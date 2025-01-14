@@ -45,13 +45,19 @@
                                     <p class="text-xs text-secondary mb-0">{{ $partida->AC }}</p>
                                 </td>
                                 <td class="text-end">
-                                    <p class="text-xs text-secondary mb-0">{{ $partida->CREDITO_ACTUAL }}</p>
+                                    <p class="text-xs text-secondary mb-0">
+                                        {{ '$' . number_format($partida->CREDITO_ACTUAL, 2, ',', '.') }}
+                                    </p>
                                 </td>
                                 <td class="text-end">
-                                    <p class="text-xs text-secondary mb-0">{{ $partida->RESERVADO }}</p>
+                                    <p class="text-xs text-secondary mb-0">
+                                        {{ '$' . number_format($partida->RESERVADO, 2, ',', '.') }}
+                                    </p>
                                 </td>
                                 <td class="text-end">
-                                    <p class="text-xs text-secondary mb-0">{{ $partida->DISPONIBLE }}</p>
+                                    <p class="text-xs text-secondary mb-0">
+                                        {{ '$' . number_format($partida->DISPONIBLE, 2, ',', '.') }}
+                                    </p>
                                 </td>
                             </tr>
                         @endforeach
@@ -63,7 +69,6 @@
                                     </div>
                                 </td>
                             </tr>
-                            
                         @endif
                     </tbody>
                 </table>
