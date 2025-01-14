@@ -8,7 +8,8 @@
                     wire:model.live="searchPartida">
             </div>
         </div>
-        <div class="card">
+        @desktop
+        <div class="card partidas-PC">
             <div class="table-responsive">
                 <table class="table align-items-center mb-0">
                     <thead>
@@ -36,7 +37,7 @@
                                     <h6 class="mb-0 text-xs">{{ $partida->CODIGO }}</h6>
                                 </td>
                                 <td>
-                                    <p class="text-xs text-secondary mb-0">{{ $partida->DESCRIPCION }}</p>
+                                    <p class="text-xs text-secondary mb-0 text-wrap">{{ $partida->DESCRIPCION }}</p>
                                 </td>
                                 <td class="text-center">
                                     <p class="text-xs font-weight-bold mb-0">{{ $partida->PG }}</p>
@@ -74,5 +75,36 @@
                 </table>
             </div>
         </div>
+        @elsedesktop
+        <div class="partidas-movil">
+            @foreach ($partidas as $partida)
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <div class="cardpartida">
+                        <div class="cardpartida-header bg-success text-star pt-4 pb-3">
+                            <h1 class="font-weight-bold mt-2 text-center">
+                                <small>{{ $partida->CODIGO }}</small>
+                            </h1>
+                            <span class="text-dark text-wrap" style="white-space: normal; word-break: break-word;">
+                                {{ $partida->DESCRIPCION }}
+                            </span>
+                        </div>
+                        <div class="cardpartida-body text-lg-left text-start pt-0">
+                            <div class="d-flex justify-content-lg-start pt-2">
+                                <ul>
+                                    <li class="">Prog.: {{ $partida->PG }} / Activ.: {{ $partida->AC }}</li>
+                                    <li class="">Crédito: {{ '$ ' . number_format($partida->CREDITO_ACTUAL, 2, ',', '.') }}</li>
+                                    <li class="">Reservado: {{ '$ ' . number_format($partida->RESERVADO, 2, ',', '.') }}</li>
+                                    <li class="">Disponible: {{ '$ ' . number_format($partida->DISPONIBLE, 2, ',', '.') }}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            @endforeach
+        </div>
+        @enddesktop
     </div>
 </div>
