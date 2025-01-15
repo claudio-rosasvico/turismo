@@ -35,10 +35,20 @@ class IndexPartidas extends Component
     public function showInfoPartida($codigo){
         
         $this->codigoModal = $codigo;
+        Log::info('codigo: '.$codigo);
         $infoPartida = InfoPartida::where('codigo', $codigo)->first();
-        $this->tituloModal = $infoPartida->titulo;
-        $this->infoModal = $infoPartida->descripcion;
-        $this->modalShow = true;
+        Log::info($infoPartida);
+        if($infoPartida){
+            $this->tituloModal = $infoPartida->titulo;
+            $this->infoModal = $infoPartida->descripcion;
+            $this->modalShow = true;
+        } else {
+            $this->codigoModal = substr($codigo, 0, -2);
+            $infoPartida = InfoPartida::where('codigo', $codigo)->first();
+            $this->tituloModal = $infoPartida->titulo;
+            $this->infoModal = $infoPartida->descripcion;
+            $this->modalShow = true;
+        }
     }
 
     public function render()
