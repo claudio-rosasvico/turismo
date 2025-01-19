@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
     /*PARTIDAS*/
     Route::get('/partidas/upload', function(){ return view('partidas.upload'); })->name('Cargar Partidas');
     Route::post('/partidas/importar_partida', [PartidaController::class, 'importar_partida'])->name('importar_partida');
+    Route::post('/partidas/importar_partida_CURL', [PartidaController::class, 'importar_partida_CURL'])->name('importar_partida_CURL');
     Route::resource('/partidas', PartidaController::class)->names('partidas');
     
     /*LINKS*/

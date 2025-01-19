@@ -1,6 +1,8 @@
 <div>
     <div class="mx-3">
         <div class="mb-3">
+            <p>Ultima Carga:
+                {{ $partidas->count() > 0 ? date('d-m-Y', strtotime($partidas->first()->created_at)) : '' }}</p>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>
                 <input type="text" class="form-control" placeholder="Buscar Partida" aria-label="searchPartida"
@@ -66,11 +68,11 @@
                                             wire:click="showInfoPartida('{{ $partida->CODIGO }}')"><i
                                                 class="fa-solid fa-circle-info"></i></a>
                                     </td>
-                                    
-                                   {{--  <td>
+
+                                    {{--  <td>
                                         {{ $partida->infoPartida->titulo }}
                                     </td> --}}
-                                    
+
                                 </tr>
                             @endforeach
                             @if ($partidas->isEmpty())
@@ -105,8 +107,8 @@
                                     <p>{{ $infoModal }}</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-success  ml-auto"
-                                        data-bs-dismiss="modal" wire:click="$set('modalShow', false)">Aceptar</button>
+                                    <button type="button" class="btn btn-success  ml-auto" data-bs-dismiss="modal"
+                                        wire:click="$set('modalShow', false)">Aceptar</button>
                                 </div>
                             </div>
                         </div>
