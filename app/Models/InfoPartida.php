@@ -15,6 +15,6 @@ class InfoPartida extends Model
     protected $fillable = ['codigo', 'titulo', 'descripcion'];
 
     public function partida(){
-        return $this->hasMany(Partida::class, 'CODIGO', 'codigo');
+        return $this->hasMany(Partida::class, 'info_partida_id');
     }
 }

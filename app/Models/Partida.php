@@ -44,9 +44,11 @@ class Partida extends Model
         'PAGADO',
         'DISPONIBLE',
         'PASIVO',
+        'info_partida_id'
     ];
 
-    public function info_partida(){
-        return $this->belongsTo(InfoPartida::class, 'CODIGO', 'codigo');
+    public function infoPartida()
+    {
+        return $this->belongsTo(InfoPartida::class, 'info_partida_id');
     }
 }

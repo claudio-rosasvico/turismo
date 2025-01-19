@@ -236,10 +236,6 @@ a {
   color: #f53939;
   text-decoration: none;
 }
-a:hover {
-  color: #d70b0b;
-  text-decoration: none;
-}
 
 a:not([href]):not([class]), a:not([href]):not([class]):hover {
   color: inherit;
@@ -24725,3 +24721,35 @@ pre[class*=language-] {
   border-bottom: none; 
 }
 
+.card .list-group .list-group-item:hover {
+  background-color: #e9ecef;
+  color: none;
+}
+
+.icon-wrapper {
+  width: 120px; /* Tamaño del círculo */
+  height: 120px; /* Tamaño del círculo */
+  background-color: #82d616; /* Fondo verde */
+  color: white; /* Color del ícono */
+  border-radius: 50%; /* Círculo */
+  font-size: 50px; /* Tamaño del ícono */
+  display: flex; /* Centrar contenido */
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para resaltar */
+  margin: 20px auto; /* Espaciado y centrado */
+}
+
+.icon-wrapper-dashboard {
+  width: 70px; /* Tamaño del círculo */
+  height: 70px; /* Tamaño del círculo */
+  background-color: #82d616; /* Fondo verde */
+  color: white; /* Color del ícono */
+  border-radius: 50%; /* Círculo */
+  font-size: 35px; /* Tamaño del ícono */
+  display: flex; /* Centrar contenido */
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para resaltar */
+  margin: 20px auto; /* Espaciado y centrado */
+}

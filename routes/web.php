@@ -58,5 +58,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/partidas/importar_partida', [PartidaController::class, 'importar_partida'])->name('importar_partida');
     Route::resource('/partidas', PartidaController::class)->names('partidas');
     
+    /*LINKS*/
+    Route::get('/links', function(){ return view('links'); })->name('links');
 });
 

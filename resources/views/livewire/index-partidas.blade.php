@@ -66,6 +66,11 @@
                                             wire:click="showInfoPartida('{{ $partida->CODIGO }}')"><i
                                                 class="fa-solid fa-circle-info"></i></a>
                                     </td>
+                                    
+                                   {{--  <td>
+                                        {{ $partida->infoPartida->titulo }}
+                                    </td> --}}
+                                    
                                 </tr>
                             @endforeach
                             @if ($partidas->isEmpty())

@@ -2,19 +2,28 @@
 
 namespace App\Imports;
 
+use App\Models\InfoPartida;
 use App\Models\Partida;
 use Maatwebsite\Excel\Concerns\ToModel;
 
 class PartidaImport implements ToModel
 {
     /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
+     * @param array $row
+     *
+     * @return \Illuminate\Database\Eloquent\Model|null
+     */
     public function model(array $row)
     {
         if ($row[14] == '_2' || $row[14] == '_3' || $row[14] == '_4' || $row[14] == '_5') {
+
+            $codigo = intval(str_replace('_', '', $row[14])) . '.' . intval(str_replace('_', '', $row[15])) . '.' . intval(str_replace('_', '', $row[16]));
+            $infoPartida = InfoPartida::where('codigo', $codigo)->first();
+            if (!$infoPartida) {
+                $codigo = substr($codigo, 0, -2);
+                $infoPartida = InfoPartida::where('codigo', $codigo)->first();
+            }
+
             return new Partida([
 
                 'DA' => (intval(str_replace('_', '', $row[0]))),
@@ -48,6 +57,7 @@ class PartidaImport implements ToModel
                 'PAGADO' => $row[27],
                 'DISPONIBLE' => $row[28],
                 'PASIVO' => $row[29],
+                'info_partida_id' => $infoPartida->id,
 
             ]);
         }
