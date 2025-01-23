@@ -68,11 +68,6 @@
                                             wire:click="showInfoPartida('{{ $partida->CODIGO }}')"><i
                                                 class="fa-solid fa-circle-info"></i></a>
                                     </td>
-
-                                    {{--  <td>
-                                        {{ $partida->infoPartida->titulo }}
-                                    </td> --}}
-
                                 </tr>
                             @endforeach
                             @if ($partidas->isEmpty())
@@ -91,7 +86,7 @@
             @if ($modalShow)
                 <div>
                     <div class="modal-backdrop show"></div>
-                    <div wire:ignore class="modal fade show" id="modal-default" tabindex="-1" role="dialog"
+                    <div class="modal fade show" id="modal-default" tabindex="-1" role="dialog"
                         aria-labelledby="modal-default" aria-modal="true" style="display: block;">
                         <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
                             <div class="modal-content">
@@ -122,12 +117,20 @@
                         <div class="col-12 mb-4">
                             <div class="cardpartida">
                                 <div class="cardpartida-header bg-success text-star pt-4 pb-3">
-                                    <h1 class="font-weight-bold mt-2 text-center">
-                                        <small>{{ $partida->CODIGO }}</small>
-                                    </h1>
-                                    <span class="text-dark text-wrap" style="white-space: normal; word-break: break-word;">
-                                        {{ $partida->DESCRIPCION }}
-                                    </span>
+                                    <div>
+                                        <h1 class="font-weight-bold mt-2 text-center">
+                                            <small>{{ $partida->CODIGO }}</small>
+                                        </h1>
+                                        <span class="text-dark text-wrap" style="white-space: normal; word-break: break-word;">
+                                            {{ $partida->DESCRIPCION }}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <a class="text-xs text-secondary mb-0 cursor-pointer" data-bs-toggle="modal"
+                                            data-bs-target="#modal-default"
+                                            wire:click="showInfoPartida('{{ $partida->CODIGO }}')"><i
+                                                class="fa-solid fa-circle-info"></i></a>
+                                    </div>
                                 </div>
                                 <div class="cardpartida-body text-lg-left text-start pt-0">
                                     <div class="d-flex justify-content-lg-start pt-2">
