@@ -83,33 +83,6 @@
                     </table>
                 </div>
             </div>
-            @if ($modalShow)
-                <div>
-                    <div class="modal-backdrop show"></div>
-                    <div class="modal fade show" id="modal-default" tabindex="-1" role="dialog"
-                        aria-labelledby="modal-default" aria-modal="true" style="display: block;">
-                        <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h6 class="modal-title" id="modal-title-default">
-                                        {{ $codigoModal }} /
-                                        {{ $tituloModal }}</h6>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">×</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body text-wrap text-start">
-                                    <p>{{ $infoModal }}</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-success  ml-auto" data-bs-dismiss="modal"
-                                        wire:click="$set('modalShow', false)">Aceptar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endif
         @elsedesktop
             <div class="partidas-movil">
                 @foreach ($partidas as $partida)
@@ -121,15 +94,10 @@
                                         <h1 class="font-weight-bold mt-2 text-center">
                                             <small>{{ $partida->CODIGO }}</small>
                                         </h1>
-                                        <span class="text-dark text-wrap" style="white-space: normal; word-break: break-word;">
+                                        <span class="text-dark text-wrap"
+                                            style="white-space: normal; word-break: break-word;">
                                             {{ $partida->DESCRIPCION }}
                                         </span>
-                                    </div>
-                                    <div>
-                                        <a class="text-xs text-secondary mb-0 cursor-pointer" data-bs-toggle="modal"
-                                            data-bs-target="#modal-default"
-                                            wire:click="showInfoPartida('{{ $partida->CODIGO }}')"><i
-                                                class="fa-solid fa-circle-info"></i></a>
                                     </div>
                                 </div>
                                 <div class="cardpartida-body text-lg-left text-start pt-0">
@@ -143,9 +111,12 @@
                                                 {{ '$ ' . number_format($partida->RESERVADO, 2, ',', '.') }}</li>
                                             <li class="">Disponible:
                                                 {{ '$ ' . number_format($partida->DISPONIBLE, 2, ',', '.') }}</li>
-                                            <li class=""><i class="fa-solid fa-circle-info"></i></li>
                                         </ul>
                                     </div>
+                                    <p class="cursor-pointer text-center"
+                                        wire:click="showInfoPartida('{{ $partida->CODIGO }}')"><i
+                                            class="fa-solid fa-circle-info"></i>
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -153,5 +124,32 @@
                 @endforeach
             </div>
         @enddesktop
+        @if ($modalShow)
+            <div>
+                <div class="modal-backdrop show"></div>
+                <div class="modal fade show" id="modal-default" tabindex="-1" role="dialog"
+                    aria-labelledby="modal-default" aria-modal="true" style="display: block;">
+                    <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h6 class="modal-title" id="modal-title-default">
+                                    {{ $codigoModal }} /
+                                    {{ $tituloModal }}</h6>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body text-wrap text-start">
+                                <p>{{ $infoModal }}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success  ml-auto" data-bs-dismiss="modal"
+                                    wire:click="$set('modalShow', false)">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 </div>

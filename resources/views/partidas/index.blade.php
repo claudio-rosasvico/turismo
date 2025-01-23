@@ -11,13 +11,13 @@
                             <div>
                                 <h4 class="card-title">Ver Partidas</h4>
                             </div>
-                            <div>
+                            {{-- <div>
                                 <form action="{{ route('importar_partida_CURL') }}" method="post">
                                     @csrf
                                     <button type="submit" name="" id="" class="btn btn-primary"
                                         role="button">Cargar Excel CURL</button>
                                 </form>
-                            </div>
+                            </div> --}}
                             <div>
                                 <a name="" id="" class="btn btn-primary"
                                     href="{{ route('Cargar Partidas') }}" role="button">Cargar Partidas</a>
