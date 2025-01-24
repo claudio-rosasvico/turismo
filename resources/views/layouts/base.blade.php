@@ -22,7 +22,7 @@
     <link href="../assets/css/nucleo-svg.css" rel="stylesheet" /> --}}
     <link href="{{ asset('/assets/fonts/css/all.css') }}" rel="stylesheet">
     <!-- CSS Files -->
-    <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1" rel="stylesheet" />
+    {{-- <link id="pagestyle" href="../assets/css/soft-ui-dashboard.css?v=1" rel="stylesheet" /> --}}
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
