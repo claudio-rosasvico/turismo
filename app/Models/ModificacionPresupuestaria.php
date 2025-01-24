@@ -12,5 +12,10 @@ class ModificacionPresupuestaria extends Model
     use SoftDeletes;
 
     protected $table = 'modificacion_presupuestarias';
-    protected $fillable = ['partida', 'pg', 'ac', 'monto', 'accion', 'activo', 'fecha_solicitud', 'fecha_ejecutada', 'descripcion'];
+    protected $fillable = ['partida', 'pg', 'ac', 'monto', 'accion', 'activo', 'fecha_solicitud', 'fecha_ejecutada', 'descripcion', 'partida_id'];
+
+    public function partida()
+    {
+        return $this->belongsTo(Partida::class, 'partida_id');
+    }
 }

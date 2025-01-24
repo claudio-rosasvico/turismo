@@ -51,4 +51,9 @@ class Partida extends Model
     {
         return $this->belongsTo(InfoPartida::class, 'info_partida_id');
     }
+    
+    public function modificacion()
+    {
+        return $this->hasMany(ModificacionPresupuestaria::class, 'partida_id');
+    }
 }

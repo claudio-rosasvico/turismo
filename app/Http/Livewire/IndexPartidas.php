@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\InfoPartida;
+use App\Models\ModificacionPresupuestaria;
 use App\Models\Partida;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -15,6 +16,10 @@ class IndexPartidas extends Component
     public $codigoModal;
     public $infoModal;
     public $tituloModal = 'titulo';
+    public $modalModificacion = false;
+    public $monto_modificacion;
+    public $fecha_modificacion;
+    public $descripcion_modificacion;
 
     public function mount()
     {
@@ -43,6 +48,16 @@ class IndexPartidas extends Component
         $this->infoModal = $partida->infoPartida->descripcion;
         $this->codigoModal = $partida->infoPartida->codigo;
         $this->modalShow = true;
+        
+    }
+    
+    public function showModificacionPartida($modificacion_id)
+    {
+        $modificacion = ModificacionPresupuestaria::find($modificacion_id);
+        $this->monto_modificacion = $modificacion->monto;
+        $this->fecha_modificacion = $modificacion->fecha_solicitud;
+        $this->descripcion_modificacion = $modificacion->descripcion;
+        $this->modalModificacion = true;
         
     }
 

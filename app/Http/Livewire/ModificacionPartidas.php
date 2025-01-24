@@ -59,15 +59,21 @@ class ModificacionPartidas extends Component
 
     public function modificacionCreate()
     {
-        Log::info('Por validar');
+
         $this->validate([
             'partidaModal' => 'required|string|max:255',
             'pg' => 'required|string|max:2',
             'ac' => 'required|string|max:2',
             'accion' => 'required|in:0,1',
             'descripcion' => '',
+            'fecha_solicitud' => 'required|date',
         ]);
-        Log::info('Validado');
+
+        $partida = Partida::where('CODIGO', $this->partidaModal)
+            ->where('PG', $this->pg)
+            ->where('AC', $this->ac)
+            ->first();
+
         $ModificacionPresupuestaria = ModificacionPresupuestaria::create([
             'partida' => $this->partidaModal,
             'pg' => $this->pg,
@@ -76,8 +82,8 @@ class ModificacionPartidas extends Component
             'accion' => $this->accion,
             'descripcion' => $this->descripcion,
             'fecha_solicitud' => $this->fecha_solicitud,
+            'partida_id' => $partida->id,
         ]);
-        Log::info('Modificacion = ' . $ModificacionPresupuestaria);
 
         $this->reset(['partidaModal', 'pg', 'ac', 'accion', 'descripcion', 'fecha_solicitud']);
         $this->modificaciones = ModificacionPresupuestaria::all();
@@ -92,10 +98,11 @@ class ModificacionPartidas extends Component
         $this->modalShowInfo = true;
     }
 
-    public function deleteModificacion($modificacion_id)
+    public function deactivateModificacion($modificacion_id)
     {
         $modificacion = ModificacionPresupuestaria::find($modificacion_id);
-        $modificacion->delete();
+        $modificacion->activo = 0;
+        $modificacion->save();
         $this->modificaciones = ModificacionPresupuestaria::all();
     }
 

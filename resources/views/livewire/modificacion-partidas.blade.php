@@ -6,7 +6,7 @@
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i
                                 class="fa-solid fa-magnifying-glass"></i></span>
-                        <input type="text" class="form-control" placeholder="Buscar Modificación"
+                        <input type="text" class="form-control custom-padding" placeholder="Buscar Modificación"
                             aria-label="searchModificacion" aria-describedby="basic-addon1" name="searchModificacion"
                             id="searchModificacion" wire:model.live="searchModificacion"
                             style="padding-left: 35px !important;">
@@ -42,37 +42,40 @@
                     </thead>
                     <tbody>
                         @foreach ($modificaciones as $modificacion)
-                            <tr wire:key="{{ $modificacion->id }}">
-                                <td>
-                                    <h6 class="mb-0 text-xs">{{ $modificacion->partida }}</h6>
-                                </td>
-                                <td class="text-center">
-                                    <p class="text-xs text-secondary mb-0 text-wrap">{{ $modificacion->pg }}</p>
-                                </td>
-                                <td class="text-center">
-                                    <p class="text-xs font-weight-bold mb-0">{{ $modificacion->ac }}</p>
-                                </td>
-                                <td class="text-center">
-                                    <p class="text-xs text-secondary mb-0">
-                                        {{ '$ ' . number_format($modificacion->monto, 2, ',', '.') }}</p>
-                                </td>
-                                <td class="text-center">
-                                    <p
-                                        class="mb-0 badge  {{ $modificacion->accion == 1 ? 'bg-success' : 'bg-danger' }}">
-                                        {{ $modificacion->accion ? 'Aumentar' : 'Disminuir' }}</p>
-                                </td>
-                                <td class="text-center">
-                                    <p class="text-xs text-secondary mb-0">
-                                        {{ date('d-m-Y', strtotime($modificacion->fecha_solicitud)) }}</p>
-                                </td>
-                                <td>
-                                    <a class="" style="cursor: pointer;" wire:click="showInfo({{ $modificacion->id }})">
-                                        <i class="fa-solid fa-circle-info"></i></a>
-                                    <a class="text-primary" style="cursor: pointer;"
-                                        wire:click="deleteModificacion({{ $modificacion->id }})">
-                                        <i class="fa-solid fa-circle-xmark"></i></a>
-                                </td>
-                            </tr>
+                            @if ($modificacion->activo)
+                                <tr wire:key="{{ $modificacion->id }}">
+                                    <td>
+                                        <h6 class="mb-0 text-xs">{{ $modificacion->partida }}</h6>
+                                    </td>
+                                    <td class="text-center">
+                                        <p class="text-xs text-secondary mb-0 text-wrap">{{ $modificacion->pg }}</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p class="text-xs font-weight-bold mb-0">{{ $modificacion->ac }}</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p class="text-xs text-secondary mb-0">
+                                            {{ '$ ' . number_format($modificacion->monto, 2, ',', '.') }}</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p
+                                            class="mb-0 badge  {{ $modificacion->accion == 1 ? 'bg-success' : 'bg-danger' }}">
+                                            {{ $modificacion->accion ? 'Aumentar' : 'Disminuir' }}</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <p class="text-xs text-secondary mb-0">
+                                            {{ date('d-m-Y', strtotime($modificacion->fecha_solicitud)) }}</p>
+                                    </td>
+                                    <td>
+                                        <a class="" style="cursor: pointer;"
+                                            wire:click="showInfo({{ $modificacion->id }})">
+                                            <i class="fa-solid fa-circle-info"></i></a>
+                                        <a class="text-primary" style="cursor: pointer;"
+                                            wire:click="deactivateModificacion({{ $modificacion->id }})">
+                                            <i class="fa-solid fa-circle-xmark"></i></a>
+                                    </td>
+                                </tr>
+                            @endif
                         @endforeach
                         @if ($modificaciones->isEmpty())
                             <tr>
@@ -108,7 +111,7 @@
                                             <div class="mb-3">
                                                 <label for="" class="form-label">Programa</label>
                                                 <input type="text" class="form-control" name="pg" id="pg"
-                                                    aria-describedby="helpId" placeholder="Programa" wire:model="pg" />
+                                                    aria-describedby="helpId" placeholder="Programa" wire:model="pg"/>
                                             </div>
                                         </div>
                                         <div class="col-2">
@@ -204,7 +207,8 @@
                     <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <span class="ms-auto" style="cursor:pointer" wire:click="$set('modalShowInfo', false)">
+                                <span class="ms-auto" style="cursor:pointer"
+                                    wire:click="$set('modalShowInfo', false)">
                                     <strong>X</strong>
                                 </span>
                             </div>

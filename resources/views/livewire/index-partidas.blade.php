@@ -5,8 +5,8 @@
                 {{ $partidas->count() > 0 ? date('d-m-Y', strtotime($partidas->first()->created_at)) : '' }}</p>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>
-                <input type="text" class="form-control" placeholder="Buscar Partida" aria-label="searchPartida"
-                    aria-describedby="basic-addon1" name="searchPartida" id="searchPartida"
+                <input type="text" class="form-control custom-padding" placeholder="Buscar Partida"
+                    aria-label="searchPartida" aria-describedby="basic-addon1" name="searchPartida" id="searchPartida"
                     wire:model.live="searchPartida">
             </div>
         </div>
@@ -63,10 +63,21 @@
                                         </p>
                                     </td>
                                     <td class="text-end">
-                                        <a class="text-xs text-secondary mb-0 cursor-pointer" data-bs-toggle="modal"
+                                        <a class="text-xs text-secondary mb-0 cursor-pointer mr-2" data-bs-toggle="modal"
                                             data-bs-target="#modal-default"
                                             wire:click="showInfoPartida('{{ $partida->CODIGO }}')"><i
                                                 class="fa-solid fa-circle-info"></i></a>
+                                        @foreach ($partida->modificacion as $modificacion)
+                                            @if ($modificacion->accion)
+                                                <span class="ms-2 cursor-pointer"
+                                                    wire:click="showModificacionPartida({{ $modificacion->id }})"><i
+                                                        class="fa-solid fa-up-long text-info"></i></span>
+                                            @else
+                                                <span class="ms-2 cursor-pointer"
+                                                    wire:click="showModificacionPartida({{ $modificacion->id }})"><i
+                                                        class="fa-solid fa-up-long text-danger"></i></span>
+                                            @endif
+                                        @endforeach
                                     </td>
                                 </tr>
                             @endforeach
@@ -113,10 +124,23 @@
                                                 {{ '$ ' . number_format($partida->DISPONIBLE, 2, ',', '.') }}</li>
                                         </ul>
                                     </div>
-                                    <p class="cursor-pointer text-center"
-                                        wire:click="showInfoPartida('{{ $partida->CODIGO }}')"><i
-                                            class="fa-solid fa-circle-info"></i>
-                                    </p>
+                                    <div class="d-flex justify-content-center">
+                                        <p class="cursor-pointer text-center"
+                                            wire:click="showInfoPartida('{{ $partida->CODIGO }}')">
+                                            <i class="fa-solid fa-circle-info"></i>
+                                        </p>
+                                        @foreach ($partida->modificacion as $modificacion)
+                                            @if ($modificacion->accion)
+                                                <span class="ms-3 cursor-pointer"
+                                                    wire:click="showModificacionPartida({{ $modificacion->id }})"><i
+                                                        class="fa-solid fa-up-long text-info"></i></span>
+                                            @else
+                                                <span class="ms-3 cursor-pointer"
+                                                    wire:click="showModificacionPartida({{ $modificacion->id }})"><i
+                                                        class="fa-solid fa-up-long text-danger"></i></span>
+                                            @endif
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -145,6 +169,29 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-success  ml-auto" data-bs-dismiss="modal"
                                     wire:click="$set('modalShow', false)">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+        @if ($modalModificacion)
+            <div>
+                <div class="modal-backdrop show"></div>
+                <div class="modal fade show" id="modal-default" tabindex="-1" role="dialog"
+                    aria-labelledby="modal-default" aria-modal="true" style="display: block;">
+                    <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h6>Monto: {{ '$ ' . number_format($monto_modificacion, 2, ',', '.') }}</h6>
+                                <span class="ms-auto" style="cursor:pointer"
+                                    wire:click="$set('modalModificacion', false)">
+                                    <strong>X</strong>
+                                </span>
+                            </div>
+                            <div class="modal-body text-wrap text-start">
+                                <p><strong>Fecha:</strong> {{ date('d-m-Y', strtotime($fecha_modificacion)) }}</p>
+                                <p><strong>Descripción:</strong> {{ $descripcion_modificacion }}</p>
                             </div>
                         </div>
                     </div>

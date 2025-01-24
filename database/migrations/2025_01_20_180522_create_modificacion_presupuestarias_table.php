@@ -24,6 +24,7 @@ return new class extends Migration
             $table->date('fecha_ejecutada')->nullable();
             $table->string('descripcion', 300)->nullable();
             $table->boolean('activo')->default(1);
+            $table->integer('partida_id')->default(1);
         });
     }
 
