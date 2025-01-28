@@ -68,11 +68,11 @@
                                             wire:click="showInfoPartida('{{ $partida->CODIGO }}')"><i
                                                 class="fa-solid fa-circle-info"></i></a>
                                         @foreach ($partida->modificacion as $modificacion)
-                                            @if ($modificacion->accion)
+                                            @if ($modificacion->accion && $modificacion->activo)
                                                 <span class="ms-2 cursor-pointer"
                                                     wire:click="showModificacionPartida({{ $modificacion->id }})"><i
                                                         class="fa-solid fa-up-long text-info"></i></span>
-                                            @else
+                                            @elseif(!$modificacion->accion && $modificacion->activo)
                                                 <span class="ms-2 cursor-pointer"
                                                     wire:click="showModificacionPartida({{ $modificacion->id }})"><i
                                                         class="fa-solid fa-up-long text-danger"></i></span>
