@@ -10,6 +10,7 @@
     </div>
     <hr class="horizontal dark mt-0">
     <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
+        @unlessrole('Visitante')
         <ul class="navbar-nav">
             <li class="nav-item pb-2">
                 <a class="nav-link {{ Route::currentRouteName() == 'dashboard' ? 'active' : '' }}"
@@ -21,7 +22,7 @@
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
-
+            @hasanyrole('Desarrollador|Contable')
             <li class="nav-item mt-2">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Contable</h6>
             </li>
@@ -59,7 +60,7 @@
                   </div>
             </li>
             
-            
+            @endhasanyrole
             
             <li class="nav-item pb-2">
                 <a class="nav-link {{ Route::currentRouteName() == 'links' ? 'active' : '' }}"
@@ -87,8 +88,9 @@
             </li>
 
         </ul>
+        @endunlessrole
     </div>
-    <div class="sidenav-footer mx-3 mt-3 pt-3">
+    {{-- <div class="sidenav-footer mx-3 mt-3 pt-3">
         <div class="card card-background shadow-none card-background-mask-secondary" id="sidenavCard">
             <div class="full-background"
                 style="background-image: url('../assets/img/curved-images/white-curved.jpeg')">
@@ -97,5 +99,5 @@
 
             </div>
         </div>
-    </div>
+    </div> --}}
 </aside>

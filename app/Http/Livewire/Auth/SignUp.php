@@ -31,6 +31,7 @@ class SignUp extends Component
             'email' => $this->email,
             'password' => Hash::make($this->password)
         ]);
+        $user->assignRole('Visitante');
 
         auth()->login($user);
 

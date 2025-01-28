@@ -58,7 +58,7 @@
                                         </p>
                                     </td>
                                     <td class="text-end">
-                                        <p class="text-xs text-secondary mb-0">
+                                        <p class="text-xs font-weight-bold mb-0">
                                             {{ '$' . number_format($partida->DISPONIBLE, 2, ',', '.') }}
                                         </p>
                                     </td>
