@@ -22,7 +22,7 @@
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
-            @hasanyrole('Desarrollador|Contable')
+            @haspermission('contable')
             <li class="nav-item mt-2">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Contable</h6>
             </li>
@@ -60,7 +60,7 @@
                   </div>
             </li>
             
-            @endhasanyrole
+            @endhaspermission
             
             <li class="nav-item pb-2">
                 <a class="nav-link {{ Route::currentRouteName() == 'links' ? 'active' : '' }}"
