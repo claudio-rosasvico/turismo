@@ -165,7 +165,7 @@
                                         <div class="col">
                                             <div class="mb-3">
                                                 <label for="" class="form-label">Descripción</label>
-                                                <textarea class="form-control" name="descripcion" id="descripcion" rows="2" wire:model="descripcion"></textarea>
+                                                <textarea class="form-control" name="observaciones" id="observaciones" rows="2" wire:model="observaciones"></textarea>
                                             </div>
 
                                         </div>

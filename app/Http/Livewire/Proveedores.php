@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Proveedor;
+use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
 class Proveedores extends Component
@@ -10,10 +11,11 @@ class Proveedores extends Component
     public $proveedores;
     public $searchProveedor;
     public $nombre;
-    public $direccion;
+    public $CUIT;
+    public $domicilio;
     public $telefono;
     public $email;
-    public $venc_LD;
+    public $venc_libre_deuda;
     public $observaciones;
     public $modalShow;
 
@@ -69,6 +71,13 @@ class Proveedores extends Component
 
             // Mostrar toast de éxito
             $this->emit('mostrarToast', '¡Éxito!', 'El proveedor se creó correctamente.', 'success');
+        } catch (ValidationException $e) {
+            // Capturar errores de validación
+            $errors = $e->validator->errors()->all(); // Obtener todos los mensajes de error
+            $errorMessage = implode('<br>', $errors); // Unir los mensajes en un solo string
+
+            // Mostrar toast de error con los mensajes de validación
+            $this->emit('mostrarToast', 'Error de validación', $errorMessage, 'error');
         } catch (\Exception $e) {
             // Mostrar toast de error en caso de excepción
             $this->emit('mostrarToast', 'Error', 'Hubo un problema al crear el proveedor.', 'error');
