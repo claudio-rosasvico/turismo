@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Proveedor;
+use App\Models\Cotizacion;
 use Illuminate\Http\Request;
 
-class ProveedorController extends Controller
+class CotizacionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('parametros.proveedores');
+        //
     }
 
     /**
@@ -34,7 +34,7 @@ class ProveedorController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Proveedor $proveedor)
+    public function show(Cotizacion $cotizacion)
     {
         //
     }
@@ -42,7 +42,7 @@ class ProveedorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Proveedor $proveedor)
+    public function edit(Cotizacion $cotizacion)
     {
         //
     }
@@ -50,7 +50,7 @@ class ProveedorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Proveedor $proveedor)
+    public function update(Request $request, Cotizacion $cotizacion)
     {
         //
     }
@@ -58,7 +58,7 @@ class ProveedorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Proveedor $proveedor)
+    public function destroy(Cotizacion $cotizacion)
     {
         //
     }

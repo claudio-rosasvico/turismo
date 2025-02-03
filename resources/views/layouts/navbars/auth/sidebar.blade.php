@@ -28,14 +28,14 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link {{ request()->is('partidas*') ? 'active' : '' }}" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                <a class="nav-link {{ (request()->is('partidas*') || request()->is('parametros*')) ? 'active' : '' }}" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fa-solid fa-plus fa-lg" style="color: #020303;"></i>
                     </div>
                     <span class="nav-link-text ms-1">Partidas</span>
                 </a>
-                <div class="collapse {{ request()->is('partidas*') ? 'show' : '' }}"" id="collapseExample">
+                <div class="collapse {{ (request()->is('partidas*') || request()->is('parametros*')) ? 'show' : '' }}"" id="collapseExample">
                     <a class="nav-sublink {{ request()->is('partidas') ? 'active' : '' }}" href="/partidas" >
                         <div
                             class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -56,6 +56,13 @@
                             <i class="fa-solid fa-right-left fa-lg" style="color: #020303;"></i>
                         </div>
                         <span class="nav-link-text ms-1">Modif. Presupuestaria</span>
+                    </a>
+                    <a class="nav-sublink {{ request()->is('parametros/proveedores') ? 'active' : '' }}" href="/parametros/proveedores" >
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fa-solid fa-truck-moving fa-lg" style="color: #020303;"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Proveedores</span>
                     </a>
                   </div>
             </li>

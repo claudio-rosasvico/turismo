@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PartidaController;
+use App\Http\Controllers\ProveedorController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Livewire\Auth\ForgotPassword;
@@ -62,5 +63,8 @@ Route::middleware('auth')->group(function () {
     
     /*LINKS*/
     Route::get('/links', function(){ return view('links'); })->name('links');
+    
+    /*PARAMETROS*/
+    Route::get('/parametros/proveedores', [ProveedorController::class, 'index'])->name('proveedores');
 });
 

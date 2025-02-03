@@ -22,4 +22,9 @@ class Proveedor extends Model
         'venc_libre_deuda',
         'observaciones'
     ];
+
+    public function ofertas()
+    {
+        return $this->hasMany(OfertaCotizacion::class, 'proveedor_id');
+    }
 }
