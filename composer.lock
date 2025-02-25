@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b807eee5f86d071ce01a842eb25528ce",
+    "content-hash": "c1283d753cd6f1b4ac5346eaf5c18c41",
     "packages": [
         {
             "name": "barryvdh/laravel-snappy",
