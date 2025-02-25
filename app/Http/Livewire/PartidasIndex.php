@@ -2,13 +2,12 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\InfoPartida;
 use App\Models\ModificacionPresupuestaria;
 use App\Models\Partida;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
-class IndexPartidas extends Component
+class PartidasIndex extends Component
 {
     public $searchPartida;
     public $partidas;
@@ -63,6 +62,6 @@ class IndexPartidas extends Component
 
     public function render()
     {
-        return view('livewire.index-partidas');
+        return view('livewire.partidas-index');
     }
 }

@@ -24,7 +24,7 @@
                             </div>
                         </div>
                         <div.card-body>
-                            @livewire('index-partidas')
+                            @livewire('partidas-index')
                         </div.card-body>
 
                     </div>

@@ -1,4 +1,24 @@
 {
+  "__commonjsHelpers-Cpj98o6Y.js": {
+    "file": "assets/_commonjsHelpers-Cpj98o6Y.js",
+    "name": "_commonjsHelpers"
+  },
+  "_index-CH9bwCDp.js": {
+    "file": "assets/index-CH9bwCDp.js",
+    "name": "index",
+    "isDynamicEntry": true,
+    "imports": [
+      "__commonjsHelpers-Cpj98o6Y.js"
+    ]
+  },
+  "_lodash-B8oQS9-T.js": {
+    "file": "assets/lodash-B8oQS9-T.js",
+    "name": "lodash",
+    "isDynamicEntry": true,
+    "imports": [
+      "__commonjsHelpers-Cpj98o6Y.js"
+    ]
+  },
   "public/assets/fonts/webfonts/fa-brands-400.ttf": {
     "file": "assets/fa-brands-400-D1LuMI3I.ttf",
     "src": "public/assets/fonts/webfonts/fa-brands-400.ttf"
@@ -32,17 +52,18 @@
     "src": "public/assets/fonts/webfonts/fa-v4compatibility.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app--FljfBVc.css",
+    "file": "assets/app-DsC9LQ7U.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-CacxFqkI.js",
+    "file": "assets/app-BpEoXBkg.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
-    "css": [
-      "assets/app-DPlFYqzU.css"
+    "dynamicImports": [
+      "_lodash-B8oQS9-T.js",
+      "_index-CH9bwCDp.js"
     ]
   }
 }

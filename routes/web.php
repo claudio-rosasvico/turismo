@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CotizacionController;
 use App\Http\Controllers\PartidaController;
 use App\Http\Controllers\ProveedorController;
 use Illuminate\Support\Facades\Route;
@@ -66,5 +67,12 @@ Route::middleware('auth')->group(function () {
     
     /*PARAMETROS*/
     Route::get('/parametros/proveedores', [ProveedorController::class, 'index'])->name('proveedores');
+    
+    /*COTIZACIONES*/
+    Route::resource('/cotizaciones', CotizacionController::class)->names('cotizaciones');
+
+    /*PAGOS*/
+    Route::get('/pagos', function(){ return view('pagos.index'); })->name('pagos');
+
 });
 

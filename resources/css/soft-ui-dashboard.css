@@ -5931,7 +5931,7 @@ textarea.form-control-lg {
   filter: invert(1) grayscale(100%) brightness(200%);
 }
 
-.toast {
+/* .toast {
   width: 350px;
   max-width: 100%;
   font-size: 0.875rem;
@@ -5979,7 +5979,7 @@ textarea.form-control-lg {
 .toast-body {
   padding: 0.75rem;
   word-wrap: break-word;
-}
+} */
 
 .modal {
   position: fixed;
@@ -20471,7 +20471,7 @@ label,
 }
 .icon-sm i {
   top: 2px;
-  font-size: 0.65rem;
+  font-size: 0.750rem;
 }
 
 .icon-md {

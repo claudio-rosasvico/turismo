@@ -11,90 +11,137 @@
     <hr class="horizontal dark mt-0">
     <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
         @unlessrole('Visitante')
-        <ul class="navbar-nav">
-            <li class="nav-item pb-2">
-                <a class="nav-link {{ Route::currentRouteName() == 'dashboard' ? 'active' : '' }}"
-                    href="{{ route('dashboard') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa-solid fa-table-columns" style="color: #020303;"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Dashboard</span>
-                </a>
-            </li>
-            @haspermission('contable')
-            <li class="nav-item mt-2">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Contable</h6>
-            </li>
+            <ul class="navbar-nav">
+                <li class="nav-item pb-2">
+                    <a class="nav-link {{ Route::currentRouteName() == 'dashboard' ? 'active' : '' }}"
+                        href="{{ route('dashboard') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fa-solid fa-table-columns" style="color: #020303;"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Dashboard</span>
+                    </a>
+                </li>
+                @haspermission('contable')
+                    <li class="nav-item mt-2">
+                        <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Contable</h6>
+                    </li>
 
-            <li class="nav-item">
-                <a class="nav-link {{ (request()->is('partidas*') || request()->is('parametros*')) ? 'active' : '' }}" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa-solid fa-plus fa-lg" style="color: #020303;"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Partidas</span>
-                </a>
-                <div class="collapse {{ (request()->is('partidas*') || request()->is('parametros*')) ? 'show' : '' }}"" id="collapseExample">
-                    <a class="nav-sublink {{ request()->is('partidas') ? 'active' : '' }}" href="/partidas" >
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('partidas*') ? 'active' : '' }}" data-bs-toggle="collapse"
+                            href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                            <div
+                                class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="fa-solid fa-dollar-sign fa-lg" style="color: #020303;"></i>
+                            </div>
+                            <span class="nav-link-text ms-1">Partidas</span>
+                        </a>
+                        <div class="collapse {{ request()->is('partidas*') ? 'show' : '' }}" id="collapseExample">
+                            <a class="nav-sublink {{ request()->is('partidas') ? 'active' : '' }}" href="/partidas">
+                                <div
+                                    class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="fa-solid fa-magnifying-glass-dollar fa-lg" style="color: #020303;"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">Ver Partidas</span>
+                            </a>
+                            <a class="nav-sublink {{ request()->is('partidas/upload') ? 'active' : '' }}"
+                                href="/partidas/upload">
+                                <div
+                                    class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="fa-solid fa-upload fa-lg" style="color: #020303;"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">Cargar Partidas</span>
+                            </a>
+                            <a class="nav-sublink {{ request()->is('partidas/modificacion') ? 'active' : '' }}"
+                                href="/partidas/modificacion">
+                                <div
+                                    class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="fa-solid fa-right-left fa-lg" style="color: #020303;"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">Modif. Presupuestaria</span>
+                            </a>
+
+                        </div>
+                    </li>
+                    {{-- <li class="nav-item">
+                        <a class="nav-link {{ request()->is('cotizaciones*') ? 'active' : '' }}"
+                            data-bs-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false"
+                            aria-controls="collapseExample1">
+                            <div
+                                class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="fa-solid fa-bag-shopping" style="color: #020303;"></i>
+                            </div>
+                            <span class="nav-link-text ms-1">Cotizaciones</span>
+                        </a>
+                        <div class="collapse {{ request()->is('cotizaciones*') ? 'show' : '' }}"
+                            id="collapseExample1">
+                            <a class="nav-sublink {{ request()->is('cotizaciones') ? 'active' : '' }}" href="/cotizaciones">
+                                <div
+                                    class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="fa-solid fa-cart-shopping fa-lg" style="color: #020303;"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">Cotizaciones</span>
+                            </a>
+                        </div>
+                    </li> --}}
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('parametros*') || request()->is('pagos*') ? 'active' : '' }}"
+                            data-bs-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false"
+                            aria-controls="collapseExample2">
+                            <div
+                                class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                                <i class="fa-solid fa-file-invoice-dollar fa-lg" style="color: #020303;"></i>
+                            </div>
+                            <span class="nav-link-text ms-1">Pagos</span>
+                        </a>
+                        <div class="collapse {{ request()->is('parametros*') || request()->is('pagos*') ? 'show' : '' }}"
+                            id="collapseExample2">
+                            <a class="nav-sublink {{ request()->is('pagos') ? 'active' : '' }}" href="/pagos">
+                                <div
+                                    class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="fa-solid fa-file-invoice-dollar fa-lg" style="color: #020303;"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">Pagos</span>
+                            </a>
+                            <a class="nav-sublink {{ request()->is('parametros/proveedores') ? 'active' : '' }}"
+                                href="/parametros/proveedores">
+                                <div
+                                    class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="fa-solid fa-truck-moving fa-lg" style="color: #020303;"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">Proveedores</span>
+                            </a>
+                        </div>
+                    </li>
+                @endhaspermission
+
+                <li class="nav-item pb-2">
+                    <a class="nav-link {{ Route::currentRouteName() == 'links' ? 'active' : '' }}"
+                        href="{{ route('links') }}">
                         <div
                             class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fa-solid fa-magnifying-glass-dollar fa-lg" style="color: #020303;"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">Ver Partidas</span>
-                    </a>
-                    <a class="nav-sublink {{ request()->is('partidas/upload') ? 'active' : '' }}" href="/partidas/upload" >
-                        <div
-                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fa-solid fa-upload fa-lg" style="color: #020303;"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">Cargar Partidas</span>
-                    </a>
-                    <a class="nav-sublink {{ request()->is('partidas/modificacion') ? 'active' : '' }}" href="/partidas/modificacion" >
-                        <div
-                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fa-solid fa-right-left fa-lg" style="color: #020303;"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">Modif. Presupuestaria</span>
-                    </a>
-                    <a class="nav-sublink {{ request()->is('parametros/proveedores') ? 'active' : '' }}" href="/parametros/proveedores" >
-                        <div
-                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fa-solid fa-truck-moving fa-lg" style="color: #020303;"></i>
-                        </div>
-                        <span class="nav-link-text ms-1">Proveedores</span>
-                    </a>
-                  </div>
-            </li>
-            
-            @endhaspermission
-            
-            <li class="nav-item pb-2">
-                <a class="nav-link {{ Route::currentRouteName() == 'links' ? 'active' : '' }}"
-                    href="{{ route('links') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;"
-                            class="fa-solid fa-link ps-2 pe-2 text-center
+                            <i style="font-size: 1rem;"
+                                class="fa-solid fa-link ps-2 pe-2 text-center
                         {{ request()->is('links') ? 'text-white' : 'text-dark' }}"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Links de Interés</span>
-                </a>
-            </li>
+                        </div>
+                        <span class="nav-link-text ms-1">Links de Interés</span>
+                    </a>
+                </li>
 
 
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('static-sign-up') }}">
-                    <div
-                        class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fa-solid fa-link ps-2 pe-2 text-center
-                        {{ in_array(request()->route()->getName(), ['user-management']) ? 'text-white' : 'text-dark' }}" style="font-size: 1rem;"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Sign Up</span>
-                </a>
-            </li>
+                {{-- <li class="nav-item">
+                    <a class="nav-link" href="{{ route('static-sign-up') }}">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="fa-solid fa-link ps-2 pe-2 text-center
+                        {{ in_array(request()->route()->getName(), ['user-management']) ? 'text-white' : 'text-dark' }}"
+                                style="font-size: 1rem;"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Sign Up</span>
+                    </a>
+                </li> --}}
 
-        </ul>
+            </ul>
         @endunlessrole
     </div>
     {{-- <div class="sidenav-footer mx-3 mt-3 pt-3">

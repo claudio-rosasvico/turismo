@@ -17,10 +17,13 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->string('nombre'); 
+            $table->string('expediente'); 
+            $table->string('numero', 5)->nullable(); 
+            $table->float('precio_estimado', 10, 2, true); 
             $table->date('fecha_llamado')->nullable(); 
             $table->time('hora_llamado')->nullable(); 
             $table->integer('proveedor_ganador_id')->nullable(); 
-            $table->float('precio_total')->nullable(); 
+            $table->float('precio_total', 10, 2, true)->nullable(); 
             $table->date('fecha_auorizacion')->nullable(); 
             $table->date('fecha_contaduria_llamado')->nullable(); 
             $table->date('fecha_reso_llamado')->nullable(); 

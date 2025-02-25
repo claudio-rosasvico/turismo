@@ -27,4 +27,14 @@ class Proveedor extends Model
     {
         return $this->hasMany(OfertaCotizacion::class, 'proveedor_id');
     }
+    
+    public function cotizaciones()
+    {
+        return $this->hasMany(Cotizacion::class, 'proveedor_id');
+    }
+    
+    public function pagos()
+    {
+        return $this->hasMany(Pago::class, 'proveedor_id');
+    }
 }

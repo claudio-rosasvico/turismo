@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cotizacion;
+use App\Models\Proveedor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CotizacionController extends Controller
 {
@@ -12,7 +14,7 @@ class CotizacionController extends Controller
      */
     public function index()
     {
-        //
+        return view('cotizaciones.index');
     }
 
     /**
@@ -20,7 +22,8 @@ class CotizacionController extends Controller
      */
     public function create()
     {
-        //
+        $proveedores = Proveedor::all();
+        return view('cotizaciones.create', compact('proveedores'));
     }
 
     /**
@@ -28,7 +31,29 @@ class CotizacionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $cotizacion = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'expediente' => 'required|string|max:255',
+            'numero' => 'nullable',
+            'precio_estimado' => 'required',
+            'fecha_llamado' => 'nullable|date',
+            'hora_llamado' => 'nullable',
+            'proveedor_ganador_id' => 'nullable',
+            'precio_total' => 'nullable',
+            'fecha_auorizacion' => 'nullable|date',
+            'fecha_contaduria_llamado' => 'nullable|date',
+            'fecha_reso_llamado' => 'nullable|date',
+            'fecha_contaduria_adjudicacion' => 'nullable|date',
+            'fecha_reso_adjudicacion' => 'nullable|date',
+            'fecha_OC' => 'nullable|date',
+            'fecha_OP' => 'nullable|date',
+            'descripcion' => 'nullable|string',
+        ]);
+
+        $cotizacion = Cotizacion::create($cotizacion);
+
+        return redirect()->route('cotizaciones.index')->with('success', 'Cotización creada exitosamente.');
     }
 
     /**
@@ -42,17 +67,41 @@ class CotizacionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Cotizacion $cotizacion)
+    public function edit($cotizacion_id)
     {
-        //
+        $cotizacion = Cotizacion::find($cotizacion_id);
+        $proveedores = Proveedor::all();
+        return view('cotizaciones.create', compact(['proveedores' , 'cotizacion']));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Cotizacion $cotizacion)
+    public function update(Request $request, $cotizacion_id)
     {
-        //
+        $cotizacion = Cotizacion::find($cotizacion_id);
+
+        $cotizacionValidate = $request->validate([
+            'nombre' => 'required|string|max:255',
+            'expediente' => 'required|string|max:255',
+            'numero' => 'nullable',
+            'precio_estimado' => 'required',
+            'fecha_llamado' => 'nullable|date',
+            'hora_llamado' => 'nullable',
+            'proveedor_ganador_id' => 'nullable',
+            'precio_total' => 'nullable',
+            'fecha_auorizacion' => 'nullable|date',
+            'fecha_contaduria_llamado' => 'nullable|date',
+            'fecha_reso_llamado' => 'nullable|date',
+            'fecha_contaduria_adjudicacion' => 'nullable|date',
+            'fecha_reso_adjudicacion' => 'nullable|date',
+            'fecha_OC' => 'nullable|date',
+            'fecha_OP' => 'nullable|date',
+            'descripcion' => 'nullable|string',
+        ]);
+        $cotizacion->update($cotizacionValidate);
+
+        return redirect()->route('cotizaciones.index')->with('success', 'Cotización actualizada exitosamente.');
     }
 
     /**

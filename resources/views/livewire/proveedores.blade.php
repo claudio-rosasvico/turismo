@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-lg-3 text-end">
-                    <button type="button" class="btn btn-success" wire:click="$set('modalShow', true)">
+                    <button type="button" class="btn btn-success" wire:click="showModal">
                         Cargar Proveedor
                     </button>
 
@@ -44,7 +44,7 @@
                     </thead>
                     <tbody>
                         @foreach ($proveedores as $proveedor)
-                            @if ($proveedor->activo)
+                            @if ($proveedor->estado)
                                 <tr wire:key="{{ $proveedor->id }}">
                                     <td>
                                         <h6 class="mb-0 text-xs">{{ $proveedor->nombre }}</h6>
@@ -69,8 +69,8 @@
                                     </td>
                                     <td>
                                         <a class="" style="cursor: pointer;"
-                                            wire:click="editarProveedor({{ $proveedor->id }})">
-                                            <i class="fa-solid fa-circle-info"></i></a>
+                                            wire:click="showModal({{ $proveedor->id }})">
+                                            <i class="fa-regular fa-pen-to-square"></i></a>
                                         <a class="text-primary" style="cursor: pointer;"
                                             wire:click="deactivateproveedor({{ $proveedor->id }})">
                                             <i class="fa-solid fa-circle-xmark"></i></a>
@@ -99,13 +99,13 @@
                     <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h6 class="modal-title" id="modal-title-default">Cargar Proveedor</h6>
+                                <h6 class="modal-title" id="modal-title-default">{{ $proveedor_id ? 'Actualizar Proveedor':'Cargar Proveedor' }}</h6>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">×</span>
                                 </button>
                             </div>
                             <div class="modal-body text-wrap text-start">
-                                <form action="" wire:submit="modificacionCreate">
+                                <form action="" wire:submit="proveedorCreate">
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="mb-3">
@@ -170,15 +170,16 @@
 
                                         </div>
                                     </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-info btn-sm ml-auto"
+                                            data-bs-dismiss="modal"
+                                            wire:click="$set('modalShow', false)">Cancelar</button>
+                                        <button type="submit" class="btn btn-success btn-sm ml-auto"
+                                            data-bs-dismiss="modal">{{ $proveedor_id ? 'Actualizar':'Cargar' }} </button>
+                                    </div>
+                                </form>
                             </div>
 
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-info btn-sm ml-auto" data-bs-dismiss="modal"
-                                    wire:click="$set('modalShow', false)">Cancelar</button>
-                                <button type="submit" class="btn btn-success btn-sm ml-auto"
-                                    data-bs-dismiss="modal">Cargar</button>
-                            </div>
-                            </form>
                         </div>
                     </div>
                 </div>
