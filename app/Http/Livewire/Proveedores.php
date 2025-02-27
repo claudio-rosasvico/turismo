@@ -20,10 +20,12 @@ class Proveedores extends Component
     public $observaciones;
     public $modalShow;
     public $proveedor_id;
+    public $sortField = 'nombre';
+    public $sortDirection = 'asc';
 
     public function mount()
     {
-        $this->proveedores = Proveedor::all();
+        $this->proveedores = Proveedor::orderBy($this->sortField, $this->sortDirection)->get();
     }
 
     public function updatedSearchProveedor()
@@ -123,6 +125,19 @@ class Proveedores extends Component
         ]);
         $this->proveedores = Proveedor::all();
         $this->dispatch('mostrarToast', ['titulo' => '¡Éxito!', 'mensaje' => 'El proveedor se eliminó correctamente.', 'tipo' => 'success']);
+    }
+
+    public function sortBy($field)
+    {
+
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
+        }
+        $this->proveedores = Proveedor::orderBy($this->sortField, $this->sortDirection)->get();
+
     }
 
     public function render()

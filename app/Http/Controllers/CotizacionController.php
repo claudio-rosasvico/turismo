@@ -80,7 +80,8 @@ class CotizacionController extends Controller
     public function update(Request $request, $cotizacion_id)
     {
         $cotizacion = Cotizacion::find($cotizacion_id);
-
+        $request['proveedor_ganador_id'] = $request->input('proveedor_ganador_id') == 0 ? null : $request->input('proveedor_ganador_id');
+        
         $cotizacionValidate = $request->validate([
             'nombre' => 'required|string|max:255',
             'expediente' => 'required|string|max:255',

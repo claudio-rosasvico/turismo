@@ -16,19 +16,52 @@
                     <table class="table align-items-center mb-0">
                         <thead>
                             <tr>
-                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Código</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" wire:click="sortBy('CODIGO')" style="cursor: pointer" >
+                                    Código
+                                    @if ($sortField === 'CODIGO')
+                                    @if ($sortDirection === 'asc')
+                                        <i class="fas fa-arrow-up"></i>
+                                    @else
+                                        <i class="fas fa-arrow-down"></i>
+                                    @endif
+                                @endif
+                                </th>
                                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                     Descripción</th>
                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                     Pg</th>
                                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                     Act</th>
-                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                    Crédito</th>
-                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                    Reservado</th>
-                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                    Disponible</th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" wire:click="sortBy('CREDITO_ACTUAL')" style="cursor: pointer">
+                                    Crédito
+                                    @if ($sortField === 'CREDITO_ACTUAL')
+                                    @if ($sortDirection === 'asc')
+                                        <i class="fas fa-arrow-up"></i>
+                                    @else
+                                        <i class="fas fa-arrow-down"></i>
+                                    @endif
+                                @endif
+                                </th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"  wire:click="sortBy('RESERVADO')" style="cursor: pointer">
+                                    Reservado
+                                    @if ($sortField === 'RESERVADO')
+                                    @if ($sortDirection === 'asc')
+                                        <i class="fas fa-arrow-up"></i>
+                                    @else
+                                        <i class="fas fa-arrow-down"></i>
+                                    @endif
+                                @endif
+                                </th>
+                                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"  wire:click="sortBy('DISPONIBLE')" style="cursor: pointer">
+                                    Disponible
+                                    @if ($sortField === 'DISPONIBLE')
+                                    @if ($sortDirection === 'asc')
+                                        <i class="fas fa-arrow-up"></i>
+                                    @else
+                                        <i class="fas fa-arrow-down"></i>
+                                    @endif
+                                @endif
+                                </th>
                                 <th class="text-secondary opacity-7"></th>
                             </tr>
                         </thead>

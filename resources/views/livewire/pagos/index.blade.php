@@ -79,7 +79,7 @@
                                     @endif
                                 @endif
                             </th>
-                            <th wire:click="sortBy('pagado')" style="cursor: pointer;" 
+                            <th wire:click="sortBy('pagado')" style="cursor: pointer;"
                                 class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                 Pago
                                 @if ($sortField === 'pagado')
@@ -90,8 +90,7 @@
                                     @endif
                                 @endif
                             </th>
-                            <th
-                                class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
+                            <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                 Modalidad
                                 @if ($sortField === 'tipo_pago_id')
                                     @if ($sortDirection === 'asc')
@@ -125,7 +124,7 @@
                                     <p class="text-xs text-secondary mb-0">{{ $pago->nro_solicitud }}</p>
                                 </td>
                                 <td class="text-center">
-                                    <p class="mb-0 badge  {{ $pago->pagado ? 'bg-success' : 'bg-danger' }}">
+                                    <p class="mb-0 badge  {{ $pago->pagado ? 'bg-success' : 'bg-warning' }}">
                                         {{ $pago->pagado ? 'Pagado' : 'En proceso' }}</p>
                                 </td>
                                 <td class="text-center">
@@ -152,7 +151,7 @@
                                 </td>
                             </tr>
                         @endforeach
-{{--                         @if ($pagos->isEmpty())
+                        {{--                         @if ($pagos->isEmpty())
                             <tr>
                                 <td colspan="8">
                                     <div class="text-center">
@@ -182,20 +181,21 @@
                                     <input type="text" class="form-control" placeholder="Buscar proveedor..."
                                         wire:model.live="busquedaProveedor">
                                 </div>
-
-                                <!-- Listado de proveedores filtrados -->
-                                <div style="max-height: 300px; overflow-y: auto;">
-                                    <ul
-                                        class="list-group list-group-flush border border-secondary border-opacity-25 rounded">
-                                        @foreach ($proveedoresFiltrados as $proveedor)
-                                            <li class="list-group-item p-1 fs-6 fw-light lh-1"
-                                                wire:click="addProveedor({{ $proveedor->id }})"
-                                                style="cursor: pointer;">
-                                                {{ $proveedor->nombre }}
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
+                                @if (!$proveedorSeleccionado)
+                                    <!-- Listado de proveedores filtrados -->
+                                    <div style="max-height: 300px; overflow-y: auto;">
+                                        <ul
+                                            class="list-group list-group-flush border border-secondary border-opacity-25 rounded">
+                                            @foreach ($proveedoresFiltrados as $proveedor)
+                                                <li class="list-group-item p-1 fs-6 fw-light lh-1"
+                                                    wire:click="addProveedor({{ $proveedor->id }})"
+                                                    style="cursor: pointer;">
+                                                    {{ $proveedor->nombre }} ({{ $proveedor->CUIT }})
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
 
                                 <!-- Form Pago -->
                                 <form wire:submit="pagoCreate">

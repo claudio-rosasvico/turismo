@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\CotizacionController;
 use App\Http\Controllers\PartidaController;
 use App\Http\Controllers\ProveedorController;
@@ -73,6 +74,11 @@ Route::middleware('auth')->group(function () {
 
     /*PAGOS*/
     Route::get('/pagos', function(){ return view('pagos.index'); })->name('pagos');
+
+    /*CONTRATOS*/
+    Route::post('/contratos/store', [ContratoController::class, 'store'])->name('contratos.store');
+    Route::get('/contratos/show/{contrato_id}', [ContratoController::class, 'show'])->name('contratos.show');
+    Route::resource('/contratos', ContratoController::class)->except(['store', 'show'])->names('contratos');
 
 });
 

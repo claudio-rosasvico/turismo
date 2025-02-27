@@ -30,7 +30,7 @@
                             <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                 Precio Final</th>
                             <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                OP</th>
+                                Orden de Compra</th>
                             <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                 Imprimir</th>
                             <th class="text-secondary opacity-7"></th>
@@ -59,25 +59,32 @@
                                         {{ '$' . number_format($cotizacion->precio_total, 2, ',', '.') }}</p>
                                 </td>
                                 <td class="text-center">
-                                    <p class="text-xs font-weight-bold mb-0">{{ $cotizacion->fecha_OP }}</p>
+                                    <p class="text-xs font-weight-bold mb-0">{{ $cotizacion->fecha_OC }}</p>
                                 </td>
                                 <td class="text-center">
-                                    @if ($cotizacion->fecha_OP)
+                                    @if ($cotizacion->fecha_OP || (isset($cotizacion->contrato) && !$cotizacion->contrato->activo))
                                         <span class="badge bg-success">Finalizado</span>
-                                    @elseif ($cotizacion->fecha_reso_adjudicacion)
+                                    @elseif ($cotizacion->contrato)
                                         <span class="badge bg-info">Adjudicado</span>
                                     @else
-                                        <a class="me-2" style="cursor: pointer;"
-                                            wire:click="showModal({{ $cotizacion->id }})" title="Cargar Proveedores">
-                                            <i class="fa-solid fa-user-plus"></i></a>
-                                        <a class="me-2" style="cursor: pointer;"
-                                            wire:click="generarRecibidos({{ $cotizacion->id }})"
-                                            title="Imprimir Recibidos">
-                                            <i class="fa-solid fa-clipboard-check"></i></a>
-                                        <a class="me-2" style="cursor: pointer;"
-                                            wire:click=""
-                                            title="Imprimir Sobres">
-                                            <i class="fa-solid fa-envelope"></i></a>
+                                        @if (!$cotizacion->proveedor_ganador_id)
+                                            <a class="me-2" style="cursor: pointer;"
+                                                wire:click="showModal({{ $cotizacion->id }})"
+                                                title="Cargar Proveedores">
+                                                <i class="fa-solid fa-user-plus"></i></a>
+                                            <a class="me-2" style="cursor: pointer;"
+                                                wire:click="generarRecibidos({{ $cotizacion->id }})"
+                                                title="Imprimir Recibidos">
+                                                <i class="fa-solid fa-clipboard-check"></i></a>
+                                            <a class="me-2" style="cursor: pointer;" wire:click=""
+                                                title="Imprimir Sobres">
+                                                <i class="fa-solid fa-envelope"></i></a>
+                                        @elseif($cotizacion->proveedor_ganador_id && !$cotizacion->contrato)
+                                            <a class="me-2" style="cursor: pointer;"
+                                                wire:click="showModalContrato({{ $cotizacion->id }})"
+                                                title="Registrar contrato">
+                                                <i class="fa-solid fa-file-signature"></i></a>
+                                        @endif
                                     @endif
                                 </td>
                                 <td>
@@ -88,6 +95,11 @@
                                         wire:click="delete_cotizacion({{ $cotizacion->id }})"
                                         title="Eliminar Cotización">
                                         <i class="fa-solid fa-circle-xmark"></i></a>
+                                    @if ($cotizacion->contrato)
+                                        <a href="/contratos/show/{{ $cotizacion->contrato->id }}" class="text-success" style="cursor: pointer;"
+                                            title="Ver Contrato">
+                                            <i class="fa-regular fa-eye"></i></a>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -128,7 +140,8 @@
 
                                 <!-- Listado de proveedores filtrados -->
                                 <div style="max-height: 300px; overflow-y: auto;">
-                                    <ul class="list-group list-group-flush border border-secondary border-opacity-25 rounded">
+                                    <ul
+                                        class="list-group list-group-flush border border-secondary border-opacity-25 rounded">
                                         @foreach ($proveedoresFiltrados as $proveedor)
                                             <li class="list-group-item p-1 fs-6 fw-light lh-1"
                                                 wire:click="addProveedor({{ $proveedor->id }})"
@@ -160,7 +173,8 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary"
                                     wire:click="closeModal">Cerrar</button>
-                                <button type="button" class="btn btn-primary" wire:click="closeModal">Guardar</button>
+                                <button type="button" class="btn btn-primary"
+                                    wire:click="closeModal">Guardar</button>
                             </div>
                         </div>
                     </div>
@@ -168,7 +182,7 @@
             </div>
         @endif
     </div>
-    {{-- @if ($modalShow)
+    @if ($modalShowContrato)
         <div>
             <div class="modal-backdrop show"></div>
             <div class="modal fade show" id="modal-default" tabindex="-1" role="dialog"
@@ -176,49 +190,85 @@
                 <div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5>Cargar Proveedores</h5>
+                            <h5>Cargar Contrato</h5>
                             <span class="ms-auto" style="cursor:pointer" wire:click="closeModal">
                                 <strong>X</strong>
                             </span>
                         </div>
                         <div class="modal-body text-wrap text-start">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="mb-3">
-                                        <label for="proveedores" class="form-label">Proveedores</label>
-                                        <select class="form-select miSelect" name="proveedores" id="proveedores"
-                                            wire:model="proveedor_seleccionado_id" wire:change="addProveedor">
-                                            <option selected>Seleccione Proveedor</option>
+                            <form action="/contratos/store" method="POST">
+                                @csrf
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label for="nombre" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" name="nombre" id="nombre"
+                                            aria-describedby="helpId" placeholder=""
+                                            value="{{ $cotizacion_contrato->nombre }}" />
+                                    </div>
+                                    <div class="col col-lg-4">
+                                        <label for="expediente" class="form-label">Expediente</label>
+                                        <input type="text" class="form-control" name="expediente" id="expediente"
+                                            aria-describedby="helpId" placeholder=""
+                                            value="{{ $cotizacion_contrato->expediente }}" />
+                                    </div>
+                                    <div class="col col-lg-4">
+                                        <label for="nro_resolucion" class="form-label">Resolución</label>
+                                        <input type="text" class="form-control" name="nro_resolucion"
+                                            id="nro_resolucion" aria-describedby="helpId"
+                                            placeholder="Nº Resolución" />
+                                    </div>
+                                    <div class="col col-lg-4">
+                                        <label for="nombre" class="form-label">Proveedor</label>
+                                        <select class="form-select form-select" name="proveedor_id"
+                                            id="proveedor_id">
                                             @foreach ($proveedores as $proveedor)
-                                                <option value="{{ $proveedor->id }}">
-                                                    {{ $proveedor->nombre }}
-                                                </option>
+                                                <option value="{{ $proveedor->id }}"
+                                                    {{ $proveedor->id == $cotizacion_contrato->proveedor_ganador_id ? 'selected' : '' }}>
+                                                    {{ $proveedor->nombre }}</option>
                                             @endforeach
                                         </select>
                                     </div>
+                                    <div class="col col-lg-6">
+                                        <label for="fecha_inicio" class="form-label">Fecha de Inicio</label>
+                                        <input type="date" class="form-control" name="fecha_inicio"
+                                            id="fecha_inicio" aria-describedby="helpId" placeholder="" />
+                                    </div>
+                                    <div class="col col-lg-6">
+                                        <label for="fecha_fin" class="form-label">Fecha de Fin</label>
+                                        <input type="date" class="form-control" name="fecha_fin" id="fecha_fin"
+                                            aria-describedby="helpId" placeholder="" />
+                                    </div>
+                                    <div class="col col-lg-6">
+                                        <label for="monto_total" class="form-label">Monto Total</label>
+                                        <input type="number" class="form-control" name="monto_total"
+                                            id="monto_total" aria-describedby="helpId" placeholder="" />
+                                    </div>
+                                    <div class="col col-lg-6">
+                                        <label for="monto_mensual" class="form-label">Monto Mensual</label>
+                                        <input type="number" class="form-control" name="monto_mensual"
+                                            id="monto_mensual" aria-describedby="helpId" placeholder="" />
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="observacion" class="form-label">Observación</label>
+                                        <textarea type="number" class="form-control" name="observacion" id="observacion" aria-describedby="helpId"
+                                            placeholder=""></textarea>
+                                    </div>
+
+                                    <input type="hidden" name="cotizacion_id" id="cotizacion_id"
+                                        value="{{ $cotizacion_contrato->id }}">
                                 </div>
-                                <div class="col-12">
-                                    <h6>Proveedores Invitados</h6>
-                                    @foreach ($proveedores_cotizacion as $proveedor_cotizacion)
-                                        <div class="row">
-                                            <div class="col-10">
-                                                {{ $proveedor_cotizacion->proveedor->nombre }}
-                                            </div>
-                                            <div class="col-2">
-                                                <a class="text-primary" style="cursor: pointer;"
-                                                    wire:click="delete_proveedor_cotizacion({{ $proveedor_cotizacion->id }})"
-                                                    title="Eliminar">
-                                                    <i class="fa-solid fa-circle-xmark"></i></a>
-                                            </div>
-                                        </div>
-                                    @endforeach
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        wire:click="closeModal">Cerrar</button>
+                                    <button type="submit" class="btn btn-primary">Guardar</button>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    @endif --}}
+    @endif
 
 </div>

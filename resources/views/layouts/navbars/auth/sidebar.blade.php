@@ -63,8 +63,8 @@
 
                         </div>
                     </li>
-                    {{-- <li class="nav-item">
-                        <a class="nav-link {{ request()->is('cotizaciones*') ? 'active' : '' }}"
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->is('cotizaciones*') || request()->is('contratos*') ? 'active' : '' }}"
                             data-bs-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false"
                             aria-controls="collapseExample1">
                             <div
@@ -73,7 +73,7 @@
                             </div>
                             <span class="nav-link-text ms-1">Cotizaciones</span>
                         </a>
-                        <div class="collapse {{ request()->is('cotizaciones*') ? 'show' : '' }}"
+                        <div class="collapse {{ request()->is('cotizaciones*') || request()->is('contratos*') ? 'show' : '' }}"
                             id="collapseExample1">
                             <a class="nav-sublink {{ request()->is('cotizaciones') ? 'active' : '' }}" href="/cotizaciones">
                                 <div
@@ -82,8 +82,15 @@
                                 </div>
                                 <span class="nav-link-text ms-1">Cotizaciones</span>
                             </a>
+                            <a class="nav-sublink {{ request()->is('contratos') ? 'active' : '' }}" href="/contratos">
+                                <div
+                                    class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="fa-solid fa-file-signature fa-lg" style="color: #020303;"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">Contratos</span>
+                            </a>
                         </div>
-                    </li> --}}
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link {{ request()->is('parametros*') || request()->is('pagos*') ? 'active' : '' }}"
                             data-bs-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false"

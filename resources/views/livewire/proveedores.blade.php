@@ -25,8 +25,16 @@
                 <table class="table align-items-center mb-0">
                     <thead>
                         <tr>
-                            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
-                                Nombre</th>
+                            <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2" wire:click="sortBy('nombre')" style="cursor: pointer;">
+                                Nombre
+                                @if ($sortField === 'nombre')
+                                    @if ($sortDirection === 'asc')
+                                        <i class="fas fa-arrow-up"></i>
+                                    @else
+                                        <i class="fas fa-arrow-down"></i>
+                                    @endif
+                                @endif
+                            </th>
                             <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                 CUIT</th>
                             <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
@@ -35,8 +43,16 @@
                                 Email</th>
                             <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                 Domicilio</th>
-                            <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                Venc. LD</th>
+                            <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7" wire:click="sortBy('venc_libre_deuda')" style="cursor: pointer;">
+                                Venc. LD
+                                @if ($sortField === 'venc_libre_deuda')
+                                    @if ($sortDirection === 'asc')
+                                        <i class="fas fa-arrow-up"></i>
+                                    @else
+                                        <i class="fas fa-arrow-down"></i>
+                                    @endif
+                                @endif
+                            </th>
                             <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                 Observación</th>
                             <th class="text-secondary opacity-7"></th>
@@ -61,11 +77,11 @@
                                     <td class="text-center">
                                         <p class="text-xs font-weight-bold mb-0">{{ $proveedor->domicilio }}</p>
                                     </td>
-                                    <td class="text-center">
-                                        <p class="text-xs font-weight-bold mb-0">{{ $proveedor->venc_libre_deuda }}</p>
+                                    <td class="text-center" >
+                                        <p class="text-xs font-weight-bold mb-0">{{ date('d-m-Y', strtotime($proveedor->venc_libre_deuda))  }}</p>
                                     </td>
                                     <td class="text-center">
-                                        <p class="text-xs font-weight-bold mb-0">{{ $proveedor->observaciones }}</p>
+                                        <p class="text-xs font-weight-bold mb-0 text-wrap">{{ $proveedor->observaciones }}</p>
                                     </td>
                                     <td>
                                         <a class="" style="cursor: pointer;"

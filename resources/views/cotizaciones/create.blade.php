@@ -119,8 +119,8 @@
                                     <!-- Campo: Proveedor Ganador ID -->
                                     <div class="col col-lg-2 mb-3">
                                         <label for="proveedor_ganador_id" class="form-label">Proveedor Ganador</label>
-                                        <select class="form-select form-select" name="proveedor_ganador_id" id="proveedor_ganador_id" >
-                                            <option selected>Selecciona un proveedor</option>
+                                        <select class="form-select" name="proveedor_ganador_id" id="proveedor_ganador_id" >
+                                            <option value="0" selected>Selecciona un proveedor</option>
                                             @foreach ($proveedores as $proveedor)
                                                 <option value="{{ $proveedor->id }}" {{ (isset($cotizacion) && $cotizacion->proveedor_ganador_id == $proveedor->id) ? 'selected' : '' }}>{{ $proveedor->nombre }}
                                                 </option>

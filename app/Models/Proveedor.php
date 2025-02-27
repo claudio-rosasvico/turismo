@@ -37,4 +37,9 @@ class Proveedor extends Model
     {
         return $this->hasMany(Pago::class, 'proveedor_id');
     }
+
+    public function contratos()
+    {
+        return $this->hasMany(Contrato::class, 'proveedor_id');
+    }
 }

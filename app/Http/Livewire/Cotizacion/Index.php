@@ -19,8 +19,10 @@ class Index extends Component
     public $proveedores;
     public $searchCotizacion;
     public $cotizacion_id;
+    public $cotizacion_contrato;
     public $proveedores_cotizacion;
     public $modalShow = false;
+    public $modalShowContrato = false;
     public $proveedoresFiltrados; // Lista filtrada de proveedores
     public $busquedaProveedor = ''; // Término de búsqueda
     public $proveedorSeleccionado; // Proveedor seleccionado
@@ -54,7 +56,12 @@ class Index extends Component
         $this->cotizacion_id = $id_cotizacion;
         $this->proveedores_cotizacion = Cotizacion::find($this->cotizacion_id)->proveedores;
         $this->modalShow = true;
-        $this->dispatch('modalOpened');
+    }
+    
+    public function showModalContrato($id_cotizacion)
+    {
+        $this->cotizacion_contrato = Cotizacion::find($id_cotizacion);
+        $this->modalShowContrato = true;
     }
 
     public function updatedBusquedaProveedor()
@@ -78,7 +85,8 @@ class Index extends Component
     public function closeModal()
     {
         $this->modalShow = false;
-        $this->reset(['busquedaProveedor', 'proveedorSeleccionado']); // Limpiar búsqueda y selección
+        $this->modalShowContrato = false;
+        $this->reset(['busquedaProveedor', 'proveedorSeleccionado', 'cotizacion_contrato']); 
     }
 
     public function generarRecibidos($cotizacion_id)

@@ -25,4 +25,8 @@ class Cotizacion extends Model
     public function proveedorGanador(){
         return $this->belongsTo(Proveedor::class, 'proveedor_ganador_id');
     }
+
+    public function contrato(){
+        return $this->hasOne(Contrato::class);
+    }
 }

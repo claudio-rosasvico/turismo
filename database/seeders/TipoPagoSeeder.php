@@ -17,6 +17,7 @@ class TipoPagoSeeder extends Seeder
             ['nombre' => 'Compra directa', 'descripcion' => 'Según monto Secretario'],
             ['nombre' => 'Compra directa (vía excepción)', 'descripcion' => 'De acuerdo a la excepción'],
             ['nombre' => 'Cotización', 'descripcion' => ''],
+            ['nombre' => 'Cotización (Contrato)', 'descripcion' => 'Pago mensual'],
             ['nombre' => 'Licitación', 'descripcion' => ''],
         ];
 

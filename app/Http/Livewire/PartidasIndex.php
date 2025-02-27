@@ -19,6 +19,8 @@ class PartidasIndex extends Component
     public $monto_modificacion;
     public $fecha_modificacion;
     public $descripcion_modificacion;
+    public $sortField = 'CODIGO';
+    public $sortDirection = 'asc';
 
     public function mount()
     {
@@ -58,6 +60,19 @@ class PartidasIndex extends Component
         $this->descripcion_modificacion = $modificacion->descripcion;
         $this->modalModificacion = true;
         
+    }
+
+    public function sortBy($field)
+    {
+
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
+        }
+        $this->partidas = Partida::orderBy($this->sortField, $this->sortDirection)->get();
+
     }
 
     public function render()
