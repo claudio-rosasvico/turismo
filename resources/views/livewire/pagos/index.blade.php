@@ -107,7 +107,7 @@
                         @foreach ($pagos as $pago)
                             <tr wire:key="{{ $pago->id }}">
                                 <td>
-                                    <h6 class="mb-0 text-xs">{{ $pago->proveedor->nombre }}</h6>
+                                    <h6 class="mb-0 text-xs text-wrap">{{ $pago->proveedor->nombre }}</h6>
                                 </td>
                                 <td class="text-center">
                                     <p class="text-xs text-secondary mb-0 text-wrap">
@@ -115,7 +115,7 @@
                                 </td>
                                 <td class="text-center">
                                     <p class="text-xs text-secondary mb-0">
-                                        {{ date('d-m-Y', strtotime($pago->fecha_imputacion)) }}</p>
+                                        {{ $pago->fecha_imputacion ? date('d-m-Y', strtotime($pago->fecha_imputacion)) : '' }}</p>
                                 </td>
                                 <td class="text-center">
                                     <p class="text-xs font-weight-bold mb-0">{{ $pago->nro_OP }}</p>

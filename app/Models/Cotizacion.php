@@ -12,21 +12,43 @@ class Cotizacion extends Model
     use SoftDeletes;
 
     protected $table = 'cotizaciones';
-    protected $fillable = ['nombre', 'expediente', 'numero', 'precio_estimado', 'fecha_llamado', 'hora_llamado', 'proveedor_ganador_id', 'precio_total', 'fecha_auorizacion', 'fecha_contaduria_llamado', 'fecha_reso_llamado', 'fecha_contaduria_adjudicacion', 'fecha_reso_adjudicacion', 'fecha_OC', 'fecha_OP', 'activo', 'descripcion'];
+    protected $fillable = [
+        'nombre',
+        'expediente',
+        'numero',
+        'precio_estimado',
+        'fecha_llamado',
+        'hora_llamado',
+        'fecha_autorizacion',
+        'fecha_reso_llamado',
+        'fecha_reso_adjudicacion',
+        'nro_reso_adjudicacion',
+        'activo',
+        'descripcion'
+    ];
 
-    public function items(){
+    public function items()
+    {
         return $this->hasMany(ItemCotizacion::class, 'cotizacion_id');
     }
 
-    public function proveedores(){
+    public function proveedores()
+    {
         return $this->hasMany(Proveedor_cotizacion::class, 'cotizacion_id');
     }
+    
+    public function OrdenesCompra()
+    {
+        return $this->hasMany(OrdenCompra::class, 'cotizacion_id');
+    }
 
-    public function proveedorGanador(){
+    public function proveedorGanador()
+    {
         return $this->belongsTo(Proveedor::class, 'proveedor_ganador_id');
     }
 
-    public function contrato(){
+    public function contrato()
+    {
         return $this->hasOne(Contrato::class);
     }
 }

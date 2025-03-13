@@ -70,6 +70,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/parametros/proveedores', [ProveedorController::class, 'index'])->name('proveedores');
     
     /*COTIZACIONES*/
+    Route::get('/cotizaciones/show/{cotizacion_id}', [CotizacionController::class, 'show']);
     Route::resource('/cotizaciones', CotizacionController::class)->names('cotizaciones');
 
     /*PAGOS*/

@@ -9,7 +9,8 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
                             <div>
-                                <h4 class="card-title">{{ isset($cotizacion) ? 'Actualizar Cotización' : 'Crear Cotización' }}
+                                <h4 class="card-title">
+                                    {{ isset($cotizacion) ? 'Actualizar Cotización' : 'Crear Cotización' }}
                                 </h4>
                             </div>
                             <div>
@@ -20,7 +21,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form
+                            <form id="cotizacionForm"
                                 action="{{ isset($cotizacion) ? route('cotizaciones.update', $cotizacion->id) : route('cotizaciones.store') }}"
                                 method="POST">
                                 @csrf
@@ -29,15 +30,17 @@
                                 @endif
                                 <div class="row">
                                     <!-- Campo: Nombre -->
-                                    <div class="col col-lg-4 mb-3">
-                                        <label for="nombre" class="form-label">Nombre</label>
+                                    <div class="col col-lg-6 mb-3">
+                                        <label for="nombre" class="form-label">Nombre <span
+                                                style="color: red">*</span></label>
                                         <input type="text" class="form-control" id="nombre" name="nombre"
                                             required value="{{ isset($cotizacion) ? $cotizacion->nombre : '' }}">
                                     </div>
 
                                     <!-- Campo: Expediente -->
                                     <div class="col col-lg-2 mb-3">
-                                        <label for="expediente" class="form-label">Expediente</label>
+                                        <label for="expediente" class="form-label">Expediente <span
+                                                style="color: red">*</span></label>
                                         <input type="text" class="form-control" id="expediente" name="expediente"
                                             required value="{{ isset($cotizacion) ? $cotizacion->expediente : '' }}">
                                     </div>
@@ -45,7 +48,8 @@
 
                                     <!-- Campo: Precio Estimado -->
                                     <div class="col col-lg-2 mb-3">
-                                        <label for="precio_estimado" class="form-label">Precio Estimado</label>
+                                        <label for="precio_estimado" class="form-label">Precio Estimado <span
+                                                style="color: red">*</span></label>
                                         <input type="number" class="form-control" id="precio_estimado"
                                             name="precio_estimado" step="0.01" required
                                             value="{{ isset($cotizacion) ? $cotizacion->precio_estimado : '' }}">
@@ -53,24 +57,17 @@
 
                                     <!-- Campo: Fecha de Autorización -->
                                     <div class="col col-lg-2 mb-3">
-                                        <label for="fecha_autorizacion" class="form-label">Fecha de Autorización</label>
+                                        <label for="fecha_autorizacion" class="form-label"><i
+                                                class="fa-regular fa-calendar"></i> Autorización SG</label>
                                         <input type="date" class="form-control" id="fecha_autorizacion"
                                             name="fecha_autorizacion"
                                             value="{{ isset($cotizacion) ? $cotizacion->fecha_autorizacion : '' }}">
                                     </div>
 
-                                    <!-- Campo: Fecha de Contaduría Llamado -->
-                                    <div class="col col-lg-2 mb-3">
-                                        <label for="fecha_contaduria_llamado" class="form-label">Fecha de Contaduría
-                                            Llamado</label>
-                                        <input type="date" class="form-control" id="fecha_contaduria_llamado"
-                                            name="fecha_contaduria_llamado"
-                                            value="{{ isset($cotizacion) ? $cotizacion->fecha_contaduria_llamado : '' }}">
-                                    </div>
-
                                     <!-- Campo: Fecha de Resolución Llamado -->
                                     <div class="col col-lg-2 mb-3">
-                                        <label for="fecha_reso_llamado" class="form-label">Fecha de Resolución
+                                        <label for="fecha_reso_llamado" class="form-label"><i
+                                                class="fa-regular fa-calendar"></i> Resolución
                                             Llamado</label>
                                         <input type="date" class="form-control" id="fecha_reso_llamado"
                                             name="fecha_reso_llamado"
@@ -85,7 +82,8 @@
                                     </div>
                                     <!-- Campo: Fecha de Llamado -->
                                     <div class="col col-lg-2 mb-3">
-                                        <label for="fecha_llamado" class="form-label">Fecha de Llamado</label>
+                                        <label for="fecha_llamado" class="form-label"><i
+                                                class="fa-regular fa-calendar"></i> Llamado</label>
                                         <input type="date" class="form-control" id="fecha_llamado"
                                             name="fecha_llamado"
                                             value="{{ isset($cotizacion) ? $cotizacion->fecha_llamado : '' }}">
@@ -98,64 +96,32 @@
                                             value="{{ isset($cotizacion) ? $cotizacion->hora_llamado : '' }}">
                                     </div>
 
-                                    <!-- Campo: Fecha de Contaduría Adjudicación -->
-                                    <div class="col col-lg-2 mb-3">
-                                        <label for="fecha_contaduria_adjudicacion" class="form-label">Fecha de
-                                            Contaduría Adjudicación</label>
-                                        <input type="date" class="form-control" id="fecha_contaduria_adjudicacion"
-                                            name="fecha_contaduria_adjudicacion"
-                                            value="{{ isset($cotizacion) ? $cotizacion->fecha_contaduria_adjudicacion : '' }}">
-                                    </div>
-
                                     <!-- Campo: Fecha de Resolución Adjudicación -->
                                     <div class="col col-lg-2 mb-3">
-                                        <label for="fecha_reso_adjudicacion" class="form-label">Fecha de Resolución
-                                            Adjudicación</label>
+                                        <label for="fecha_reso_adjudicacion" class="form-label"><i
+                                                class="fa-regular fa-calendar"></i> Resolución
+                                            Adjud.</label>
                                         <input type="date" class="form-control" id="fecha_reso_adjudicacion"
                                             name="fecha_reso_adjudicacion"
                                             value="{{ isset($cotizacion) ? $cotizacion->fecha_reso_adjudicacion : '' }}">
                                     </div>
 
-                                    <!-- Campo: Proveedor Ganador ID -->
+                                    <!-- Campo: Numero de Reso-->
                                     <div class="col col-lg-2 mb-3">
-                                        <label for="proveedor_ganador_id" class="form-label">Proveedor Ganador</label>
-                                        <select class="form-select" name="proveedor_ganador_id" id="proveedor_ganador_id" >
-                                            <option value="0" selected>Selecciona un proveedor</option>
-                                            @foreach ($proveedores as $proveedor)
-                                                <option value="{{ $proveedor->id }}" {{ (isset($cotizacion) && $cotizacion->proveedor_ganador_id == $proveedor->id) ? 'selected' : '' }}>{{ $proveedor->nombre }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
-                                    <!-- Campo: Precio Total -->
-                                    <div class="col col-lg-2 mb-3">
-                                        <label for="precio_total" class="form-label">Precio Total</label>
-                                        <input type="number" class="form-control" id="precio_total"
-                                            name="precio_total" step="0.01"
-                                            value="{{ isset($cotizacion) ? $cotizacion->precio_total : '' }}">
-                                    </div>
-
-                                    <!-- Campo: Fecha de OC -->
-                                    <div class="col col-lg-2 mb-3">
-                                        <label for="fecha_OC" class="form-label">Fecha de OC</label>
-                                        <input type="date" class="form-control" id="fecha_OC" name="fecha_OC"
-                                            value="{{ isset($cotizacion) ? $cotizacion->nombre : '' }}">
-                                    </div value="{{ isset($cotizacion) ? $cotizacion->fecha_OC : '' }}">
-
-                                    <!-- Campo: Fecha de OP -->
-                                    <div class="col col-lg-2 mb-3">
-                                        <label for="fecha_OP" class="form-label">Fecha de OP</label>
-                                        <input type="date" class="form-control" id="fecha_OP" name="fecha_OP"
-                                            value="{{ isset($cotizacion) ? $cotizacion->fecha_OP : '' }}">
+                                        <label for="nro_reso_adjudicacion" class="form-label">Número de Reso</label>
+                                        <input type="text" class="form-control" id="nro_reso_adjudicacion"
+                                            name="nro_reso_adjudicacion"
+                                            value="{{ isset($cotizacion) ? $cotizacion->nro_reso_adjudicacion : '' }}">
                                     </div>
 
                                     <!-- Campo: Descripción -->
-                                    <div class="col col-lg-4 mb-3">
+                                    <div class="col  mb-3">
                                         <label for="descripcion" class="form-label">Descripción</label>
                                         <textarea class="form-control" id="descripcion" name="descripcion" rows="1"
                                             value="{{ isset($cotizacion) ? $cotizacion->descripcion : '' }}"></textarea>
                                     </div>
+                                    <small style="font-size:0.6rem">(<span style="color: red">*</span>) campos
+                                        obligatorios</small>
                                 </div>
 
                                 <!-- Botón de envío -->
@@ -171,11 +137,39 @@
         </div>
     </div>
     @push('js')
-    <script>
-            $('#proveedor_ganador_id').select2({
-                placeholder: 'Seleccione Proveedor',
-                allowClear: true,
-            });
-    </script>
-@endpush
+        <script defer> 
+/*             document.addEventListener('DOMContentLoaded', function() {
+                const form = document.getElementById('cotizacionForm');
+                const inputs = Array.from(form.querySelectorAll('input, textarea'));
+                console.log(inputs);
+                inputs.forEach((input, index) => {
+                    input.addEventListener('input', function() {
+                        if (index > 0) {
+                            const previousInput = inputs[index - 1];
+                            if (!previousInput.value.trim()) {
+                                toast('error', 'falta el anterior', 'error');
+                                input.setCustomValidity(
+                                    'Complete el campo anterior antes de continuar.');
+                                input.reportValidity();
+                            } else {
+                                input.setCustomValidity('');
+                            }
+                        }
+                    });
+
+                    input.addEventListener('blur', function() {
+                        if (index > 0) {
+                            const previousInput = inputs[index - 1];
+                            if (!previousInput.value.trim()) {
+                                previousInput.classList.add('is-invalid');
+                                toast('Error', `Complete ${previousInput['nombre']}`, 'error');
+                            } else {
+                                previousInput.classList.remove('is-invalid');
+                            }
+                        }
+                    });
+                }); 
+            }); */
+        </script>
+    @endpush
 </x-layouts.app>

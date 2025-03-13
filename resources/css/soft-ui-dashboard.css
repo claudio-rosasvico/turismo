@@ -24757,3 +24757,41 @@ pre[class*=language-] {
 .form-control.custom-padding {
   padding-left: 35px !important;
 }
+
+.btn-plus {
+  display: inline-block;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #28a745; /* Color verde para el símbolo "+" */
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  background-color: #fff; /* Fondo blanco */
+  border: 2px solid #82d616; /* Borde verde */
+  padding: 0; /* Eliminamos el padding para que sea un círculo perfecto */
+  font-size: 1.0rem; /* Tamaño del símbolo "+" */
+  border-radius: 50%; /* Hacemos que el botón sea un círculo */
+  width: 50px; /* Ancho del botón */
+  height: 50px; /* Alto del botón (igual al ancho para que sea un círculo) */
+  transition: all 0.15s ease-in;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(40, 167, 69, 0.1); /* Sombra verde sutil */
+}
+
+/* Efecto al pasar el cursor sobre el botón */
+.btn-plus:hover {
+  background-color: #e6f7eb; /* Verde clarito de fondo al pasar el cursor */
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2); /* Sombra más pronunciada al pasar el cursor */
+}
+
+/* Efecto al hacer clic en el botón */
+.btn-plus:active {
+  transform: scale(0.95); /* Reduce ligeramente el tamaño al hacer clic */
+  box-shadow: 0 2px 4px rgba(40, 167, 69, 0.1); /* Sombra más pequeña al hacer clic */
+}

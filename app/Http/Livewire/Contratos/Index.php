@@ -128,7 +128,6 @@ class Index extends Component
                 'observacion' => $this->observacion,
             ]);
             
-            Log::info('aCTUALIZADO: '.$contrato);
             $this->dispatch('mostrarToast', ['titulo' => 'Éxito', 'mensaje' => 'Se actualizó el contrato correctamente.', 'tipo' => 'success']);
             $this->contratos = Contrato::all();
             $this->closeModal();

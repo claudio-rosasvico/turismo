@@ -35,33 +35,30 @@ class CotizacionController extends Controller
         $cotizacion = $request->validate([
             'nombre' => 'required|string|max:255',
             'expediente' => 'required|string|max:255',
-            'numero' => 'nullable',
             'precio_estimado' => 'required',
+            'fecha_autorizacion' => 'nullable|date',
+            'fecha_reso_llamado' => 'nullable|date',
+            'numero' => 'nullable',
             'fecha_llamado' => 'nullable|date',
             'hora_llamado' => 'nullable',
-            'proveedor_ganador_id' => 'nullable',
-            'precio_total' => 'nullable',
-            'fecha_auorizacion' => 'nullable|date',
-            'fecha_contaduria_llamado' => 'nullable|date',
-            'fecha_reso_llamado' => 'nullable|date',
-            'fecha_contaduria_adjudicacion' => 'nullable|date',
             'fecha_reso_adjudicacion' => 'nullable|date',
-            'fecha_OC' => 'nullable|date',
-            'fecha_OP' => 'nullable|date',
+            'nro_reso_adjudicacion' => 'nullable',
             'descripcion' => 'nullable|string',
         ]);
 
         $cotizacion = Cotizacion::create($cotizacion);
 
-        return redirect()->route('cotizaciones.index')->with('success', 'Cotización creada exitosamente.');
+        return redirect('/cotizaciones/show/'.$cotizacion->id);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Cotizacion $cotizacion)
+    public function show($cotizacion_id)
     {
-        //
+        $cotizacion = Cotizacion::find($cotizacion_id);
+
+        return view('cotizaciones.show')->with('cotizacion', $cotizacion);
     }
 
     /**
@@ -85,19 +82,14 @@ class CotizacionController extends Controller
         $cotizacionValidate = $request->validate([
             'nombre' => 'required|string|max:255',
             'expediente' => 'required|string|max:255',
-            'numero' => 'nullable',
             'precio_estimado' => 'required',
+            'fecha_autorizacion' => 'nullable|date',
+            'fecha_reso_llamado' => 'nullable|date',
+            'numero' => 'nullable',
             'fecha_llamado' => 'nullable|date',
             'hora_llamado' => 'nullable',
-            'proveedor_ganador_id' => 'nullable',
-            'precio_total' => 'nullable',
-            'fecha_auorizacion' => 'nullable|date',
-            'fecha_contaduria_llamado' => 'nullable|date',
-            'fecha_reso_llamado' => 'nullable|date',
-            'fecha_contaduria_adjudicacion' => 'nullable|date',
             'fecha_reso_adjudicacion' => 'nullable|date',
-            'fecha_OC' => 'nullable|date',
-            'fecha_OP' => 'nullable|date',
+            'nro_reso_adjudicacion' => 'nullable',
             'descripcion' => 'nullable|string',
         ]);
         $cotizacion->update($cotizacionValidate);

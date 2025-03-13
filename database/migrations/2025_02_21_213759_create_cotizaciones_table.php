@@ -18,19 +18,14 @@ return new class extends Migration
 
             $table->string('nombre'); 
             $table->string('expediente'); 
-            $table->string('numero', 5)->nullable(); 
             $table->float('precio_estimado', 10, 2, true); 
+            $table->date('fecha_autorizacion')->nullable(); 
+            $table->date('fecha_reso_llamado')->nullable(); 
+            $table->string('numero', 5)->nullable(); 
             $table->date('fecha_llamado')->nullable(); 
             $table->time('hora_llamado')->nullable(); 
-            $table->integer('proveedor_ganador_id')->nullable(); 
-            $table->float('precio_total', 10, 2, true)->nullable(); 
-            $table->date('fecha_auorizacion')->nullable(); 
-            $table->date('fecha_contaduria_llamado')->nullable(); 
-            $table->date('fecha_reso_llamado')->nullable(); 
-            $table->date('fecha_contaduria_adjudicacion')->nullable(); 
             $table->date('fecha_reso_adjudicacion')->nullable(); 
-            $table->date('fecha_OC')->nullable(); 
-            $table->date('fecha_OP')->nullable(); 
+            $table->string('nro_reso_adjudicacion')->nullable(); 
             $table->boolean('activo')->default(true); 
             $table->string('descripcion')->nullable();
         });

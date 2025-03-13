@@ -78,7 +78,7 @@
                                         <p class="text-xs font-weight-bold mb-0">{{ $proveedor->domicilio }}</p>
                                     </td>
                                     <td class="text-center" >
-                                        <p class="text-xs font-weight-bold mb-0">{{ date('d-m-Y', strtotime($proveedor->venc_libre_deuda))  }}</p>
+                                        <p class="text-xs font-weight-bold mb-0">{{ $proveedor->venc_libre_deuda ? date('d-m-Y', strtotime($proveedor->venc_libre_deuda)) : '' }}</p>
                                     </td>
                                     <td class="text-center">
                                         <p class="text-xs font-weight-bold mb-0 text-wrap">{{ $proveedor->observaciones }}</p>

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Cotizacion;
 
 use App\Models\Cotizacion;
+use App\Models\OfertaCotizacion;
 use App\Models\Proveedor;
 use App\Models\Proveedor_cotizacion;
 use Barryvdh\Snappy\Facades\SnappyPdf;
@@ -21,11 +22,18 @@ class Index extends Component
     public $cotizacion_id;
     public $cotizacion_contrato;
     public $proveedores_cotizacion;
+    public $items_cotizacion;
     public $modalShow = false;
     public $modalShowContrato = false;
+    public $modalShowOfertas = false;
     public $proveedoresFiltrados; // Lista filtrada de proveedores
     public $busquedaProveedor = ''; // Término de búsqueda
     public $proveedorSeleccionado; // Proveedor seleccionado
+    public $proveedorBotonId;
+    public $showInputOfertas = false;
+    public $precio_unitario;
+    public $precio_total;
+    public $ofertas_proveedor;
 
     public function mount()
     {
@@ -53,11 +61,13 @@ class Index extends Component
 
     public function showModal($id_cotizacion)
     {
+
         $this->cotizacion_id = $id_cotizacion;
         $this->proveedores_cotizacion = Cotizacion::find($this->cotizacion_id)->proveedores;
+        $this->updatedBusquedaProveedor();
         $this->modalShow = true;
     }
-    
+
     public function showModalContrato($id_cotizacion)
     {
         $this->cotizacion_contrato = Cotizacion::find($id_cotizacion);
@@ -65,28 +75,72 @@ class Index extends Component
     }
 
     public function updatedBusquedaProveedor()
-    {
-        // Filtrar proveedores según el término de búsqueda
-        $this->proveedoresFiltrados = $this->proveedores->filter(function ($proveedor) {
-            return stripos($proveedor->nombre, $this->busquedaProveedor) !== false;
-        });
-    }
+{
+    $proveedoresSeleccionadosIds = $this->proveedores_cotizacion->pluck('proveedor_id')->toArray();
+    
+    $this->proveedoresFiltrados = $this->proveedores->reject(function ($proveedor) use ($proveedoresSeleccionadosIds) {
+        return in_array($proveedor->id, $proveedoresSeleccionadosIds);
+    })->filter(function ($proveedor) {
+        return stripos($proveedor->nombre, $this->busquedaProveedor) !== false;
+    });
+}
 
     public function addProveedor($proveedorId)
     {
-
         Proveedor_cotizacion::create([
             'proveedor_id' => $proveedorId,
             'cotizacion_id' => $this->cotizacion_id
         ]);
+        $items = Cotizacion::find($this->cotizacion_id)->items;
+        foreach ($items as $item) {
+            $oferta = OfertaCotizacion::create([
+                'item_id' => $item->id,
+                'proveedor_id' => $proveedorId
+            ]);
+            Log::info($oferta);
+        }
         $this->proveedores_cotizacion = Cotizacion::find($this->cotizacion_id)->proveedores;
+        $this->updatedBusquedaProveedor();
+    }
+
+    public function showModalOfertas($id_cotizacion)
+    {
+
+        $this->cotizacion_id = $id_cotizacion;
+        $this->proveedores_cotizacion = Cotizacion::find($this->cotizacion_id)->proveedores;
+        $this->modalShowOfertas = true;
+    }
+
+    public function selectProveedorOfertas($proveedorId)
+    {
+
+        $this->proveedorBotonId = $proveedorId;
+        $this->ofertas_proveedor = OfertaCotizacion::where('proveedor_id', $proveedorId)
+            ->whereIn('item_id', function ($query) {
+                $query->select('id')
+                    ->from('items_cotizaciones')
+                    ->where('cotizacion_id', $this->cotizacion_id);
+            })->get();
+            
+        $this->showInputOfertas = true;
+    }
+
+    public function updateOferta($ofertaId, $campo, $valor)
+    {
+        $oferta = OfertaCotizacion::find($ofertaId);
+
+        $oferta->update([
+            $campo => $valor
+        ]);
     }
 
     public function closeModal()
     {
         $this->modalShow = false;
         $this->modalShowContrato = false;
-        $this->reset(['busquedaProveedor', 'proveedorSeleccionado', 'cotizacion_contrato']); 
+        $this->modalShowOfertas = false;
+        $this->showInputOfertas = false;
+        $this->reset(['busquedaProveedor', 'proveedorSeleccionado', 'cotizacion_contrato', 'proveedorBotonId']);
     }
 
     public function generarRecibidos($cotizacion_id)
@@ -104,8 +158,17 @@ class Index extends Component
     public function delete_proveedor_cotizacion($proveedor_cotizacion_id)
     {
         $proveedor_cotizacion = Proveedor_cotizacion::find($proveedor_cotizacion_id);
+        $proveedorId = $proveedor_cotizacion->proveedor_id;
+        OfertaCotizacion::where('proveedor_id', $proveedorId)
+            ->whereIn('item_id', function ($query) {
+                $query->select('id')
+                    ->from('items_cotizaciones')
+                    ->where('cotizacion_id', $this->cotizacion_id);
+            })
+            ->delete();
         $proveedor_cotizacion->delete();
         $this->proveedores_cotizacion = Cotizacion::find($this->cotizacion_id)->proveedores;
+        $this->updatedBusquedaProveedor();
     }
 
     public function render()

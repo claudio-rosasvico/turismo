@@ -24,16 +24,15 @@
                             <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                 Precio Estimado</th>
                             <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                Fecha de Apertura</th>
-                            <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                Adjudicado</th>
+                                <i class="fa-regular fa-calendar"></i> Apertura
+                            </th>
                             <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                 Precio Final</th>
                             <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
-                                Orden de Compra</th>
+                                Estado</th>
                             <th class="text-center text-uppercase text-secondary text-xs font-weight-bolder opacity-7">
                                 Imprimir</th>
-                            <th class="text-secondary opacity-7"></th>
+                            <th class="text-secondary opacity-7">...</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,40 +50,40 @@
                                 </td>
                                 <td class="text-center">
                                     <p class="text-xs font-weight-bold mb-0">
-                                        {{ $cotizacion->proveedor_ganador_id ? $cotizacion->proveedorGanador->nombre : '' }}
-                                    </p>
-                                </td>
-                                <td class="text-center">
-                                    <p class="text-xs font-weight-bold mb-0">
                                         {{ '$' . number_format($cotizacion->precio_total, 2, ',', '.') }}</p>
                                 </td>
-                                <td class="text-center">
-                                    <p class="text-xs font-weight-bold mb-0">{{ $cotizacion->fecha_OC }}</p>
-                                </td>
-                                <td class="text-center">
+                                <td>
                                     @if ($cotizacion->fecha_OP || (isset($cotizacion->contrato) && !$cotizacion->contrato->activo))
                                         <span class="badge bg-success">Finalizado</span>
-                                    @elseif ($cotizacion->contrato)
+                                    @elseif ($cotizacion->fecha_reso_adjudicacion)
                                         <span class="badge bg-info">Adjudicado</span>
                                     @else
-                                        @if (!$cotizacion->proveedor_ganador_id)
+                                        <span class="badge bg-secondary">En proceso</span>
+                                    @endif
+                                </td>
+                                <td class="text-center">
+                                    @if (!$cotizacion->fecha_reso_adjudicacion)
+                                        <a class="me-2" style="cursor: pointer;"
+                                            wire:click="showModal({{ $cotizacion->id }})" title="Cargar Proveedores">
+                                            <i class="fa-solid fa-truck-arrow-right"></i></a>
+                                        <a class="me-2" style="cursor: pointer;"
+                                            wire:click="generarRecibidos({{ $cotizacion->id }})"
+                                            title="Imprimir Recibidos">
+                                            <i class="fa-solid fa-clipboard-check"></i></a>
+                                        <a class="me-2" style="cursor: pointer;" wire:click=""
+                                            title="Imprimir Sobres">
+                                            <i class="fa-solid fa-envelope"></i></a>
+                                        @if ($cotizacion->proveedores->count() > 2 && $cotizacion->items->count() > 0)
                                             <a class="me-2" style="cursor: pointer;"
-                                                wire:click="showModal({{ $cotizacion->id }})"
-                                                title="Cargar Proveedores">
-                                                <i class="fa-solid fa-user-plus"></i></a>
-                                            <a class="me-2" style="cursor: pointer;"
-                                                wire:click="generarRecibidos({{ $cotizacion->id }})"
-                                                title="Imprimir Recibidos">
-                                                <i class="fa-solid fa-clipboard-check"></i></a>
-                                            <a class="me-2" style="cursor: pointer;" wire:click=""
-                                                title="Imprimir Sobres">
-                                                <i class="fa-solid fa-envelope"></i></a>
-                                        @elseif($cotizacion->proveedor_ganador_id && !$cotizacion->contrato)
-                                            <a class="me-2" style="cursor: pointer;"
-                                                wire:click="showModalContrato({{ $cotizacion->id }})"
-                                                title="Registrar contrato">
-                                                <i class="fa-solid fa-file-signature"></i></a>
+                                                wire:click="showModalOfertas({{ $cotizacion->id }})"
+                                                title="Cargar Ofertas">
+                                                <i class="fa-solid fa-envelope-open"></i></a>
                                         @endif
+                                    @elseif(($cotizacion->fecha_reso_adjudicacion && !$cotizacion->contrato) || !$cotizacion->activo)
+                                        <a class="me-2" style="cursor: pointer;"
+                                            wire:click="showModalContrato({{ $cotizacion->id }})"
+                                            title="Registrar contrato">
+                                            <i class="fa-solid fa-file-signature"></i></a>
                                     @endif
                                 </td>
                                 <td>
@@ -95,11 +94,9 @@
                                         wire:click="delete_cotizacion({{ $cotizacion->id }})"
                                         title="Eliminar Cotización">
                                         <i class="fa-solid fa-circle-xmark"></i></a>
-                                    @if ($cotizacion->contrato)
-                                        <a href="/contratos/show/{{ $cotizacion->contrato->id }}" class="text-success" style="cursor: pointer;"
-                                            title="Ver Contrato">
-                                            <i class="fa-regular fa-eye"></i></a>
-                                    @endif
+                                    <a href="/cotizaciones/show/{{ $cotizacion->id }}" class="text-success"
+                                        style="cursor: pointer;" title="Ver Cotización">
+                                        <i class="fa-regular fa-eye"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -118,8 +115,6 @@
         </div>
     </div>
     <div>
-
-        <!-- Modal -->
         @if ($modalShow)
             <div>
                 <div class="modal-backdrop show"></div>
@@ -270,5 +265,85 @@
             </div>
         </div>
     @endif
+
+    @if ($modalShowOfertas)
+        <div>
+            <div class="modal-backdrop show"></div>
+            <div class="modal fade show" id="modal-default" tabindex="-1" role="dialog"
+                aria-labelledby="modal-default" aria-modal="true" style="display: block;">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Cargar Ofertas</h5>
+                            <button type="button" class="btn-close" wire:click="closeModal"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <!-- Proveedor seleccionados -->
+                            <div class="col-12 mt-4">
+                                <h6>Proveedores Invitados</h6>
+                                @foreach ($proveedores_cotizacion as $proveedor_cotizacion)
+                                    <div class="row" wire:key="proveedor_cotizacion{{ $proveedor_cotizacion->id }}">
+                                        <div class="col-12">
+                                            <button type="button"
+                                                class="btn {{ $proveedor_cotizacion->proveedor_id == $proveedorBotonId ? 'btn-info ' : 'btn-primary btn-sm' }}  w-100"
+                                                wire:click="selectProveedorOfertas({{ $proveedor_cotizacion->proveedor_id }})">
+                                                {{ $proveedor_cotizacion->proveedor->nombre }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                @endforeach
+                                @if ($showInputOfertas && $ofertas_proveedor->count() > 0)
+                                    <div class="table-responsive-sm">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Cant.</th>
+                                                    <th scope="col">Descripción</th>
+                                                    <th scope="col"><i class="fa-solid fa-dollar-sign"></i>
+                                                        Unit.
+                                                    </th>
+                                                    <th scope="col"><i class="fa-solid fa-dollar-sign"></i>
+                                                        Total
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($ofertas_proveedor as $oferta)
+                                                    <tr class="" wire:key="oferta{{ $oferta->id }}">
+                                                        <td scope="row">{{ $oferta->item->cantidad }}</td>
+                                                        <td>{{ $oferta->item->descripcion }}</td>
+                                                        <td><input type="text" class="form-control"
+                                                                name="precio_unitario" id="precio_unitario"
+                                                                aria-describedby="helpId" value="{{ $oferta->precio_unitario }}" 
+                                                                wire:change="updateOferta({{ $oferta->id }}, 'precio_unitario', $event.target.value)" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control"
+                                                                name="precio_total" id="precio_total"
+                                                                aria-describedby="helpId" value="{{ $oferta->precio_total }}" 
+                                                                wire:change="updateOferta({{ $oferta->id }}, 'precio_total', $event.target.value)" />
+                                                        </td>
+                                                    </tr>
+                                                @endforeach 
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                @endif
+                            </div>
+                            <hr>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" wire:click="closeModal">Cerrar</button>
+                            <button type="button" class="btn btn-primary" wire:click="closeModal">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+</div>
 
 </div>
