@@ -12,7 +12,7 @@ class ItemCotizacion extends Model
     use SoftDeletes;
 
     protected $table = 'items_cotizaciones';
-    protected $fillable = ['cotizacion_id', 'descripcion', 'cantidad'];
+    protected $fillable = ['cotizacion_id', 'descripcion', 'cantidad', 'unidad'];
 
     public function cotizacion(){
         return $this->belongsTo(Cotizacion::class, 'cotizacion_id');

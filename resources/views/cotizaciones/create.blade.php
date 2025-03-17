@@ -91,7 +91,7 @@
 
                                     <!-- Campo: Hora de Llamado -->
                                     <div class="col col-lg-2 mb-3">
-                                        <label for="hora_llamado" class="form-label">Hora de Llamado</label>
+                                        <label for="hora_llamado" class="form-label"><i class="fa-regular fa-clock"></i> Llamado</label>
                                         <input type="time" class="form-control" id="hora_llamado" name="hora_llamado"
                                             value="{{ isset($cotizacion) ? $cotizacion->hora_llamado : '' }}">
                                     </div>

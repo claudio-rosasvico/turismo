@@ -11,6 +11,7 @@
                 <thead>
                     <tr>
                         <th scope="col">Descripción</th>
+                        <th scope="col">Unidad</th>
                         <th scope="col" class="text-center">Cantidad</th>
                         <th scope="col" class="text-center">...</th>
                     </tr>
@@ -20,6 +21,9 @@
                         <tr>
                             <td class="text-wrap">
                                 {{ $item->descripcion }}
+                            </td>
+                            <td class="text-center">
+                                {{ $item->unidad }}
                             </td>
                             <td class="text-center">
                                 {{ $item->cantidad }}
@@ -50,13 +54,18 @@
                             <button type="button" class="btn-close" wire:click="closeModal"></button>
                         </div>
                         <div class="modal-body row">
-                            <div class="col-9">
+                            <div class="col-12">
                                 <label for="" class="form-label">Descripción</label>
                                 <input type="text" class="form-control" name="descripcion" id="descripcion"
                                     aria-describedby="helpId" placeholder="Descripcion" wire:model="descripcion" />
                             </div>
+                            <div class="col-6">
+                                <label for="" class="form-label">Unid.</label>
+                                <input type="text" class="form-control" name="unidad" id="unidad"
+                                    aria-describedby="helpId" placeholder="" wire:model="unidad"/>
+                            </div>
 
-                            <div class="col-3">
+                            <div class="col-6">
                                 <label for="cantidad" class="form-label">Cantidad</label>
                                 <input type="number" class="form-control" name="cantidad" id="cantidad"
                                     aria-describedby="helpId" placeholder="Cantidad" wire:model="cantidad" />

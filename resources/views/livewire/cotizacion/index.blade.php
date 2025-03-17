@@ -46,7 +46,10 @@
                                         {{ '$' . number_format($cotizacion->precio_estimado, 2, ',', '.') }}</p>
                                 </td>
                                 <td class="text-center">
-                                    <p class="text-xs font-weight-bold mb-0">{{ $cotizacion->fecha_llamado }}</p>
+
+                                    <p class="text-xs font-weight-bold mb-0">
+                                        {{ $cotizacion->fecha_llamado ? date('d-m-Y', strtotime($cotizacion->fecha_llamado)) : '' }}
+                                    </p>
                                 </td>
                                 <td class="text-center">
                                     <p class="text-xs font-weight-bold mb-0">
@@ -62,18 +65,21 @@
                                     @endif
                                 </td>
                                 <td class="text-center">
+                                    <a class="me-2" style="cursor: pointer;"
+                                        wire:click="generarAnexo({{ $cotizacion->id }})" title="Imprimir Pliego">
+                                        <i class="fa-solid fa-file"></i></a>
                                     @if (!$cotizacion->fecha_reso_adjudicacion)
                                         <a class="me-2" style="cursor: pointer;"
                                             wire:click="showModal({{ $cotizacion->id }})" title="Cargar Proveedores">
                                             <i class="fa-solid fa-truck-arrow-right"></i></a>
-                                        <a class="me-2" style="cursor: pointer;"
-                                            wire:click="generarRecibidos({{ $cotizacion->id }})"
-                                            title="Imprimir Recibidos">
-                                            <i class="fa-solid fa-clipboard-check"></i></a>
-                                        <a class="me-2" style="cursor: pointer;" wire:click=""
-                                            title="Imprimir Sobres">
-                                            <i class="fa-solid fa-envelope"></i></a>
                                         @if ($cotizacion->proveedores->count() > 2 && $cotizacion->items->count() > 0)
+                                            <a class="me-2" style="cursor: pointer;"
+                                                wire:click="generarRecibidos({{ $cotizacion->id }})"
+                                                title="Imprimir Recibidos">
+                                                <i class="fa-solid fa-clipboard-check"></i></a>
+                                            <a class="me-2" style="cursor: pointer;" wire:click="generarSobres({{ $cotizacion->id }})"
+                                                title="Imprimir Sobres">
+                                                <i class="fa-solid fa-envelope"></i></a>
                                             <a class="me-2" style="cursor: pointer;"
                                                 wire:click="showModalOfertas({{ $cotizacion->id }})"
                                                 title="Cargar Ofertas">
@@ -283,7 +289,8 @@
                             <div class="col-12 mt-4">
                                 <h6>Proveedores Invitados</h6>
                                 @foreach ($proveedores_cotizacion as $proveedor_cotizacion)
-                                    <div class="row" wire:key="proveedor_cotizacion{{ $proveedor_cotizacion->id }}">
+                                    <div class="row"
+                                        wire:key="proveedor_cotizacion{{ $proveedor_cotizacion->id }}">
                                         <div class="col-12">
                                             <button type="button"
                                                 class="btn {{ $proveedor_cotizacion->proveedor_id == $proveedorBotonId ? 'btn-info ' : 'btn-primary btn-sm' }}  w-100"
@@ -315,17 +322,29 @@
                                                         <td>{{ $oferta->item->descripcion }}</td>
                                                         <td><input type="text" class="form-control"
                                                                 name="precio_unitario" id="precio_unitario"
-                                                                aria-describedby="helpId" value="{{ $oferta->precio_unitario }}" 
+                                                                aria-describedby="helpId"
+                                                                value="{{ $oferta->precio_unitario }}"
                                                                 wire:change="updateOferta({{ $oferta->id }}, 'precio_unitario', $event.target.value)" />
                                                         </td>
                                                         <td>
                                                             <input type="text" class="form-control"
                                                                 name="precio_total" id="precio_total"
-                                                                aria-describedby="helpId" value="{{ $oferta->precio_total }}" 
+                                                                aria-describedby="helpId"
+                                                                value="{{ $oferta->precio_total }}"
                                                                 wire:change="updateOferta({{ $oferta->id }}, 'precio_total', $event.target.value)" />
                                                         </td>
                                                     </tr>
-                                                @endforeach 
+                                                @endforeach
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td class="text-end">
+                                                        <p>TOTAL</p>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        {{ '$' . number_format($ofertas_proveedor->sum('precio_total'), 2, ',', '.') }}
+                                                    </td>
+                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>

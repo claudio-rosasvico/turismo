@@ -75,15 +75,15 @@ class Index extends Component
     }
 
     public function updatedBusquedaProveedor()
-{
-    $proveedoresSeleccionadosIds = $this->proveedores_cotizacion->pluck('proveedor_id')->toArray();
-    
-    $this->proveedoresFiltrados = $this->proveedores->reject(function ($proveedor) use ($proveedoresSeleccionadosIds) {
-        return in_array($proveedor->id, $proveedoresSeleccionadosIds);
-    })->filter(function ($proveedor) {
-        return stripos($proveedor->nombre, $this->busquedaProveedor) !== false;
-    });
-}
+    {
+        $proveedoresSeleccionadosIds = $this->proveedores_cotizacion->pluck('proveedor_id')->toArray();
+
+        $this->proveedoresFiltrados = $this->proveedores->reject(function ($proveedor) use ($proveedoresSeleccionadosIds) {
+            return in_array($proveedor->id, $proveedoresSeleccionadosIds);
+        })->filter(function ($proveedor) {
+            return stripos($proveedor->nombre, $this->busquedaProveedor) !== false;
+        });
+    }
 
     public function addProveedor($proveedorId)
     {
@@ -121,7 +121,7 @@ class Index extends Component
                     ->from('items_cotizaciones')
                     ->where('cotizacion_id', $this->cotizacion_id);
             })->get();
-            
+
         $this->showInputOfertas = true;
     }
 
@@ -132,6 +132,17 @@ class Index extends Component
         $oferta->update([
             $campo => $valor
         ]);
+        if ($campo == 'precio_unitario') {
+            $oferta->update([
+                'precio_total' => ($valor * $oferta->item->cantidad)
+            ]);
+        };
+        $this->ofertas_proveedor = OfertaCotizacion::where('proveedor_id', $oferta->proveedor_id)
+            ->whereIn('item_id', function ($query) {
+                $query->select('id')
+                    ->from('items_cotizaciones')
+                    ->where('cotizacion_id', $this->cotizacion_id);
+            })->get();
     }
 
     public function closeModal()
@@ -154,6 +165,24 @@ class Index extends Component
         }, 'Recibidos Expte ' . $cotizacion->expediente . ' - Cotización Nº ' . $cotizacion->numero . '.pdf');
     }
 
+    public function generarSobres($cotizacion_id)
+    {
+        $cotizacion = Cotizacion::find($cotizacion_id);
+        $proveedores = $cotizacion->proveedores;
+
+        $pdf = SnappyPdf::loadView('cotizaciones.sobres', compact('cotizacion', 'proveedores'))
+            ->setOption('margin-left', '50mm')
+            ->setOption('margin-right', '50mm')
+            ->setOption('margin-top', '25mm')
+            ->setOption('margin-bottom', '25mm')
+            ->setOrientation('landscape');
+        Log::info('impreso en mm');
+
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->inline();
+        }, 'Sobres Expte ' . $cotizacion->expediente . ' - Cotización Nº ' . $cotizacion->numero . '.pdf');
+    }
+
 
     public function delete_proveedor_cotizacion($proveedor_cotizacion_id)
     {
@@ -169,6 +198,24 @@ class Index extends Component
         $proveedor_cotizacion->delete();
         $this->proveedores_cotizacion = Cotizacion::find($this->cotizacion_id)->proveedores;
         $this->updatedBusquedaProveedor();
+    }
+
+    public function generarAnexo($cotizacion_id)
+    {
+        $cotizacion = Cotizacion::find($cotizacion_id);
+        $proveedores = $cotizacion->proveedores;
+        Log::info($cotizacion->proveedores->count());
+        if ($cotizacion->proveedores->count() > 2) {
+            $pdf = SnappyPdf::loadView('cotizaciones.pliego', compact('cotizacion', 'proveedores'));
+            return response()->streamDownload(function () use ($pdf) {
+                echo $pdf->inline();
+            }, 'Anexo Expte ' . $cotizacion->expediente . ' - Cotización Nº ' . $cotizacion->numero . '.pdf');
+        } else {
+            $pdf = SnappyPdf::loadView('cotizaciones.pliegoSinProveedor', compact('cotizacion'));
+            return response()->streamDownload(function () use ($pdf) {
+                echo $pdf->inline();
+            }, 'Anexo Expte ' . $cotizacion->expediente . ' - Cotización Nº ' . $cotizacion->numero . '.pdf');
+        }
     }
 
     public function render()
