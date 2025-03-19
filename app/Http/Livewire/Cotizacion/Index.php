@@ -6,7 +6,6 @@ use App\Models\Cotizacion;
 use App\Models\OfertaCotizacion;
 use App\Models\Proveedor;
 use App\Models\Proveedor_cotizacion;
-use Barryvdh\Snappy\Facades\SnappyPdf;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;

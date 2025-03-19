@@ -168,7 +168,6 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Riverskies\Laravel\MobileDetect\MobileDetectServiceProvider::class,
-        Barryvdh\Snappy\ServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -236,8 +235,6 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'MobileDetect' => Riverskies\Laravel\MobileDetect\Facades\MobileDetect::class,
-        'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
-        'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
     ],
 
 ];
