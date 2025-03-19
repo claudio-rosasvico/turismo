@@ -85,7 +85,7 @@
             <p style="text-indent: 0pt;text-align: left;"><br /></p>
             
             <div style="text-align: center"> <img width="330" height="83"
-                    src="{{ asset('assets/img/Logo-gobernacion.png') }}" style="margin: auto;" />
+                    src="/public/assets/img/Logo-gobernacion.png" style="margin: auto;" />
             </div>
 
             <p class="s1" style="padding-top: 9pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">DIRECCIÓN

@@ -1,25 +1,102 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
     <title>Recibidos</title>
     <style>
-        body{
+        body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
+
+        .mb-5 {
+            margin-bottom: 3rem !important;
+        }
+
+        .mt-5 {
+            margin-top: 3rem !important;
+        }
+
+        .mb-2 {
+            margin-bottom: 0.5rem !important;
+        }
+
+        .mt-2 {
+            margin-top: 0.5rem !important;
+        }
+
+        .h4 {
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .h5 {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .border-0 {
+            border: none !important;
+        }
+
+        .pb-0 {
+            padding-bottom: 0 !important;
+        }
+
+        .align-bottom {
+            vertical-align: bottom !important;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table-bordered {
+            border: 1px solid #000;
+        }
+
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid #000;
+            padding: 8px;
+        }
+
         .celda-distribuida {
-            display: flex;
-            flex-direction: column;
-            /* Apila los elementos verticalmente */
-            justify-content: space-between;
-            /* Distribuye el espacio entre los elementos */
-            height: 100px;
-            /* Ajusta la altura según tus necesidades */
+            display: block;
+            height: 200px;
+            position: relative;
+        }
+
+        .celda-distribuida p {
+            margin: 0;
+            position: absolute;
+        }
+
+        .celda-distribuida p:nth-child(1) {
+            top: 0;
+        }
+
+        .celda-distribuida p:nth-child(3) {
+            top: 40px;
+        }
+
+        .celda-distribuida p:nth-child(5) {
+            top: 80px;
+        }
+
+        .celda-distribuida p:nth-child(6) {
+            top: 120px;
+        }
+
+        .fs-4 {
+            font-size: 1rem;
         }
     </style>
 </head>
@@ -27,14 +104,13 @@
 <body>
     @php ($count = 1)
     @foreach ($proveedores as $proveedor)
-        <br>
-        <br>
+
 
         <div class="mb-5 mt-5">
             <p class="h4 mb-2">
                 Recibí del Servicio Administrativo Contable de la Gobernación Oficina 16- Primer Piso-Casa de Gobierno
                 las
-                Solicitudes de Cotización con APERTURA en <strong>FECHA: {{ $cotizacion->fecha_llamado }}, HORA :
+                Solicitudes de Cotización con APERTURA en <strong>FECHA: {{ date('d/m/Y', strtotime($cotizacion->fecha_llamado)) }}, HORA :
                     {{ $cotizacion->hora_llamado }}</strong>.
             </p>
 
@@ -54,7 +130,7 @@
                 <tr class="table-bordered" style="height: 200px">
                     <th class="text-center border-botom-0" style="width: 10%;">{{ $count }}</th>
                     <th class="border-botom-0" style="width: 20%;">
-                        <div class="">
+                        <div>
                             <p class="text-center h5 mt-3">{{ $proveedor->proveedor->nombre }}</p>
                             <br>
                             <br>
@@ -67,7 +143,6 @@
                         <div class="celda-distribuida">
                             <p>Firma:</p>
                             <br>
-                            <br>
                             <p>Aclaración</p>
                             <br>
                             <p>DNI:</p>
@@ -75,19 +150,18 @@
                     </th>
 
                     <th class="border-botom-0" style="width: 25%;">
-
+                        <!-- Espacio para el sello -->
                     </th>
                     <th class="border-botom-0" style="width: 15%;">
-
+                        <!-- Espacio para fecha/hora -->
                     </th>
                 </tr>
             </table>
         </div>
         <br>
-        <br>
-        @php ($count++) 
-    @endforeach
 
+        @php ($count++)
+    @endforeach
 </body>
 
 </html>

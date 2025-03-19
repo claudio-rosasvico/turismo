@@ -157,20 +157,11 @@ class Index extends Component
         $proveedores = $cotizacion->proveedores;
 
         $pdf = Pdf::loadView('cotizaciones.recibidos', compact('cotizacion', 'proveedores'))
-            ->setPaper('a4', 'portrait')
-            ->setOption('isHtml5ParserEnabled', false) // Deshabilita el parser HTML5
-            ->setOption('isPhpEnabled', false)         // Deshabilita PHP embebido
-            ->setOption('defaultFont', 'Arial')
-            ->setOption('isRemoteEnabled', false)      // Deshabilita recursos remotos
-            ->setOption('defaultEncoding', 'UTF-8');
+            ->setPaper('a4', 'portrait');
 
-        /* return $pdf->stream('Recibidos Expte ' . $cotizacion->expediente . ' - Cotización Nº ' . $cotizacion->numero . '.pdf')->header('Content-Type', 'application/pdf'); */
-/*         return response()->stream(function () use ($pdf) {
-            echo $pdf->stream('Sobres Expte.pdf');
-        }, 200, ['Content-Type' => 'application/pdf']); */
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->stream();
-        }, 'Sobres Expte.pdf');
+        }, 'Recibidos Expte ' . $cotizacion->expediente . ' - Cotización Nº ' . $cotizacion->numero . '.pdf');
     }
 
     public function generarSobres($cotizacion_id)
@@ -182,7 +173,8 @@ class Index extends Component
             ->setOption('margin-left', '50mm')
             ->setOption('margin-right', '50mm')
             ->setOption('margin-top', '25mm')
-            ->setOption('margin-bottom', '25mm');
+            ->setOption('margin-bottom', '25mm')
+            ->setPaper('a4', 'landscape');
         Log::info('impreso en mm');
 
         return response()->streamDownload(function () use ($pdf) {
@@ -213,14 +205,18 @@ class Index extends Component
         $proveedores = $cotizacion->proveedores;
         Log::info($cotizacion->proveedores->count());
         if ($cotizacion->proveedores->count() > 2) {
-            $pdf = SnappyPdf::loadView('cotizaciones.pliego', compact('cotizacion', 'proveedores'));
+            $pdf = Pdf::loadView('cotizaciones.pliego', compact('cotizacion', 'proveedores'))
+                ->setOption('margin-left', '20mm')
+                ->setOption('margin-top', '20mm');
             return response()->streamDownload(function () use ($pdf) {
-                echo $pdf->inline();
+                echo $pdf->stream();
             }, 'Anexo Expte ' . $cotizacion->expediente . ' - Cotización Nº ' . $cotizacion->numero . '.pdf');
         } else {
-            $pdf = SnappyPdf::loadView('cotizaciones.pliegoSinProveedor', compact('cotizacion'));
+            $pdf = Pdf::loadView('cotizaciones.pliegoSinProveedor', compact('cotizacion'))
+                ->setOption('margin-left', '20mm')
+                ->setOption('margin-top', '20mm');
             return response()->streamDownload(function () use ($pdf) {
-                echo $pdf->inline();
+                echo $pdf->stream();
             }, 'Anexo Expte ' . $cotizacion->expediente . ' - Cotización Nº ' . $cotizacion->numero . '.pdf');
         }
     }

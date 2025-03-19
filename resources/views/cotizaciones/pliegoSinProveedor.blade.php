@@ -4,15 +4,11 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>3022436- COTEJO - ACOMPRA DE ARTICULOS DE PROMOCION Y FACHADA DE LA SECRETARIA .xls</title>
-    <meta name="author" content="Claudio Rosas Vico" />
+    <title>Anexo Expte {{$cotizacion->expediente  }}</title>
+    <meta name="author" content="Contable Turismo" />
     <link rel="stylesheet" href="https://use.typekit.net/oov2wcw.css">
     <style type="text/css">
-        * {
-            margin: 0;
-            padding: 0;
-            text-indent: 0;
-        }
+        
 
         h4 {
             color: black;
@@ -207,7 +203,7 @@
                     </p>
                 </td>
                 <td
-                    style="width:314pt;border-top-style:solid;border-top-width:1pt;;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt;">
+                    style="width:250pt;border-top-style:solid;border-top-width:1pt;;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt;">
                     <p class="s7" style="padding-top: 3pt;text-indent: 0pt;line-height: 7pt;text-align: center;">
                         Artículos y Especificaciones</p>
                 </td>
@@ -247,7 +243,7 @@
                         </p>
                     </td>
                     <td
-                        style="width:314pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                        style="width:250pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
                         <p class="s9"
                             style="padding-top: 6pt;padding-left: 1pt;text-indent: 0pt;line-height: 11pt;text-align: left;">
                             {{ $item->descripcion }}</p>
@@ -270,7 +266,7 @@
                 </tr>
                 @php($countItem++)
             @endforeach
-            @while ($countItem < 28)
+            @while ($countItem < 55)
             <tr style="height:24pt">
                 <td
                     style="width:46pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
@@ -279,7 +275,7 @@
                     </p>
                 </td>
                 <td
-                    style="width:314pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
+                    style="width:250pt;border-left-style:solid;border-left-width:1pt;border-right-style:solid;border-right-width:1pt">
                     <p class="s9"
                         style="padding-top: 6pt; padding-left: 1pt;text-indent: 0pt;line-height: 11pt;text-align: left;">
                         </p>
@@ -308,7 +304,7 @@
                     <p style="text-indent: 0pt;text-align: left;"><br /></p>
                 </td>
                 <td
-                    style="width:314pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                    style="width:250pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
                     <p class="s10" style="padding-left: 7pt;text-indent: 0pt;line-height: 9pt;text-align: left;">{{ $cotizacion->descripcion }}</p>
 
                 </td>
@@ -335,7 +331,7 @@
                     <p style="text-indent: 0pt;text-align: left;"><br /></p>
                 </td>
                 <td
-                    style="width:314pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
+                    style="width:250pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
                     <p style="text-indent: 0pt;text-align: left;"><br /></p>
                 </td>
                 <td
