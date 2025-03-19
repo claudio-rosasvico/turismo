@@ -16,7 +16,7 @@
         }
 
         .mt-5 {
-            margin-top: 3rem !important;
+            margin-top: 2rem !important;
         }
 
         .mb-2 {
@@ -33,7 +33,7 @@
         }
 
         .h5 {
-            font-size: 1.1rem;
+            font-size: 1.0rem;
             font-weight: bold;
         }
 
@@ -96,7 +96,11 @@
         }
 
         .fs-4 {
-            font-size: 1rem;
+            font-size: 0.8rem;
+        }
+
+        .nuevo-hoja {
+            page-break-before: always;
         }
     </style>
 </head>
@@ -106,7 +110,7 @@
     @foreach ($proveedores as $proveedor)
 
 
-        <div class="mb-5 mt-5">
+        <div class="mb-5 mt-5 {{ $count > 1 && !is_int($count/2) ? 'nuevo-hoja' : '' }}">
             <p class="h4 mb-2">
                 Recibí del Servicio Administrativo Contable de la Gobernación Oficina 16- Primer Piso-Casa de Gobierno
                 las
@@ -127,7 +131,7 @@
                     <th class="text-center pb-0 border-0 align-bottom" style="width: 15%;">FECHA/HORA</th>
                 </tr>
 
-                <tr class="table-bordered" style="height: 200px">
+                <tr class="table-bordered" style="height-max: 20px">
                     <th class="text-center border-botom-0" style="width: 10%;">{{ $count }}</th>
                     <th class="border-botom-0" style="width: 20%;">
                         <div>
