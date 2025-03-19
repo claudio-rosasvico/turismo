@@ -9,6 +9,9 @@
 
     <title>Recibidos</title>
     <style>
+        body{
+            font-family: Arial, sans-serif;
+        }
         .celda-distribuida {
             display: flex;
             flex-direction: column;

@@ -7,12 +7,10 @@ use App\Models\OfertaCotizacion;
 use App\Models\Proveedor;
 use App\Models\Proveedor_cotizacion;
 use Barryvdh\Snappy\Facades\SnappyPdf;
-use Barryvdh\Snappy\PdfFaker;
-use Barryvdh\DomPDF\Facade\Pdf as DomPDF;
-use Illuminate\Support\Facades\App;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
-use Smalot\PdfParser\Parser;
+use Mpdf\Mpdf;
 
 class Index extends Component
 {
@@ -159,10 +157,21 @@ class Index extends Component
         $cotizacion = Cotizacion::find($cotizacion_id);
         $proveedores = $cotizacion->proveedores;
 
-        $pdf = SnappyPdf::loadView('cotizaciones.recibidos', compact('cotizacion', 'proveedores'));
+        $pdf = Pdf::loadView('cotizaciones.recibidos', compact('cotizacion', 'proveedores'))
+            ->setPaper('a4', 'portrait')
+            ->setOption('isHtml5ParserEnabled', false) // Deshabilita el parser HTML5
+            ->setOption('isPhpEnabled', false)         // Deshabilita PHP embebido
+            ->setOption('defaultFont', 'Arial')
+            ->setOption('isRemoteEnabled', false)      // Deshabilita recursos remotos
+            ->setOption('defaultEncoding', 'UTF-8');
+
+        /* return $pdf->stream('Recibidos Expte ' . $cotizacion->expediente . ' - Cotización Nº ' . $cotizacion->numero . '.pdf')->header('Content-Type', 'application/pdf'); */
+/*         return response()->stream(function () use ($pdf) {
+            echo $pdf->stream('Sobres Expte.pdf');
+        }, 200, ['Content-Type' => 'application/pdf']); */
         return response()->streamDownload(function () use ($pdf) {
-            echo $pdf->inline();
-        }, 'Recibidos Expte ' . $cotizacion->expediente . ' - Cotización Nº ' . $cotizacion->numero . '.pdf');
+            echo $pdf->stream();
+        }, 'Sobres Expte.pdf');
     }
 
     public function generarSobres($cotizacion_id)
@@ -170,16 +179,15 @@ class Index extends Component
         $cotizacion = Cotizacion::find($cotizacion_id);
         $proveedores = $cotizacion->proveedores;
 
-        $pdf = SnappyPdf::loadView('cotizaciones.sobres', compact('cotizacion', 'proveedores'))
+        $pdf = Pdf::loadView('cotizaciones.sobres', compact('cotizacion', 'proveedores'))
             ->setOption('margin-left', '50mm')
             ->setOption('margin-right', '50mm')
             ->setOption('margin-top', '25mm')
-            ->setOption('margin-bottom', '25mm')
-            ->setOrientation('landscape');
+            ->setOption('margin-bottom', '25mm');
         Log::info('impreso en mm');
 
         return response()->streamDownload(function () use ($pdf) {
-            echo $pdf->inline();
+            echo $pdf->stream();
         }, 'Sobres Expte ' . $cotizacion->expediente . ' - Cotización Nº ' . $cotizacion->numero . '.pdf');
     }
 
