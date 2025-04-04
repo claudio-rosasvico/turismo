@@ -17,14 +17,15 @@ class Cotizacion extends Model
         'expediente',
         'numero',
         'precio_estimado',
+        'fecha_reso_llamado',
         'fecha_llamado',
         'hora_llamado',
         'fecha_autorizacion',
-        'fecha_reso_llamado',
         'fecha_reso_adjudicacion',
         'nro_reso_adjudicacion',
         'activo',
-        'descripcion'
+        'descripcion',
+        'descripcion_anexo'
     ];
 
     public function items()

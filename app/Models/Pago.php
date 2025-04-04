@@ -25,6 +25,7 @@ class Pago extends Model
         'nro_OP',
         'nro_expte_siaf',
         'nro_solicitud',
+        'cotizacion_id',
         'pagado',
         'observacion'
     ];

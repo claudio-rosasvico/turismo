@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Cotizacion;
 
+use App\Models\Cotizacion;
 use App\Models\ItemCotizacion;
 use Livewire\Component;
 
@@ -9,6 +10,7 @@ class Item extends Component
 {
     public $items;
     public $cotizacion_id;
+    public $cotizacion;
     public $modalItem = false;
     public $descripcion;
     public $cantidad;
@@ -17,6 +19,7 @@ class Item extends Component
     public function mount($cotizacion_id){
         $this->cotizacion_id = $cotizacion_id;
         $this->items = ItemCotizacion::where('cotizacion_id', $this->cotizacion_id)->get();
+        $this->cotizacion = Cotizacion::find($this->cotizacion_id);
     }
 
     public function ItemCreate(){

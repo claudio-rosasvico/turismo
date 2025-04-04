@@ -70,7 +70,7 @@ class ContratoController extends Controller
         ]);
 
         $contrato = Contrato::create($contrato);
-        $reserva = ReservaController
+        
 
         return redirect('/contratos/show/'.$contrato->id);
     }

@@ -20,7 +20,9 @@ class Index extends Component
     public $cotizacion_contrato;
     public $proveedores_cotizacion;
     public $items_cotizacion;
+    public $descripcion_anexo;
     public $modalShow = false;
+    public $modalAnexo = false;
     public $modalShowContrato = false;
     public $modalShowOfertas = false;
     public $proveedoresFiltrados; // Lista filtrada de proveedores
@@ -49,9 +51,9 @@ class Index extends Component
         }
     }
 
-    public function delete_cotizacion($cotizacion_id)
+    public function delete_cotizacion($id_cotizacion)
     {
-        $cotizacion = Cotizacion::find($cotizacion_id);
+        $cotizacion = Cotizacion::find($id_cotizacion);
         $cotizacion->delete();
         $this->cotizaciones = Cotizacion::all();
     }
@@ -68,6 +70,7 @@ class Index extends Component
     public function showModalContrato($id_cotizacion)
     {
         $this->cotizacion_contrato = Cotizacion::find($id_cotizacion);
+        $this->proveedores_cotizacion = $this->cotizacion_contrato->proveedores;
         $this->modalShowContrato = true;
     }
 
@@ -148,7 +151,8 @@ class Index extends Component
         $this->modalShowContrato = false;
         $this->modalShowOfertas = false;
         $this->showInputOfertas = false;
-        $this->reset(['busquedaProveedor', 'proveedorSeleccionado', 'cotizacion_contrato', 'proveedorBotonId']);
+        $this->modalAnexo = false;
+        $this->reset(['busquedaProveedor', 'proveedorSeleccionado', 'cotizacion_contrato', 'proveedorBotonId', 'cotizacion_id']);
     }
 
     public function generarRecibidos($cotizacion_id)
@@ -162,7 +166,7 @@ class Index extends Component
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->stream();
         }, 'Recibidos Expte ' . $cotizacion->expediente . ' - Cotización Nº ' . $cotizacion->numero . '.pdf');
-    }
+    }   
 
     public function generarSobres($cotizacion_id)
     {
@@ -199,12 +203,23 @@ class Index extends Component
         $this->updatedBusquedaProveedor();
     }
 
-    public function generarAnexo($cotizacion_id)
+    public function showDescripcionAnexo($id_cotizacion){
+        $this->cotizacion_id = $id_cotizacion;
+        $cotizacion = Cotizacion::find($id_cotizacion);
+        $this->descripcion_anexo = $cotizacion->descripcion_anexo;
+        $this->modalAnexo = true;
+    }
+
+    public function generarAnexo()
     {
-        $cotizacion = Cotizacion::find($cotizacion_id);
+        $cotizacion = Cotizacion::find($this->cotizacion_id);
+        $cotizacion->update([
+            'descripcion_anexo' => $this->descripcion_anexo
+        ]);
+        $this->modalAnexo = false;
         $proveedores = $cotizacion->proveedores;
-        Log::info($cotizacion->proveedores->count());
-        if ($cotizacion->proveedores->count() > 2) {
+
+        if ($cotizacion->proveedores->count() > 2 && $cotizacion->fecha_llamado) {
             $pdf = Pdf::loadView('cotizaciones.pliego', compact('cotizacion', 'proveedores'))
                 ->setOption('margin-left', '20mm')
                 ->setOption('margin-top', '20mm');
@@ -219,6 +234,16 @@ class Index extends Component
                 echo $pdf->stream();
             }, 'Anexo Expte ' . $cotizacion->expediente . ' - Cotización Nº ' . $cotizacion->numero . '.pdf');
         }
+    }
+
+    public function updateActivo($activo, $id_cotizacion)
+    {
+        $cotizacion = Cotizacion::find($id_cotizacion);
+        
+        $cotizacion->update([
+            'activo' => $activo
+        ]);
+        $this->cotizaciones = Cotizacion::all();
     }
 
     public function render()

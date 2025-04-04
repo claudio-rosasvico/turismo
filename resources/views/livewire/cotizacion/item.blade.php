@@ -1,9 +1,11 @@
 <div class="card">
     <div class="card-head mt-1 d-flex justify-content-between">
         <h5 class="ms-2">Items de Cotización</h5>
-        <a class="btn-plus me-2" wire:click="$set('modalItem', true)" title="Agregar Ítem">
-            <i class="fa-solid fa-plus" ></i>
-        </a>
+        @if (!$cotizacion->fecha_reso_llamado)
+            <a class="btn-plus me-2" wire:click="$set('modalItem', true)" title="Agregar Ítem">
+                <i class="fa-solid fa-plus"></i>
+            </a>
+        @endif
     </div>
     <div class="card-body">
         <div class="table-responsive-sm">
@@ -30,9 +32,8 @@
                             </td>
                             <td class="text-center">
                                 <a class="text-primary" style="cursor: pointer;"
-                                wire:click="delete_item({{ $item->id }})"
-                                title="Eliminar Item">
-                                <i class="fa-solid fa-circle-xmark"></i></a>
+                                    wire:click="delete_item({{ $item->id }})" title="Eliminar Item">
+                                    <i class="fa-solid fa-circle-xmark"></i></a>
                             </td>
                         </tr>
                     @endforeach
@@ -62,7 +63,7 @@
                             <div class="col-6">
                                 <label for="" class="form-label">Unid.</label>
                                 <input type="text" class="form-control" name="unidad" id="unidad"
-                                    aria-describedby="helpId" placeholder="" wire:model="unidad"/>
+                                    aria-describedby="helpId" placeholder="" wire:model="unidad" />
                             </div>
 
                             <div class="col-6">

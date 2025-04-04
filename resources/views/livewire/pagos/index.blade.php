@@ -115,7 +115,8 @@
                                 </td>
                                 <td class="text-center">
                                     <p class="text-xs text-secondary mb-0">
-                                        {{ $pago->fecha_imputacion ? date('d-m-Y', strtotime($pago->fecha_imputacion)) : '' }}</p>
+                                        {{ $pago->fecha_imputacion ? date('d-m-Y', strtotime($pago->fecha_imputacion)) : '' }}
+                                    </p>
                                 </td>
                                 <td class="text-center">
                                     <p class="text-xs font-weight-bold mb-0">{{ $pago->nro_OP }}</p>
@@ -169,7 +170,7 @@
                 <div class="modal-backdrop show"></div>
                 <div class="modal fade show" id="modal-default" tabindex="-1" role="dialog"
                     aria-labelledby="modal-default" aria-modal="true" style="display: block;">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-dialog pagos modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">Seleccionar Proveedor</h5>
@@ -218,46 +219,44 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col col-lg-4">
+                                            <div class="col col-lg-3">
                                                 <label for="" class="form-label">Expediente</label>
                                                 <input type="text" class="form-control" name="expediente"
                                                     id="expediente" wire:model="expediente" />
                                             </div>
-                                            <div class="col col-lg-4">
+                                            <div class="col col-lg-3">
                                                 <label for="" class="form-label">Sucursal</label>
                                                 <input type="text" class="form-control" name="sucursal"
                                                     id="sucursal" wire:model="sucursal" />
                                             </div>
-                                            <div class="col col-lg-4">
+                                            <div class="col col-lg-3">
                                                 <label for="" class="form-label">Nro. Comprobante</label>
                                                 <input type="text" class="form-control" name="nro_comprobante"
                                                     id="nro_comprobante" wire:model="nro_comprobante" />
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col col-lg-4">
+                                            <div class="col col-lg-3">
                                                 <label for="" class="form-label">Fecha Comprob.</label>
                                                 <input type="date" class="form-control" name="fecha_comprobante"
                                                     id="fecha_comprobante" wire:model="fecha_comprobante" />
                                             </div>
-                                            <div class="col col-lg-4">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col col-lg-3">
                                                 <label for="" class="form-label">Monto</label>
                                                 <input type="text" class="form-control" name="monto"
                                                     id="monto" wire:model="monto" />
                                             </div>
-                                            <div class="col col-lg-4">
+                                            <div class="col col-lg-2">
                                                 <label for="" class="form-label">Partida</label>
                                                 <input type="text" class="form-control" name="partida_codigo"
                                                     id="partida_codigo" wire:model="partida_codigo" />
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col col-lg-6">
+                                            <div class="col col-lg-3">
                                                 <label for="" class="form-label">Fecha Imput.</label>
                                                 <input type="date" class="form-control" name="fecha_imputacion"
                                                     id="fecha_imputacion" wire:model="fecha_imputacion" />
                                             </div>
-                                            <div class="col col-lg-6">
+                                            <div class="col col-lg-4">
                                                 <label for="" class="form-label">Tipo de Pago</label>
                                                 <select class="form-select form-select" name="tipo_pago_id"
                                                     id="tipo_pago_id" wire:model="tipo_pago_id">
@@ -270,29 +269,22 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col col-lg-6">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col col-lg-4">
                                                 <label for="" class="form-label">Nro. OP</label>
                                                 <input type="text" class="form-control" name="nro_OP"
                                                     id="nro_OP" wire:model="nro_OP" />
                                             </div>
-                                            <div class="col col-lg-6">
+                                            <div class="col col-lg-4">
                                                 <label for="" class="form-label">Expte. SIAF</label>
                                                 <input type="text" class="form-control" name="nro_expte_siaf"
                                                     id="nro_expte_siaf" wire:model="nro_expte_siaf" />
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col col-lg-6">
+                                            <div class="col col-lg-4">
                                                 <label for="" class="form-label">Nro. Solicitud</label>
                                                 <input type="text" class="form-control" name="nro_solicitud"
                                                     id="nro_solicitud" wire:model="nro_solicitud" />
-                                            </div>
-                                            <div class="col col-lg-6 align-content-center">
-                                                <div class="form-check">
-                                                    <input type="checkbox" class="form-check-input"
-                                                        wire:model="pagado" {{ $pagado ? 'checked' : '' }} />
-                                                    <label for="" class="form-label">Pagado</label>
-                                                </div>
                                             </div>
                                         </div>
                                         <div class="row">

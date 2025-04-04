@@ -14,6 +14,7 @@
                 <thead>
                     <tr>
                         <th scope="col">Número</th>
+                        <th scope="col" class="text-center">Proveedor</th>
                         <th scope="col" class="text-center">Expt. SIAF</th>
                         <th scope="col" class="text-center">Monto</th>
                         <th scope="col" class="text-center">...</th>
@@ -24,6 +25,9 @@
                         <tr>
                             <td class="text-wrap">
                                 {{ $orden_compra->numero }}
+                            </td>
+                            <td class="text-wrap">
+                                {{ $orden_compra->proveedor->nombre }}
                             </td>
                             <td class="text-center">
                                 {{ $orden_compra->expediente_siaf }}
@@ -53,7 +57,7 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Cargar Item</h5>
+                            <h5 class="modal-title">Cargar Orden de Compra</h5>
                             <button type="button" class="btn-close" wire:click="closeModal"></button>
                         </div>
                         <div class="modal-body row">
@@ -74,10 +78,10 @@
                             </div>
                             <div class="col-12">
                                 <label for="" class="form-label">Proveedor</label>
-                                <select class="form-select form-select-lg" name="proveedor_id" id="proveedor_id">
+                                <select class="form-select form-select-lg" name="proveedor_id" id="proveedor_id" wire:model="proveedor_id">
                                     <option selected>Seleccione Proveedor</option>
                                     @foreach ($proveedores as $proveedor)
-                                        <option value="{{ $proveedor->id }}">{{ $proveedor->nombre }}</option>
+                                        <option value="{{ $proveedor->proveedor->id }}">{{ $proveedor->proveedor->nombre }}</option>
                                     @endforeach
                                 </select>
                             </div>

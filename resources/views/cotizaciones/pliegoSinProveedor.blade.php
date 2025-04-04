@@ -305,7 +305,7 @@
                 </td>
                 <td
                     style="width:250pt;border-top-style:solid;border-top-width:1pt;border-left-style:solid;border-left-width:1pt;border-bottom-style:solid;border-bottom-width:1pt;border-right-style:solid;border-right-width:1pt">
-                    <p class="s10" style="padding-left: 7pt;text-indent: 0pt;line-height: 9pt;text-align: left;">{{ $cotizacion->descripcion }}</p>
+                    <p class="s10" style="padding-left: 7pt;text-indent: 0pt;line-height: 9pt;text-align: left;">{{ $cotizacion->descripcion_anexo }}</p>
 
                 </td>
                 <td

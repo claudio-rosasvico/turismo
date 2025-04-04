@@ -9,12 +9,14 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between">
                             <div>
-                                <h4 class="card-title"><a href="{{ route('cotizaciones.index') }}"><i class="fa-solid fa-arrow-left" style="font-size: 1rem"></i></a>  Ver Cotización de {{ $cotizacion->nombre }}</h4>
+                                <h4 class="card-title"><a href="{{ route('cotizaciones.index') }}"><i
+                                            class="fa-solid fa-arrow-left" style="font-size: 1rem"></i></a> Ver
+                                    Cotización de {{ $cotizacion->nombre }}</h4>
                             </div>
 
-                            
+
                         </div>
-                        
+
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-4">
@@ -49,19 +51,10 @@
                                         {{ $cotizacion['descripcion'] }}
                                     </p>
                                 </div>
-                                <div class="col-12">
-                                    <button
-                                        type="button"
-                                        class="btn btn-primary btn-sm"
-                                    >
-                                        Agregar oferta
-                                    </button>
-                                    
-                                </div>
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
                 <div class="col col-lg-6 mt-2">
                     @livewire('cotizacion.item', ['cotizacion_id' => $cotizacion->id])

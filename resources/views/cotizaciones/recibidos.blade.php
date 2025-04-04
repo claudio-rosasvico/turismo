@@ -154,10 +154,10 @@
                     </th>
 
                     <th class="border-botom-0" style="width: 25%;">
-                        <!-- Espacio para el sello -->
+                        
                     </th>
                     <th class="border-botom-0" style="width: 15%;">
-                        <!-- Espacio para fecha/hora -->
+                        
                     </th>
                 </tr>
             </table>

@@ -18,10 +18,15 @@ class OrdenCompra extends Model
         'precio_total',
         'cotizacion_id',
         'compensacion_id',
+        'proveedor_id'
     ];
 
     public function cotizacion(){
-        return $this->hasOne(Cotizacion::class, 'cotizacion_id');
+        return $this->belongsTo(Cotizacion::class, 'cotizacion_id');
+    }
+
+    public function proveedor(){
+        return $this->belongsTo(Proveedor::class, 'proveedor_id');
     }
 
 }
