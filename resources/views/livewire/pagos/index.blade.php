@@ -121,8 +121,25 @@
                                 <td class="text-center">
                                     <p class="text-xs font-weight-bold mb-0">{{ $pago->nro_OP }}</p>
                                 </td>
-                                <td class="text-center">
-                                    <p class="text-xs text-secondary mb-0">{{ $pago->nro_solicitud }}</p>
+                                <td class="text-center align-content-center" style="width: 10%">
+                                    @if (!$pago->nro_solicitud)
+                                        <div class="d-flex justify-content-center align-items-center gap-1" style="display: flex">
+                                            <input class="form-control solicitud" value="{{ $pago->nro_solicitud }}"
+                                                {{ $pago->id != $id_solicitud ? 'disabled' : '' }}
+                                                wire:model="nro_solicitudes.{{ $pago->id }}" />
+                                            @if ($pago->id != $id_solicitud)
+                                                <i class="fa-solid fa-pen-to-square  solicitud"
+                                                    style="font-size: 0.7rem"
+                                                    wire:click="$set('id_solicitud',{{ $pago->id }})"></i>
+                                            @else
+                                                <i class="fa-solid fa-square-check solicitud" style="font-size: 0.7rem"
+                                                    wire:click="updateSolicitud({{ $pago->id }})"></i>
+                                            @endif
+                                        </div>
+                                    @else
+                                        <p class="text-xs text-secondary mb-0">
+                                            {{ $pago->nro_solicitud }}</p>
+                                    @endif
                                 </td>
                                 <td class="text-center">
                                     <p class="mb-0 badge  {{ $pago->pagado ? 'bg-success' : 'bg-warning' }}">

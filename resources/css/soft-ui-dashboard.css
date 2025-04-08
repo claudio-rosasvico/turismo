@@ -2622,6 +2622,21 @@ progress {
   border-radius: 0.5rem;
   transition: box-shadow 0.15s ease, border-color 0.15s ease;
 }
+.form-control.solicitud {
+  padding: 0.2rem 0rem;
+  padding-left: 0px !important;
+  line-height: 0.4rem;
+  width: 40%;
+  border: 0.5px solid #d2d6da;
+  margin: 0 auto !important;
+  
+}
+td i.solicitud {
+  margin: auto;
+  margin-left: -1rem;
+  cursor: pointer;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .form-control {
     transition: none;
@@ -22691,6 +22706,16 @@ hr.horizontal.gray-light {
 .table td,
 .table th {
   white-space: nowrap;
+}
+.table td.text-center {
+  text-align: center; 
+  vertical-align: middle; 
+}
+
+input.solicitud {
+  margin: 0 auto; 
+  display: block; 
+  text-align: center; 
 }
 .table.align-items-center td,
 .table.align-items-center th {

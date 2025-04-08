@@ -37,6 +37,8 @@ class Index extends Component
     public $observacion;
     public $sortField;
     public $sortDirection = 'asc';
+    public $id_solicitud;
+    public $nro_solicitudes = [];
     
     public function mount()
     {
@@ -44,6 +46,7 @@ class Index extends Component
         $this->proveedores = Proveedor::all();
         $this->proveedoresFiltrados = $this->proveedores;
         $this->tipos_pagos = TipoPago::all();
+        $this->id_solicitud;
     }
 
     public function updatedSearchPago()
@@ -266,6 +269,21 @@ class Index extends Component
         } else {
             $this->dispatch('mostrarToast', ['titulo' => 'Error', 'mensaje' => 'Pago no encontrado', 'tipo' => 'error']);
         }
+    }
+
+    public function updateSolicitud($id_pago){
+        $pago = Pago::find($id_pago);
+        Log::info($id_pago);
+        if ($pago) {
+            $pago->update([
+                'nro_solicitud' => isset($this->nro_solicitudes[$id_pago]) ? $this->nro_solicitudes[$id_pago] : ''
+            ]);
+            $this->updatedSearchPago();
+            $this->dispatch('mostrarToast', ['titulo' => 'Éxito', 'mensaje' => 'Nº de Solicitud actualizada correctamente', 'tipo' => 'success']);
+        } else {
+            $this->dispatch('mostrarToast', ['titulo' => 'Error', 'mensaje' => 'Pago no encontrado', 'tipo' => 'error']);
+        }
+        $this->reset(['id_solicitud']);
     }
 
     public function render()
