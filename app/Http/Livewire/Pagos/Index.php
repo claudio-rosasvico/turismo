@@ -176,7 +176,7 @@ class Index extends Component
 
                 $this->pagos = Pago::all();
                 $this->modalShow = false;
-                $this->reset(['expediente', 'proveedorSeleccionado', 'sucursal', 'nro_comprobante', 'fecha_comprobante', 'monto', 'fecha_imputacion', 'partida_codigo', 'tipo_pago_id', 'nro_OP', 'nro_expte_siaf', 'nro_solicitud', 'pagado', 'observacion']);
+                $this->reset(['expediente', 'proveedorSeleccionado', 'sucursal', 'nro_comprobante', 'fecha_comprobante', 'monto', 'fecha_imputacion', 'partida_codigo', 'tipo_pago_id', 'nro_OP', 'nro_expte_siaf', 'nro_solicitud', 'pagado', 'observacion', 'nro_solicitudes']);
             } catch (ValidationException $e) {
 
                 $errors = $e->validator->errors()->all();
