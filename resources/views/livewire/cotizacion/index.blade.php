@@ -370,7 +370,7 @@
                                                         @foreach ($ofertas_proveedor as $oferta)
                                                             <tr class="" wire:key="oferta{{ $oferta->id }}">
                                                                 <td scope="row">{{ $oferta->item->cantidad }}</td>
-                                                                <td>{{ $oferta->item->descripcion }}</td>
+                                                                <td class="text-wrap">{{ $oferta->item->descripcion }}</td>
                                                                 <td><input type="text" class="form-control"
                                                                         name="precio_unitario" id="precio_unitario"
                                                                         aria-describedby="helpId"
