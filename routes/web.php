@@ -71,6 +71,7 @@ Route::middleware('auth')->group(function () {
     
     /*COTIZACIONES*/
     Route::get('/cotizaciones/show/{cotizacion_id}', [CotizacionController::class, 'show']);
+    Route::get('/cotizaciones/ofertas/{cotizacion_id}', [CotizacionController::class, 'getOfertas'])->name('cotizaciones.ofertas');
     Route::resource('/cotizaciones', CotizacionController::class)->names('cotizaciones');
 
     /*PAGOS*/

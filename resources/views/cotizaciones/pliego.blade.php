@@ -188,7 +188,7 @@
             <p style="padding-top: 1pt;padding-left: 7pt;line-height: 111%;text-align: left;">APERTURA
                 DIR. DE ADMINISTRACION CONTABLE - SECRETARIA DE TURISMO DIRECCION LAPRIDA Nº5</p>
             <p style="padding-top: 5pt;padding-left: 7pt;text-indent: 0pt;text-align: left;">SEÑORES: <span
-                    class="h1">{{ $proveedor->proveedor->nombre }}</span></p>
+                    class="h1">{{ $proveedor->nombre }}</span></p>
             <p style="padding-top: 4pt;text-indent: 0pt;text-align: left;"><br /></p>
             <p class="s4" style="padding-left: 7pt;text-indent: 0pt;text-align: left;">{{ $cotizacion->expediente }}
                 <span class="s5">SECRETARIA DE TURISMO</span>

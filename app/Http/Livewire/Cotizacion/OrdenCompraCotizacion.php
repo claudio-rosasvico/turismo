@@ -23,7 +23,7 @@ class OrdenCompraCotizacion extends Component
     {
         $this->cotizacion_id = $cotizacion_id;
         $this->ordenes_compras = OrdenCompra::where('cotizacion_id', $this->cotizacion_id)->orderBy('created_at', 'asc')->get();
-        $this->proveedores = Proveedor_cotizacion::where('cotizacion_id', $this->cotizacion_id)->get();
+        $this->proveedores = Cotizacion::find($this->cotizacion_id)->proveedores;
     }
 
     public function OrdenCompraCreate()

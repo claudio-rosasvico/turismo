@@ -85,7 +85,7 @@ class ModificacionPartidas extends Component
             'partida_id' => $partida->id,
         ]);
 
-        $this->reset(['partidaModal', 'pg', 'ac', 'accion', 'descripcion', 'fecha_solicitud']);
+        $this->reset(['partidaModal', 'pg', 'ac', 'accion', 'descripcion', 'fecha_solicitud', 'monto', 'disponibleModal']);
         $this->modificaciones = ModificacionPresupuestaria::all();
         $this->modalShow = false;
         

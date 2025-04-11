@@ -135,12 +135,12 @@
                     <th class="text-center border-botom-0" style="width: 10%;">{{ $count }}</th>
                     <th class="border-botom-0" style="width: 20%;">
                         <div>
-                            <p class="text-center h5 mt-3">{{ $proveedor->proveedor->nombre }}</p>
+                            <p class="text-center h5 mt-3">{{ $proveedor->nombre }}</p>
                             <br>
                             <br>
                             <br>
 
-                            <p class="fs-4">{{ $proveedor->proveedor->domicilio }}</p>
+                            <p class="fs-4">{{ $proveedor->domicilio }}</p>
                         </div>
                     </th>
                     <th class="border-botom-0" style="width: 30%;">

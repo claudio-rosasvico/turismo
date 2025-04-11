@@ -81,7 +81,7 @@
                                 <select class="form-select form-select-lg" name="proveedor_id" id="proveedor_id" wire:model="proveedor_id">
                                     <option selected>Seleccione Proveedor</option>
                                     @foreach ($proveedores as $proveedor)
-                                        <option value="{{ $proveedor->proveedor->id }}">{{ $proveedor->proveedor->nombre }}</option>
+                                        <option value="{{ $proveedor->id }}">{{ $proveedor->nombre }}</option>
                                     @endforeach
                                 </select>
                             </div>

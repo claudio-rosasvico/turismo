@@ -104,4 +104,10 @@ class CotizacionController extends Controller
     {
         //
     }
+
+    public function getOfertas($cotizacion_id){
+        
+        $cotizacion = Cotizacion::find($cotizacion_id);
+        return view('cotizaciones.ofertas', compact('cotizacion'));
+    }
 }

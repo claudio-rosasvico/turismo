@@ -34,9 +34,16 @@ class Cotizacion extends Model
     }
 
     public function proveedores()
-    {
-        return $this->hasMany(Proveedor_cotizacion::class, 'cotizacion_id');
-    }
+{
+    return $this->hasManyThrough(
+        Proveedor::class,           // Modelo final que quieres obtener
+        Proveedor_cotizacion::class, // Modelo intermedio
+        'cotizacion_id',            // FK en la tabla intermedia
+        'id',                       // FK en la tabla final
+        'id',                       // Clave local en Cotizacion
+        'proveedor_id'              // Clave en intermedia que apunta a final
+    );
+}
     
     public function OrdenesCompra()
     {

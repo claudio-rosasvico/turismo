@@ -89,8 +89,7 @@
                                                     wire:click="showDescripcionAnexo({{ $cotizacion->id }})"
                                                     title="Imprimir Pliego">
                                                     <i class="fa-solid fa-file"></i></a>
-                                                <a class="me-2" style="cursor: pointer;"
-                                                    wire:click="showModalOfertas({{ $cotizacion->id }})"
+                                                <a href="/cotizaciones/ofertas/{{ $cotizacion->id }}" class="me-2" style="cursor: pointer;"
                                                     title="Cargar Ofertas">
                                                     <i class="fa-solid fa-envelope-open"></i></a>
                                             @endif
@@ -210,7 +209,7 @@
                                         @foreach ($proveedores_cotizacion as $proveedor_cotizacion)
                                             <div class="row">
                                                 <div class="col-10">
-                                                    {{ $proveedor_cotizacion->proveedor->nombre }}
+                                                    {{ $proveedor_cotizacion->nombre }}
                                                 </div>
                                                 <div class="col-2">
                                                     <a class="text-primary" style="cursor: pointer;"
@@ -275,9 +274,9 @@
                                                 <select class="form-select form-select" name="proveedor_id"
                                                     id="proveedor_id">
                                                     @foreach ($proveedores_cotizacion as $proveedor)
-                                                        <option value="{{ $proveedor->proveedor->id }}"
+                                                        <option value="{{ $proveedor->id }}"
                                                             {{ $proveedor->id == $cotizacion_contrato->proveedor_ganador_id ? 'selected' : '' }}>
-                                                            {{ $proveedor->proveedor->nombre }}</option>
+                                                            {{ $proveedor->nombre }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

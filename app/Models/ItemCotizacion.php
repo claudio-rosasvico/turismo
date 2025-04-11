@@ -17,4 +17,6 @@ class ItemCotizacion extends Model
     public function cotizacion(){
         return $this->belongsTo(Cotizacion::class, 'cotizacion_id');
     }
+
+    
 }

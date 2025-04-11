@@ -95,7 +95,7 @@
             <h1 style="padding-top: 16pt;padding-left: 1pt;text-indent: 0pt;text-align: center;">DEVOLVER EL SOBRE
                 CERRADO</h1>
             <h3 style="text-indent: 0pt;line-height: 27pt;text-align: center;">PROVEEDOR<span
-                    class="h2">:</span><span class="s2"> {{ $proveedor->proveedor->nombre }}</span></h3>
+                    class="h2">:</span><span class="s2"> {{ $proveedor->nombre }}</span></h3>
             <h3 style="padding-left: 16pt;text-indent: 0pt;text-align: center;">COTEJO DE PRECIO Nº<span
                     class="h2">:</span><span class="s2"> {{ $count }} </span><span class="s3">
                 </span>PLIEGO DE
