@@ -20,7 +20,8 @@ use App\Http\Livewire\Rtl;
 
 use App\Http\Livewire\LaravelExamples\UserProfile;
 use App\Http\Livewire\LaravelExamples\UserManagement;
-
+use BotMan\BotMan\BotMan;
+use Google\Cloud\Dialogflow\V2\SessionsClient;
 use Illuminate\Http\Request;
 
 /*
@@ -81,6 +82,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/contratos/store', [ContratoController::class, 'store'])->name('contratos.store');
     Route::get('/contratos/show/{contrato_id}', [ContratoController::class, 'show'])->name('contratos.show');
     Route::resource('/contratos', ContratoController::class)->except(['store', 'show'])->names('contratos');
+
+    /* CHATBOT */
 
 });
 

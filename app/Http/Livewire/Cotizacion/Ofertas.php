@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Cotizacion;
 
+use App\Models\ItemCotizacion;
 use App\Models\OfertaCotizacion;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
@@ -24,31 +25,55 @@ class Ofertas extends Component
             foreach ($this->proveedores as $proveedor) {
                 $this->ofertas[$item->id][$proveedor->id] = OfertaCotizacion::where('item_id', $item->id)
                     ->where('proveedor_id', $proveedor->id)->first();
-                if (!empty($this->oferta_seleccionada[$item->id])) {
-                    if ($this->oferta_seleccionada[$item->id]->precio_unitario > $this->ofertas[$item->id][$proveedor->id]->precio_unitario) {
-                        $this->oferta_seleccionada[$item->id] = $this->ofertas[$item->id][$proveedor->id];
-                    }
-                } else {
-                    $this->oferta_seleccionada[$item->id] = $this->ofertas[$item->id][$proveedor->id];
-                }
+            }
+            $this->oferta_seleccionada[$item->id] = OfertaCotizacion::where('item_id', $item->id)
+                ->where('ganador', 1)
+                ->first();
+
+            if (!$this->oferta_seleccionada[$item->id]) {
+                $this->selectMenor($item->id);
             }
         }
         $this->precioTotal();
     }
 
-    public function updateOfertas($item_id, $proveedor_id, $valor)
+    public function selectMenor($item_id)
+    {
+        OfertaCotizacion::where('item_id', $item_id)->update(['ganador' => 0]);
+
+        $menorOferta = OfertaCotizacion::where('item_id', $item_id)
+            ->orderBy('precio_unitario')
+            ->first();
+
+        if ($menorOferta) {
+            $menorOferta->update(['ganador' => 1]);
+            $this->oferta_seleccionada[$item_id] = $menorOferta->fresh(); 
+        }
+        Log::info($this->oferta_seleccionada[$item_id]);
+
+        $this->precioTotal();
+    }
+
+    public function updateOferta($item_id, $proveedor_id, $valor)
     {
         $ofertaActualizada = OfertaCotizacion::where('item_id', $item_id)
-        ->where('proveedor_id', $proveedor_id)->first();
-        if ($ofertaActualizada) {
-            $ofertaActualizada->precio_unitario = $valor;
-            $ofertaActualizada->save();
-            
-        }
+            ->where('proveedor_id', $proveedor_id)->first();
+        $ofertaActualizada->update(['precio_unitario' => $valor]);
+        
+        $this->selectMenor($item_id);   
+        $this->precioTotal();
+    }
 
-        if ($this->oferta_seleccionada[$item_id]->precio_unitario > $ofertaActualizada->precio_unitario) {
-            $this->oferta_seleccionada[$item_id] = $ofertaActualizada;
-        }
+    public function selectOferta($item_id, $proveedor_id)
+    {
+        OfertaCotizacion::where('item_id', $item_id)->update(['ganador' => 0]);
+        
+        $ofertaCheck = OfertaCotizacion::where('item_id', $item_id)
+            ->where('proveedor_id', $proveedor_id)->first();
+        
+        $ofertaCheck->update(['ganador' => 1]);
+        $this->oferta_seleccionada[$item_id] = $ofertaCheck->fresh();
+
         $this->precioTotal();
     }
 
@@ -60,11 +85,13 @@ class Ofertas extends Component
                 $this->precio_total += ($oferta->precio_unitario * $oferta->item->cantidad);
             }
         }
-
+        $this->dispatch('refresh');
     }
 
     public function render()
     {
+        $this->proveedores = $this->cotizacion->proveedores;
+        $this->items = $this->cotizacion->items;
         return view('livewire.cotizacion.ofertas');
     }
 }

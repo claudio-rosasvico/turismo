@@ -2622,6 +2622,25 @@ progress {
   border-radius: 0.5rem;
   transition: box-shadow 0.15s ease, border-color 0.15s ease;
 }
+
+.form-control.input-sm {
+  display: block;
+  width: 100%;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.0rem;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #d2d6da;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border-radius: 0.5rem;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
 .form-control.solicitud {
   padding: 0.2rem 0rem;
   padding-left: 0px !important;
@@ -2903,10 +2922,10 @@ textarea.form-control-lg {
   display: block;
   min-height: 1.5rem;
   padding-left: 1.73em;
-  margin-bottom: 0.125rem;
+  
 }
 .form-check .form-check-input {
-  float: left;
+  float: center;
   margin-left: -1.73em;
 }
 
@@ -9316,6 +9335,10 @@ textarea.form-control-lg {
 
 .fs-6 {
   font-size: 1rem !important;
+}
+
+.fs-7 {
+  font-size: 0.75rem !important;
 }
 
 .fst-italic {
@@ -24535,7 +24558,7 @@ pre[class*=language-] {
   /* there must be 'bottom' or 'top' for ps__rail-x */
   bottom: 0px;
   /* please don't change 'position' */
-  position: absolute;
+  position: relative;
 }
 
 .ps__rail-y {
@@ -24547,7 +24570,7 @@ pre[class*=language-] {
   /* there must be 'right' or 'left' for ps__rail-y */
   right: 0;
   /* please don't change 'position' */
-  position: absolute;
+  position: relative;
 }
 
 .ps--active-x > .ps__rail-x,
