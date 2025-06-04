@@ -6,11 +6,14 @@ use App\Models\ModificacionPresupuestaria;
 use App\Models\Partida;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class PartidasIndex extends Component
 {
-    public $searchPartida;
-    public $partidas;
+    use WithPagination;
+
+    public $searchPartida = '';
+   /*  public $partidas; */
     public $modalShow = false;
     public $codigoModal;
     public $infoModal;
@@ -24,22 +27,12 @@ class PartidasIndex extends Component
 
     public function mount()
     {
-        $this->partidas = Partida::all();
+        
     }
 
     public function updatedSearchPartida()
     {
-        if ($this->searchPartida == '') {
-            $this->partidas = Partida::all();
-        } else {
-            $this->partidas = Partida::where('DESCRIPCION', 'LIKE', '%' . $this->searchPartida . '%')
-                ->orWhere('CODIGO', 'like', '%' . $this->searchPartida . '%')
-                ->orWhereHas('infoPartida', function ($query) {
-                    $query->where('titulo', 'LIKE', '%' . $this->searchPartida . '%')
-                        ->orWhere('descripcion', 'LIKE', '%' . $this->searchPartida . '%');
-                })
-                ->get();
-        }
+        $this->resetPage();
     }
 
     public function showInfoPartida($codigo)
@@ -69,14 +62,32 @@ class PartidasIndex extends Component
             $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
         } else {
             $this->sortField = $field;
-            $this->sortDirection = 'asc';
+            $this->sortDirection = 'desc';
         }
-        $this->partidas = Partida::orderBy($this->sortField, $this->sortDirection)->get();
+        $this->resetPage();
 
     }
 
     public function render()
     {
-        return view('livewire.partidas-index');
+        $query = Partida::query();
+
+        if (!empty($this->searchPartida)) {
+            $query->where('DESCRIPCION', 'LIKE', '%' . $this->searchPartida . '%')
+                ->orWhere('CODIGO', 'like', '%' . $this->searchPartida . '%')
+                ->orWhereHas('infoPartida', function ($q) { 
+                    $q->where('titulo', 'LIKE', '%' . $this->searchPartida . '%')
+                        ->orWhere('descripcion', 'LIKE', '%' . $this->searchPartida . '%');
+                });
+        }
+        if (in_array($this->sortField, ['CODIGO', 'CREDITO_ACTUAL', 'RESERVADO', 'DISPONIBLE'])) {
+            $query->orderBy($this->sortField, $this->sortDirection);
+        } else {
+            $query->orderBy('CODIGO', 'asc');
+        }
+        
+        return view('livewire.partidas-index', [
+            'partidas' => $query->paginate(15) 
+        ]);
     }
 }

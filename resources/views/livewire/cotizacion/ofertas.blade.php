@@ -8,10 +8,10 @@
                     @foreach ($cotizacion->proveedores as $proveedor)
                         <th class="text-wrap text-center" scope="col">{{ $proveedor->nombre }}</th>
                     @endforeach
-                    <th class="text-uppercase" scope="col">
+                    <th class="text-wrap text-uppercase" scope="col">
                         Precio Unitario
                     </th>
-                    <th class="text-uppercase" scope="col">
+                    <th class="text-wrap text-uppercase" scope="col">
                         Precio Total
                     </th>
                 </tr>
@@ -36,14 +36,14 @@
                                         id="" {{ $oferta_seleccionada[$item->id]->proveedor_id == $proveedor->id ? 'checked' : '' }} wire:click="selectOferta({{ $item->id }} , {{ $proveedor->id }})"/>
                             </td>
                         @endforeach
-                        <td class="text-center align-content-center">
+                        <td class="text-center text-wrap align-content-center">
                             @if (!empty($oferta_seleccionada[$item->id]))
                                 
                                     {{ '$' . number_format($oferta_seleccionada[$item->id]->precio_unitario, 2, ',', '.') }}
                                 
                             @endif
                         </td>
-                        <td class="text-center align-content-center">
+                        <td class="text-center text-wrap align-content-center">
                             
                                 {{ '$' . number_format($oferta_seleccionada[$item->id]->precio_unitario * $item->cantidad, 2, ',', '.') }}
                             

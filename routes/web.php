@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChatBotController;
 use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\CotizacionController;
 use App\Http\Controllers\PartidaController;
@@ -35,7 +36,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', function() {
+Route::get('/', function () {
     return redirect('/login');
 });
 
@@ -44,7 +45,7 @@ Route::get('/login', Login::class)->name('login');
 
 Route::get('/login/forgot-password', ForgotPassword::class)->name('forgot-password');
 
-Route::get('/reset-password/{id}',ResetPassword::class)->name('reset-password')->middleware('signed');
+Route::get('/reset-password/{id}', ResetPassword::class)->name('reset-password')->middleware('signed');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
@@ -58,25 +59,33 @@ Route::middleware('auth')->group(function () {
     Route::get('/laravel-user-management', UserManagement::class)->name('user-management');
 
     /*PARTIDAS*/
-    Route::get('/partidas/upload', function(){ return view('partidas.upload'); })->name('Cargar Partidas');
+    Route::get('/partidas/upload', function () {
+        return view('partidas.upload');
+    })->name('Cargar Partidas');
     Route::post('/partidas/importar_partida', [PartidaController::class, 'importar_partida'])->name('importar_partida');
     Route::post('/partidas/importar_partida_CURL', [PartidaController::class, 'importar_partida_CURL'])->name('importar_partida_CURL');
-    Route::get('/partidas/modificacion', function() {return view('partidas.modificacion');})->name('modificacion');
+    Route::get('/partidas/modificacion', function () {
+        return view('partidas.modificacion');
+    })->name('modificacion');
     Route::resource('/partidas', PartidaController::class)->names('partidas');
-    
+
     /*LINKS*/
-    Route::get('/links', function(){ return view('links'); })->name('links');
-    
+    Route::get('/links', function () {
+        return view('links');
+    })->name('links');
+
     /*PARAMETROS*/
     Route::get('/parametros/proveedores', [ProveedorController::class, 'index'])->name('proveedores');
-    
+
     /*COTIZACIONES*/
     Route::get('/cotizaciones/show/{cotizacion_id}', [CotizacionController::class, 'show']);
     Route::get('/cotizaciones/ofertas/{cotizacion_id}', [CotizacionController::class, 'getOfertas'])->name('cotizaciones.ofertas');
     Route::resource('/cotizaciones', CotizacionController::class)->names('cotizaciones');
 
     /*PAGOS*/
-    Route::get('/pagos', function(){ return view('pagos.index'); })->name('pagos');
+    Route::get('/pagos', function () {
+        return view('pagos.index');
+    })->name('pagos');
 
     /*CONTRATOS*/
     Route::post('/contratos/store', [ContratoController::class, 'store'])->name('contratos.store');
@@ -84,6 +93,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/contratos', ContratoController::class)->except(['store', 'show'])->names('contratos');
 
     /* CHATBOT */
-
 });
 
+Route::post('/chatbot/ask', [ChatBotController::class, 'handleQuery'])->name('chatbot.ask');
+Route::view('/chatbot', 'chatbot')->name('chatbot');

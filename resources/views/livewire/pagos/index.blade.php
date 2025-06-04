@@ -24,6 +24,17 @@
                 <table class="table align-items-center mb-0">
                     <thead>
                         <tr>
+                            <th wire:click="sortBy('expediente')" style="cursor: pointer;"
+                                class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
+                                Expediente
+                                @if ($sortField === 'expediente')
+                                    @if ($sortDirection === 'asc')
+                                        <i class="fas fa-arrow-up"></i>
+                                    @else
+                                        <i class="fas fa-arrow-down"></i>
+                                    @endif
+                                @endif
+                            </th>
                             <th wire:click="sortBy('proveedor_id')" style="cursor: pointer;"
                                 class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">
                                 Proveedor
@@ -107,6 +118,9 @@
                         @foreach ($pagos as $pago)
                             <tr wire:key="{{ $pago->id }}">
                                 <td>
+                                    <h6 class="mb-0 text-xs">{{ $pago->expediente }}</h6>
+                                </td>
+                                <td>
                                     <h6 class="mb-0 text-xs text-wrap">{{ $pago->proveedor->nombre }}</h6>
                                 </td>
                                 <td class="text-center">
@@ -123,7 +137,8 @@
                                 </td>
                                 <td class="text-center align-content-center" style="width: 10%">
                                     @if (!$pago->nro_solicitud)
-                                        <div class="d-flex justify-content-center align-items-center gap-1" style="display: flex">
+                                        <div class="d-flex justify-content-center align-items-center gap-1"
+                                            style="display: flex">
                                             <input class="form-control solicitud" value="{{ $pago->nro_solicitud }}"
                                                 {{ $pago->id != $id_solicitud ? 'disabled' : '' }}
                                                 wire:model="nro_solicitudes.{{ $pago->id }}" />
@@ -180,6 +195,9 @@
                         @endif --}}
                     </tbody>
                 </table>
+                <div class="container mt-4">
+                    {{ $pagos->links() }}
+                </div>
             </div>
         </div>
         @if ($modalShow)

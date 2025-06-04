@@ -7,12 +7,14 @@
                 <span class="input-group-text" id="basic-addon1"><i class="fa-solid fa-magnifying-glass"></i></span>
                 <input type="text" class="form-control custom-padding" placeholder="Buscar Partida"
                     aria-label="searchPartida" aria-describedby="basic-addon1" name="searchPartida" id="searchPartida"
-                    wire:model.live="searchPartida">
+                    wire:model.live.debounce.300ms="searchPartida">
+
+                    
             </div>
         </div>
         @desktop
             <div class="card partidas-PC">
-                <div class="table-responsive">
+                <div class="table-responsive" wire:loading.remove>
                     <table class="table align-items-center mb-0">
                         <thead>
                             <tr>
@@ -108,7 +110,7 @@
                                             @elseif(!$modificacion->accion && $modificacion->activo)
                                                 <span class="ms-2 cursor-pointer"
                                                     wire:click="showModificacionPartida({{ $modificacion->id }})"><i
-                                                        class="fa-solid fa-up-long text-danger"></i></span>
+                                                        class="fa-solid fa-down-long text-danger"></i></span>
                                             @endif
                                         @endforeach
                                     </td>
@@ -125,6 +127,14 @@
                             @endif
                         </tbody>
                     </table>
+                    <div class="container mt-4">
+                        {{ $partidas->links() }}
+                    </div>
+                </div>
+                <div class="container text-center mt-3">
+                    <div wire:loading wire:target="searchPartida" class="spinner-border text-success text-center" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
                 </div>
             </div>
         @elsedesktop
@@ -233,3 +243,6 @@
         @endif
     </div>
 </div>
+<script>
+    document.getElementById('searchPartida').focus();
+</script>

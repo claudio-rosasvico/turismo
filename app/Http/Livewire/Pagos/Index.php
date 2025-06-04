@@ -8,12 +8,14 @@ use App\Models\TipoPago;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
+    use WithPagination;
 
-    public $pagos;
-    public $searchPago;
+    
+    public $searchPago = '';
     public $pago_id;
     public $modalShow = false;
     public $busquedaProveedor = '';
@@ -39,10 +41,10 @@ class Index extends Component
     public $sortDirection = 'asc';
     public $id_solicitud;
     public $nro_solicitudes = [];
-    
+
     public function mount()
     {
-        $this->pagos = Pago::all();
+        
         $this->proveedores = Proveedor::all();
         $this->proveedoresFiltrados = $this->proveedores;
         $this->tipos_pagos = TipoPago::all();
@@ -51,16 +53,7 @@ class Index extends Component
 
     public function updatedSearchPago()
     {
-        if ($this->searchPago == '') {
-            $this->pagos = Pago::all();
-        } else {
-            $this->pagos = Pago::where('observacion', 'LIKE', '%' . $this->searchPago . '%')
-                ->orWhere('partida_codigo', 'like', '%' . $this->searchPago . '%')
-                ->orWhereHas('proveedor', function ($query) {
-                    $query->where('nombre', 'LIKE', '%' . $this->searchPago . '%');
-                })
-                ->get();
-        }
+        $this->resetPage();
     }
 
     public function sortBy($field)
@@ -72,14 +65,6 @@ class Index extends Component
             $this->sortField = $field;
             $this->sortDirection = 'asc';
         }
-        
-        $this->pagos = Pago::query()
-        ->join('proveedores', 'pagos.proveedor_id', '=', 'proveedores.id') // Join con la tabla proveedores
-            ->orderBy(
-                $this->sortField === 'proveedor_id' ? 'proveedores.nombre' : $this->sortField,
-                $this->sortDirection
-            )
-            ->select('pagos.*')->get();
     }
 
     public function updatedBusquedaProveedor()
@@ -174,7 +159,7 @@ class Index extends Component
                     $this->dispatch('mostrarToast', ['titulo' => 'Éxito', 'mensaje' => 'Pago creado correctamente', 'tipo' => 'success']);
                 }
 
-                $this->pagos = Pago::all();
+                $this->updatedSearchPago();
                 $this->modalShow = false;
                 $this->reset(['expediente', 'proveedorSeleccionado', 'sucursal', 'nro_comprobante', 'fecha_comprobante', 'monto', 'fecha_imputacion', 'partida_codigo', 'tipo_pago_id', 'nro_OP', 'nro_expte_siaf', 'nro_solicitud', 'pagado', 'observacion', 'nro_solicitudes']);
             } catch (ValidationException $e) {
@@ -216,7 +201,8 @@ class Index extends Component
         }
     }
 
-    public function closeModal(){
+    public function closeModal()
+    {
         $this->modalShow = false;
         $this->reset(['expediente', 'proveedorSeleccionado', 'sucursal', 'nro_comprobante', 'fecha_comprobante', 'monto', 'fecha_imputacion', 'partida_codigo', 'tipo_pago_id', 'nro_OP', 'nro_expte_siaf', 'nro_solicitud', 'pagado', 'observacion']);
     }
@@ -226,7 +212,7 @@ class Index extends Component
         $pago = Pago::find($pago_id);
         if ($pago) {
             $pago->delete();
-            $this->pagos = Pago::all();
+            $this->updatedSearchPago();
             $this->dispatch('mostrarToast', ['titulo' => 'Éxito', 'mensaje' => 'Pago eliminado correctamente', 'tipo' => 'success']);
         } else {
             $this->dispatch('mostrarToast', ['titulo' => 'Error', 'mensaje' => 'Pago no encontrado', 'tipo' => 'error']);
@@ -239,7 +225,7 @@ class Index extends Component
     {
         $pago = Pago::find($pago_id);
         if ($pago) {
-            if(!$pago->fecha_imputacion){
+            if (!$pago->fecha_imputacion) {
                 $this->dispatch('mostrarToast', ['titulo' => 'Error', 'mensaje' => 'El pago debe estar imputado', 'tipo' => 'error']);
             } elseif (!$pago->nro_OP) {
                 $this->dispatch('mostrarToast', ['titulo' => 'Error', 'mensaje' => 'El pago no tiene OP', 'tipo' => 'error']);
@@ -271,7 +257,8 @@ class Index extends Component
         }
     }
 
-    public function updateSolicitud($id_pago){
+    public function updateSolicitud($id_pago)
+    {
         $pago = Pago::find($id_pago);
         Log::info($id_pago);
         if ($pago) {
@@ -288,6 +275,29 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.pagos.index');
+        $query = Pago::query();
+
+        if (!empty($this->searchPago)) {
+            $query->where('observacion', 'LIKE', '%' . $this->searchPago . '%')
+                ->orWhere('partida', 'like', '%' . $this->searchPago . '%')
+                ->orWhere('expediente', 'like', '%' . $this->searchPago . '%')
+                ->orWhereHas('proveedor', function ($q) {
+                    $q->where('nombre', 'LIKE', '%' . $this->searchPago . '%');
+                });
+        }
+
+        if (!empty($this->sortField)){
+            $query->join('proveedores', 'pagos.proveedor_id', '=', 'proveedores.id') // Join con la tabla proveedores
+                ->orderBy(
+                    $this->sortField === 'proveedor_id' ? 'proveedores.nombre' : $this->sortField,
+                    $this->sortDirection
+                );
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        return view('livewire.pagos.index', [
+            'pagos' => $query->paginate(15) 
+        ]);
     }
 }

@@ -1,0 +1,7 @@
+﻿"""¿Qué pagos he realizado?""";"""¿Qué proveedor te interesa?""";"""pagos""";"""{\""modelo\"": \""Pago\"", \""campo:\"": \""monto\""}"
+"""Proveedor …""";"""Los pagos al proveedor …. Son?""";"""pagos""";"""{\""modelo\"": \""Pago\"", \""accion:\"": \""filtrar pagos del proveedor con nombre ….\"", }"
+"""¿Qué pagos se hicieron en el mes …..""";"""Los pagos realizados en el mes de …. Son?""";"""pagos""";"""{\""modelo\"": \""Pago\"", \""accion:\"": \""filtrar pagos con fecha en el mes de ….\"", \""campo\"": \""created_at\""}"
+"""¿Qué proveedores venden insumos informáticos?""";"""Los proveedores de insumos …. son?""";"""proveedores""";"""{\""modelo\"": \""Proveedor\"", \""accion:\"": \""filtrar proveedores según campo de observacion\"", \""campo\"": \""observacion\""}"
+"""¿Qué cotización se ha realizado sobre …?""";"""Cotizaciones referidas a ….. Son estas: """;"""cotizaciones""";"""{\""modelo\"": \""Cotizacion\"", \""accion:\"": \""filtrar cotizacion por nombre\"", \""campo\"": \""nombre\""}"
+"""¿Qué plata tengo en la partida ….?""";"""La partida …. Tiene …. Disponible""";"""partidas""";"""{\""modelo\"": \""Partida\"", \""accion:\"": \""filtrar partida por CODIGO\"", \""campo\"": \""CODIGO, DISPONIBLE\""}"
+"""¿Con qué partida puedo comprar un …..?""";"""Podes comprarlo con la partida ""CODIGO"" de acuerdo a su descripción""";"""partidas""";"""{\""modelo\"": \""infoPartida\"", \""accion:\"": \""filtrar infoPartida por descripción\"", \""campo\"": \""descripcion\""}"
