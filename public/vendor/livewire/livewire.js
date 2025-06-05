@@ -4343,7 +4343,7 @@ ${expression ? 'Expression: "' + expression + '"\n\n' : ""}`, el);
     succeed({ status: response.status, json: JSON.parse(content) });
   }
   function handlePageExpiry() {
-    confirm("This page has expired.\nWould you like to refresh the page?") && window.location.reload();
+    confirm("Esta página expiró.\n¿Deseas actualizarla?") && window.location.reload();
   }
   function showFailureModal(content) {
     let html = content;
