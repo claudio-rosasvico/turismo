@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 <div class="col-12 col-lg-3 text-end">
-                    <button type="button" class="btn btn-success" wire:click="$set('modalShow', true)">
+                    <button type="button" class="btn btn-success" wire:click="createPago">
                         Cargar Pago
                     </button>
 

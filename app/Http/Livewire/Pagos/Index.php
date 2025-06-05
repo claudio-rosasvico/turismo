@@ -14,9 +14,8 @@ class Index extends Component
 {
     use WithPagination;
 
-    
     public $searchPago = '';
-    public $pago_id;
+    public $pago_id = null;
     public $modalShow = false;
     public $busquedaProveedor = '';
     public $proveedores;
@@ -41,10 +40,11 @@ class Index extends Component
     public $sortDirection = 'asc';
     public $id_solicitud;
     public $nro_solicitudes = [];
+    public $advertencia = 'Ya existe ese pago';
 
     public function mount()
     {
-        
+
         $this->proveedores = Proveedor::all();
         $this->proveedoresFiltrados = $this->proveedores;
         $this->tipos_pagos = TipoPago::all();
@@ -140,28 +140,47 @@ class Index extends Component
                     ]);
                     $this->dispatch('mostrarToast', ['titulo' => 'Éxito', 'mensaje' => 'Pago actualizado correctamente', 'tipo' => 'success']);
                 } else {
-                    Pago::create([
-                        'expediente' => $this->expediente,
-                        'proveedor_id' => $this->proveedorSeleccionado->id,
-                        'sucursal' => $this->sucursal,
-                        'nro_comprobante' => $this->nro_comprobante,
-                        'fecha_comprobante' => $this->fecha_comprobante,
-                        'monto' => $this->monto,
-                        'fecha_imputacion' => $this->fecha_imputacion,
-                        'partida_codigo' => $this->partida_codigo,
-                        'tipo_pago_id' => $this->tipo_pago_id,
-                        'nro_OP' => $this->nro_OP,
-                        'nro_expte_siaf' => $this->nro_expte_siaf,
-                        'nro_solicitud' => $this->nro_solicitud,
-                        'pagado' => $this->pagado ? true : false,
-                        'observacion' => $this->observacion,
-                    ]);
-                    $this->dispatch('mostrarToast', ['titulo' => 'Éxito', 'mensaje' => 'Pago creado correctamente', 'tipo' => 'success']);
+                    $pagoExistente = Pago::where('proveedor_id', $this->proveedorSeleccionado->id)
+                        ->where('sucursal', $this->sucursal)
+                        ->where('nro_comprobante', $this->nro_comprobante)
+                        ->where('partida_codigo', $this->partida_codigo)
+                        ->first();
+
+                    $pagoAvertencia = Pago::where('proveedor_id', $this->proveedorSeleccionado->id)
+                        ->where('sucursal', $this->sucursal)
+                        ->where('nro_comprobante', $this->nro_comprobante)
+                        ->first();
+
+                    if ($pagoExistente) {
+                        $this->dispatch('mostrarToast', ['titulo' => 'Error', 'mensaje' => 'Ya existe un pago con el mismo proveedor, sucursal, número de comprobante y partida.', 'tipo' => 'error']);
+                        return;
+                    } else {
+                        if ($pagoAvertencia){
+                            $this->dispatch('mostrarToast', ['titulo' => 'Atención', 'mensaje' => 'Ya existe un pago con el mismo proveedor y comprobante', 'tipo' => 'warning']);
+                        }
+                        Pago::create([
+                            'expediente' => $this->expediente,
+                            'proveedor_id' => $this->proveedorSeleccionado->id,
+                            'sucursal' => $this->sucursal,
+                            'nro_comprobante' => $this->nro_comprobante,
+                            'fecha_comprobante' => $this->fecha_comprobante,
+                            'monto' => $this->monto,
+                            'fecha_imputacion' => $this->fecha_imputacion,
+                            'partida_codigo' => $this->partida_codigo,
+                            'tipo_pago_id' => $this->tipo_pago_id,
+                            'nro_OP' => $this->nro_OP,
+                            'nro_expte_siaf' => $this->nro_expte_siaf,
+                            'nro_solicitud' => $this->nro_solicitud,
+                            'pagado' => $this->pagado ? true : false,
+                            'observacion' => $this->observacion,
+                        ]);
+                        $this->dispatch('mostrarToast', ['titulo' => 'Éxito', 'mensaje' => 'Pago creado correctamente', 'tipo' => 'success']);
+                    }
                 }
 
                 $this->updatedSearchPago();
                 $this->modalShow = false;
-                $this->reset(['expediente', 'proveedorSeleccionado', 'sucursal', 'nro_comprobante', 'fecha_comprobante', 'monto', 'fecha_imputacion', 'partida_codigo', 'tipo_pago_id', 'nro_OP', 'nro_expte_siaf', 'nro_solicitud', 'pagado', 'observacion', 'nro_solicitudes']);
+                $this->reset(['pago_id', 'expediente', 'proveedorSeleccionado', 'sucursal', 'nro_comprobante', 'fecha_comprobante', 'monto', 'fecha_imputacion', 'partida_codigo', 'tipo_pago_id', 'nro_OP', 'nro_expte_siaf', 'nro_solicitud', 'pagado', 'observacion', 'nro_solicitudes']);
             } catch (ValidationException $e) {
 
                 $errors = $e->validator->errors()->all();
@@ -173,6 +192,12 @@ class Index extends Component
                 Log::error('Error al crear el proveedor: ' . $e->getMessage());
             }
         }
+    }
+
+    public function createPago()
+    {
+        $this->reset(['pago_id', 'expediente', 'proveedorSeleccionado', 'sucursal', 'nro_comprobante', 'fecha_comprobante', 'monto', 'fecha_imputacion', 'partida_codigo', 'tipo_pago_id', 'nro_OP', 'nro_expte_siaf', 'nro_solicitud', 'pagado', 'observacion']);
+        $this->modalShow = true;
     }
 
     public function editPago($pago_id)
@@ -279,14 +304,14 @@ class Index extends Component
 
         if (!empty($this->searchPago)) {
             $query->where('observacion', 'LIKE', '%' . $this->searchPago . '%')
-                ->orWhere('partida', 'like', '%' . $this->searchPago . '%')
+                ->orWhere('partida_codigo', 'like', '%' . $this->searchPago . '%')
                 ->orWhere('expediente', 'like', '%' . $this->searchPago . '%')
                 ->orWhereHas('proveedor', function ($q) {
                     $q->where('nombre', 'LIKE', '%' . $this->searchPago . '%');
                 });
         }
 
-        if (!empty($this->sortField)){
+        if (!empty($this->sortField)) {
             $query->join('proveedores', 'pagos.proveedor_id', '=', 'proveedores.id') // Join con la tabla proveedores
                 ->orderBy(
                     $this->sortField === 'proveedor_id' ? 'proveedores.nombre' : $this->sortField,
@@ -297,7 +322,7 @@ class Index extends Component
         }
 
         return view('livewire.pagos.index', [
-            'pagos' => $query->paginate(15) 
+            'pagos' => $query->paginate(15)
         ]);
     }
 }

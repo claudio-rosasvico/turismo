@@ -86,7 +86,6 @@
         ) => {
             toast(response[0].titulo, response[0].mensaje, response[0].tipo);
         });
-
     </script>
 </body>
 
