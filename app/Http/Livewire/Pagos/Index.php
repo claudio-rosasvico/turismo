@@ -65,6 +65,7 @@ class Index extends Component
             $this->sortField = $field;
             $this->sortDirection = 'asc';
         }
+        $this->resetPage();
     }
 
     public function updatedBusquedaProveedor()
@@ -155,7 +156,7 @@ class Index extends Component
                         $this->dispatch('mostrarToast', ['titulo' => 'Error', 'mensaje' => 'Ya existe un pago con el mismo proveedor, sucursal, número de comprobante y partida.', 'tipo' => 'error']);
                         return;
                     } else {
-                        if ($pagoAvertencia){
+                        if ($pagoAvertencia) {
                             $this->dispatch('mostrarToast', ['titulo' => 'Atención', 'mensaje' => 'Ya existe un pago con el mismo proveedor y comprobante', 'tipo' => 'warning']);
                         }
                         Pago::create([
@@ -300,7 +301,7 @@ class Index extends Component
 
     public function render()
     {
-        $query = Pago::query();
+        $query = Pago::query()->select('pagos.*');
 
         if (!empty($this->searchPago)) {
             $query->where('observacion', 'LIKE', '%' . $this->searchPago . '%')
@@ -312,13 +313,11 @@ class Index extends Component
         }
 
         if (!empty($this->sortField)) {
-            $query->join('proveedores', 'pagos.proveedor_id', '=', 'proveedores.id') // Join con la tabla proveedores
-                ->orderBy(
-                    $this->sortField === 'proveedor_id' ? 'proveedores.nombre' : $this->sortField,
-                    $this->sortDirection
-                );
+            $query->join('proveedores', 'pagos.proveedor_id', '=', 'proveedores.id');
+            $orderByField = ($this->sortField === 'proveedor_id') ? 'proveedores.nombre' : $this->sortField;
+            $query->orderBy($orderByField, $this->sortDirection);
         } else {
-            $query->orderBy('created_at', 'desc');
+            $query->orderBy('id', 'desc');
         }
 
         return view('livewire.pagos.index', [
