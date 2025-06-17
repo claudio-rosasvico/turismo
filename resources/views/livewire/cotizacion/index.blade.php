@@ -209,7 +209,7 @@
                                         @foreach ($proveedores_cotizacion as $proveedor_cotizacion)
                                             <div class="row">
                                                 <div class="col-10">
-                                                    {{ $proveedor_cotizacion->nombre }}
+                                                    {{ $proveedor_cotizacion->proveedor->nombre }}
                                                 </div>
                                                 <div class="col-2">
                                                     <a class="text-primary" style="cursor: pointer;"

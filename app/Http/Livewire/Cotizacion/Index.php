@@ -62,7 +62,7 @@ class Index extends Component
     {
 
         $this->cotizacion_id = $id_cotizacion;
-        $this->proveedores_cotizacion = Cotizacion::find($this->cotizacion_id)->proveedores;
+        $this->proveedores_cotizacion = Proveedor_cotizacion::where('cotizacion_id', $this->cotizacion_id)->get();
         $this->updatedBusquedaProveedor();
         $this->modalShow = true;
     }
@@ -99,7 +99,7 @@ class Index extends Component
             ]);
             Log::info($oferta);
         }
-        $this->proveedores_cotizacion = Cotizacion::find($this->cotizacion_id)->proveedores;
+        $this->proveedores_cotizacion = Proveedor_cotizacion::where('cotizacion_id', $this->cotizacion_id)->get();
         $this->updatedBusquedaProveedor();
     }
 
@@ -199,7 +199,7 @@ class Index extends Component
             })
             ->delete();
         $proveedor_cotizacion->delete();
-        $this->proveedores_cotizacion = Cotizacion::find($this->cotizacion_id)->proveedores;
+        $this->proveedores_cotizacion = Proveedor_cotizacion::where('cotizacion_id', $this->cotizacion_id)->get();
         $this->updatedBusquedaProveedor();
     }
 
