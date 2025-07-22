@@ -20,7 +20,7 @@
                                         </div>
                                         <div class="col-6 text-center">
                                             <a href="/partidas/upload">
-                                                <i class="fa-solid fa-upload fs-1"></i>
+                                                <i class="fa-solid fa-upload fs-2"></i>
                                                 <p>Cargar Partidas</p>
                                             </a>
                                         </div>
