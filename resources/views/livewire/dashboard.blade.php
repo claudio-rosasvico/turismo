@@ -14,7 +14,7 @@
                                     <div class="row">
                                         <div class="col-6 text-center">
                                             <a href="/partidas">
-                                                <i class="fa-solid fa-magnifying-glass-dollar fs-1"></i>
+                                                <i class="fa-solid fa-magnifying-glass-dollar fs-2"></i>
                                                 <p>Ver Partidas</p>
                                             </a>
                                         </div>
