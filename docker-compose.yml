@@ -15,22 +15,9 @@
         sh -c "chown -R www-data:www-data storage bootstrap/cache &&
               chmod -R 775 storage bootstrap/cache &&
               php-fpm"
-      environment:
-        DB_CONNECTION: mysql
-        DB_HOST: db
-        DB_PORT: 3306
-        DB_DATABASE: ${DB_DATABASE:-turismo}
-        DB_USERNAME: ${DB_USERNAME:-sail}
-        DB_PASSWORD: ${DB_PASSWORD:-password}
-        APP_ENV: local
-        APP_DEBUG: "true"
-        APP_KEY: ${APP_KEY}
-      depends_on:
-        db:
-          condition: service_healthy
+      networks:
+        - app-network
 
-
-    # Servicio del servidor web (Nginx)
     nginx:
       image: nginx:stable-alpine
       container_name: laravel_nginx
@@ -42,22 +29,53 @@
         - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
       depends_on:
         - app
-
-    # Servicio de la base de datos (MySQL)
-    db:
-      image: mysql:8.0
-      container_name: laravel_db
-      restart: unless-stopped
+      networks:
+        - app-network
+    redis:
+      image: redis:alpine
+      container_name: laravel_redis
       ports:
-        - "3306:3306"
-      environment:
-        MYSQL_DATABASE: ${DB_DATABASE:-turismo} # Asegúrate que este sea 'turismo'
-        MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-password}
-        # MYSQL_USER: ${DB_USERNAME:-sail} # Esto tomará 'root' de tu .env
-        # MYSQL_PASSWORD: ${DB_PASSWORD:-password} # ¡Asegúrate de tener esta línea también!
-      healthcheck: # ¡Añade esto!
-        test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "${DB_USERNAME:-sail}", "-p${DB_PASSWORD:-password}"]
-        interval: 10s
-        timeout: 5s
-        retries: 5
-        start_period: 20s
+        - "6379:6379"
+      restart: always
+      networks:
+        - app-network
+    
+    horizon_worker:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      image: laravel_app
+      container_name: laravel_horizon_worker
+      depends_on:
+        - redis
+        - app
+      restart: unless-stopped
+      working_dir: /var/www
+      command: php artisan horizon
+      volumes:
+        - ./:/var/www
+      networks:
+        - app-network
+    mailhog:
+      image: mailhog/mailhog
+      container_name: laravel_mailhog
+      ports:
+        - "1025:1025"  # SMTP
+        - "8025:8025"  # Web UI
+      networks:
+        - app-network
+    laravel_scheduler:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      container_name: laravel_scheduler
+      depends_on:
+        - app
+      entrypoint: ["sh", "-c", "while true; do echo Ejecutando scheduler... && php artisan schedule:run; sleep 60; done"]
+      volumes:
+        - .:/var/www
+      networks:
+        - app-network
+  networks:
+    app-network:
+      driver: bridge

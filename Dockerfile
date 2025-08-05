@@ -19,7 +19,10 @@ RUN apt-get update && apt-get install -y \
     exif \
     pcntl \
     bcmath \
-    opcache
+    opcache 
+
+# ✅ Instalar redis con PECL
+RUN pecl install redis && docker-php-ext-enable redis
 
 # Instala Composer (última versión oficial)
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

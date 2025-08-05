@@ -1,0 +1,29 @@
+FROM php:8.2-fpm
+
+# Instala dependencias del sistema necesarias
+RUN apt-get update && apt-get install -y \
+    git curl zip unzip libzip-dev libpng-dev libonig-dev libxml2-dev \
+    && docker-php-ext-install pdo pdo_mysql zip mbstring gd exif pcntl bcmath opcache
+
+# Instala Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Copia archivos del proyecto
+WORKDIR /var/www
+
+COPY . .
+
+# Instala dependencias y cachea configuración de Laravel
+RUN composer install --no-dev --optimize-autoloader \
+ && php artisan config:cache \
+ && php artisan route:cache \
+ && php artisan view:cache \
+ && chmod -R 775 storage bootstrap/cache
+
+ # Cambiar dueño a www-data
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache \
+ && chmod -R 775 /var/www/storage /var/www/bootstrap/cache
+
+EXPOSE 9000
+
+CMD ["php-fpm"]
