@@ -64,18 +64,6 @@
         - "8025:8025"  # Web UI
       networks:
         - app-network
-    laravel_scheduler:
-      build:
-        context: .
-        dockerfile: Dockerfile
-      container_name: laravel_scheduler
-      depends_on:
-        - app
-      entrypoint: ["sh", "-c", "while true; do echo Ejecutando scheduler... && php artisan schedule:run; sleep 60; done"]
-      volumes:
-        - .:/var/www
-      networks:
-        - app-network
   networks:
     app-network:
       driver: bridge

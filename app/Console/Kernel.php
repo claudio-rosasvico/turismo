@@ -27,10 +27,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function () {
-            Mail::to('test@turismo.test')->send(new TestMail());
-            Log::info("Scheduler ejecutado y mail enviado.");
-        })->everyMinute();
+
     }
 
     /**

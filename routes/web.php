@@ -3,6 +3,7 @@
 use App\Http\Controllers\ChatBotController;
 use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\CotizacionController;
+use App\Http\Controllers\DebugController;
 use App\Http\Controllers\PartidaController;
 use App\Http\Controllers\ProveedorController;
 use Illuminate\Support\Facades\Route;
@@ -93,6 +94,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('/contratos', ContratoController::class)->except(['store', 'show'])->names('contratos');
 
     /* CHATBOT */
+});
+
+Route::prefix('debug')->group(function () {
+    Route::get('/partida/{codigo}', [DebugController::class, 'partidaDisponible']);
+    Route::get('/partidas-uso/{uso}', [DebugController::class, 'partidasParaUso']);
+    Route::get('/pagos/{proveedor}', [DebugController::class, 'pagosProveedor']);
 });
 
 Route::post('/chatbot/ask', [ChatBotController::class, 'handleQuery'])->name('chatbot.ask');
