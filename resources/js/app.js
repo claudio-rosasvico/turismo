@@ -3,3 +3,4 @@ window.PerfectScrollbar = PerfectScrollbar;
 
 import './bootstrap';
 import './custom';
+import './chatbase';

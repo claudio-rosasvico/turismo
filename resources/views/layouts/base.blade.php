@@ -28,7 +28,7 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @vite(['resources/js/chatbase.js'])
+    
 </head>
 
 <body class="g-sidenav-show bg-gray-100 ">
