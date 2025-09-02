@@ -33,6 +33,27 @@
             </nav>
             @unlessrole('Visitante')
             {{ $slot }}
+            <button class="btn btn-success" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999;"
+                data-bs-toggle="modal" data-bs-target="#chatbotModal">
+                💬 Chat
+            </button>
+
+            <!-- Modal con el chatbot -->
+            <div class="modal fade" id="chatbotModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Asistente Virtual</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" style="height: 600px;">
+                            <iframe src="https://www.chatbase.co/chatbot-iframe/DYpMywwvOH7ygvVVXG41B" width="100%"
+                                style="height: 100%; min-height: 600px" frameborder="0"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <main>
                 <div class="container-fluid">
                     <div class="row">
