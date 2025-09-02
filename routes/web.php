@@ -96,11 +96,3 @@ Route::middleware('auth')->group(function () {
     /* CHATBOT */
 });
 
-Route::prefix('debug')->group(function () {
-    Route::get('/partida/{codigo}', [DebugController::class, 'partidaDisponible']);
-    Route::get('/partidas-uso/{uso}', [DebugController::class, 'partidasParaUso']);
-    Route::get('/pagos/{proveedor}', [DebugController::class, 'pagosProveedor']);
-});
-
-Route::post('/chatbot/ask', [ChatBotController::class, 'handleQuery'])->name('chatbot.ask');
-Route::view('/chatbot', 'chatbot')->name('chatbot');

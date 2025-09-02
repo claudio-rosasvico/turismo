@@ -31,31 +31,7 @@
         - app
       networks:
         - app-network
-    redis:
-      image: redis:alpine
-      container_name: laravel_redis
-      ports:
-        - "6379:6379"
-      restart: always
-      networks:
-        - app-network
     
-    horizon_worker:
-      build:
-        context: .
-        dockerfile: Dockerfile
-      image: laravel_app
-      container_name: laravel_horizon_worker
-      depends_on:
-        - redis
-        - app
-      restart: unless-stopped
-      working_dir: /var/www
-      command: php artisan horizon
-      volumes:
-        - ./:/var/www
-      networks:
-        - app-network
     mailhog:
       image: mailhog/mailhog
       container_name: laravel_mailhog
